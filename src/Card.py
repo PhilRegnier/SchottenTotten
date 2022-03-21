@@ -1,6 +1,21 @@
 #
 # Card definition
 #
+import sys
+from math import sqrt
+
+from PIL import Image
+from PyQt5 import Qt
+from PyQt5.QtCore import QPointF, QLineF, QPropertyAnimation, QRectF, QRect
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
+
+from src import UserSide, AutoSide
+from src.Ombrage import Ombrage
+from src.image_treatment import enluminure
+from src.variables_globales import N_cards, max_value, colors, card_width, card_height, card, side_height
+
+
 class Card(QGraphicsObject):
 
     def __init__(self, numero, parent=None):
@@ -14,7 +29,7 @@ class Card(QGraphicsObject):
         self.valeur = numero % max_value + 1
         self.couleur = colors[numero // max_value]
 
-        image = Image.open('../resources/images/' + self.couleur + str(self.valeur) + '.jpg')
+        image = Image.open('resources/images/' + self.couleur + str(self.valeur) + '.jpg')
         image.thumbnail((card_width - 2, card_height - 2))
         self.pixmap = QPixmap.fromImage(enluminure(image))
 
@@ -82,9 +97,9 @@ class Card(QGraphicsObject):
         # get sure the card dragged is in the foreground
 
         zvalue = 0.
-        colItems = self.collidingItems()
-        if colItems:
-            for item in colItems:
+        col_items = self.collidingItems()
+        if col_items:
+            for item in col_items:
                 if item.zValue() >= zvalue:
                     zvalue = item.zValue() + 0.1
 
@@ -105,22 +120,22 @@ class Card(QGraphicsObject):
     def mouseReleaseEvent(self, event):
         self.setCursor(Qt.ArrowCursor)
         if dragged:
-            colItems = self.collidingItems()
-            if colItems:
-                closestItem = colItems[0]
+            col_items = self.collidingItems()
+            if col_items:
+                closest_item = col_items[0]
                 shortest_dist = 100000.
 
-                for item in colItems:
+                for item in col_items:
                     line = QLineF(item.sceneBoundingRect().center(),
                                   self.sceneBoundingRect().center())
-                    if line.length() < shortestDist:
+                    if line.length() < shortest_dist:
                         shortest_dist = line.length()
-                        closestItem = item
+                        closest_item = item
 
-                if closestItem.parentItem():
-                    self.setCardOnSide(closestItem.parentItem())
+                if closest_item.parentItem():
+                    self.setCardOnSide(closest_item.parentItem())
                 else:
-                    self.setCardOnSide(closestItem)
+                    self.setCardOnSide(closest_item)
 
             QGraphicsObject.mouseReleaseEvent(self, event)
             self.ombrage.setEnabled(False)

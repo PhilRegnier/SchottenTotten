@@ -1,6 +1,17 @@
 # ------------------------------------------------------------------------------------------------------
 # Deck definition
 # ------------------------------------------------------------------------------------------------------
+from random import shuffle
+
+from PIL import ImageQt, Image
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QGraphicsPixmapItem
+
+from src.image_treatment import round_corners
+from src.variables_globales import userType, N_cards, card, rBound, card_width, card_height, cadre_color, relief_color2, \
+    relief_color
+
+
 class Deck(QGraphicsPixmapItem):
     Type = userType + 2
     Nc = N_cards
