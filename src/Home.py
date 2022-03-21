@@ -31,7 +31,7 @@ class Home(Curtain):
         self.titre.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(image)))
         self.titre.setParentItem(self)
 
-        # settings and starting button
+        # settings and starting buttons
 
         self.settings = Clickable('engrenages.jpg', cw, cw, 10, self)
         self.starting = Clickable('run.jpg', cw, cw, 11, self)

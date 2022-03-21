@@ -1,7 +1,7 @@
 #
 # Définition de la fenêtre principale de l'interface
 #
-from PyQt5 import Qt
+from PyQt5.QtCore import Qt
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QStatusBar, QWidget, QLabel, QSpinBox, QPushButton, QVBoxLayout, QHBoxLayout, \

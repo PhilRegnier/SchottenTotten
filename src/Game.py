@@ -22,7 +22,8 @@ from src.TextInForeground import TextInForeground
 from src.variables_globales import mainWindow_width, background_color, N_rounds, N_hand, stone_marge, stone_width, \
     mainWindow_marge, stone_height, side_height, user_side_color0, user_side_pen, card, marge, card_width, \
     auto_side_color0, auto_side_color1, auto_side_pen, mainWindow_height, card_height, difficulT, cote_both, \
-    cote_brelan, cote_couleur, cote_suite, N_cards, dragged, clicked
+    cote_brelan, cote_couleur, cote_suite, N_cards, dragged, clicked, side_nb, card_nb, player_1, user_side_color1, \
+    z_max, userWantToReorganize, card_hover, card_dx, hand_nb
 
 
 class Game(QGraphicsView):
@@ -218,11 +219,11 @@ class Game(QGraphicsView):
         userWantToReorganize = False
         card_hover = -1
 
-        colItems = card[card_nb].collidingItems()
+        col_items = card[card_nb].collidingItems()
 
-        if colItems:
-            shortestDist = 100000.
-            for item in colItems:
+        if col_items:
+            shortest_dist = 100000.
+            for item in col_items:
 
                 if item == card[card_nb].parentItem():
                     continue
@@ -230,8 +231,8 @@ class Game(QGraphicsView):
                 if item.parentItem() == card[card_nb].parentItem():
                     line = QLineF(item.sceneBoundingRect().center(),
                                   card[card_nb].sceneBoundingRect().center())
-                    if line.length() < shortestDist:
-                        shortestDist = line.length()
+                    if line.length() < shortest_dist:
+                        shortest_dist = line.length()
                         # if card_hover != item.numero or card_dx*line.dx() < 0:
                         userWantToReorganize = True
 
