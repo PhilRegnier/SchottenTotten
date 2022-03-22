@@ -16,7 +16,7 @@ class Stone(QGraphicsObject):
     def __init__(self, numero, parent=None):
         super().__init__(parent)
         self.numero = numero
-        image = Image.open('../resources/images/borne' + str(self.numero + 1) + '.jpg')
+        image = Image.open('resources/images/borne' + str(self.numero + 1) + '.jpg')
         image.thumbnail((stone_width - 1, stone_height - 1))
         self.pixmap = QPixmap.fromImage(enluminure(image, ow=2, oh=2))
         self.winner = ""
