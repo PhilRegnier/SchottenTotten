@@ -5,7 +5,8 @@ from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QLinearGradient, QBrush, QPen
 from PyQt5.QtWidgets import QGraphicsItem
 
-from src.variables_globales import stone_width, side_height, rBound, card
+from src.Card import Card
+from src.variables_globales import stone_width, side_height, rBound
 
 
 class Side(QGraphicsItem):
@@ -23,8 +24,8 @@ class Side(QGraphicsItem):
         self.pen = pen
 
     def boundingRect(self):
-        penWidth = 1.0
-        return QRectF(-penWidth / 2, -penWidth / 2, stone_width + penWidth, side_height + penWidth)
+        pen_width = 1.0
+        return QRectF(-pen_width / 2, -pen_width / 2, stone_width + pen_width, side_height + pen_width)
 
     def paint(self, painter, option, widget):
         gradient = QLinearGradient(0., side_height, 0., 0.)
@@ -38,8 +39,8 @@ class Side(QGraphicsItem):
 
     def addCard(self, i, pos):
         self.index.append(i)
-        card[i].setAnchorPoint(pos)
-        card[i].setParentItem(self)
-        card[i].setIndex(-1)
+        Card.cards[i].setAnchorPoint(pos)
+        Card.cards[i].setParentItem(self)
+        Card.cards[i].setIndex(-1)
         self.nCard += 1
-        self.somme += card[i].valeur
+        self.somme += Card.cards[i].valeur

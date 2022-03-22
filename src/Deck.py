@@ -7,14 +7,14 @@ from PIL import ImageQt, Image
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
+from src.Card import Card
 from src.image_treatment import round_corners
-from src.variables_globales import userType, N_cards, card, rBound, card_width, card_height, cadre_color, relief_color2, \
-    relief_color
+from src.variables_globales import userType, rBound, cadre_color, relief_color2, relief_color
 
 
 class Deck(QGraphicsPixmapItem):
     Type = userType + 2
-    Nc = N_cards
+    Nc = Card.total_cards
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -27,15 +27,15 @@ class Deck(QGraphicsPixmapItem):
 
         # Create a random deck
 
-        liste_cartes = [i for i in range(N_cards)]
+        liste_cartes = [i for i in range(Card.total_cards)]
         shuffle(liste_cartes)
 
         self.index = liste_cartes
 
-        for i in range(N_cards):
-            card[i].setParentItem(self)
-            card[i].setPos(0, 0)
-            card[i].setVisible(False)
+        for i in range(Card.total_cards):
+            Card.cards[i].setParentItem(self)
+            Card.cards[i].setPos(0, 0)
+            Card.cards[i].setVisible(False)
 
     def isEmpty(self):
         return self.empty
@@ -63,8 +63,8 @@ class Deck(QGraphicsPixmapItem):
         t = 1
         ow = 1
         oh = 1
-        im = Image.open("images/back.jpg")
-        im.thumbnail((card_width - 2 * t, card_height - 2 * t))
+        im = Image.open("resources/images/back.jpg")
+        im.thumbnail((Card.width - 2 * t, Card.height - 2 * t))
         im = round_corners(im, int(r))
         cadre = Image.new('RGBA', (im.width + 2 * t, im.height + 2 * t), cadre_color)
         cadre = round_corners(cadre, int(r + t))

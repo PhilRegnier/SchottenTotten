@@ -8,11 +8,12 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QPixmap, QPen, QColor
 from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsLineItem
 
+from src.Card import Card
 from src.Clickable import Clickable
 from src.Curtain import Curtain
 from src.TextInForeground import TextInForeground
 from src.image_treatment import enluminure
-from src.variables_globales import card_height, selected
+from src.variables_globales import selected
 
 
 class Chifoumi(Curtain):
@@ -24,7 +25,7 @@ class Chifoumi(Curtain):
 
         ww = self.boundingRect().width()
         wh = self.boundingRect().height()
-        cw = card_height
+        cw = Card.height
         ew = 20
 
         # set the items
@@ -76,8 +77,7 @@ class Chifoumi(Curtain):
         self.text2.setVisible(False)
         self.start()
 
-    def choosePlayer(self):
-        global player_1
+    def choose_player(self):
 
         # User's choice
 
@@ -98,14 +98,13 @@ class Chifoumi(Curtain):
         # verdict
 
         if selected == autoc:
-            player_1 = -1
-            return
+            return -1
         elif (selected == 0 and autoc == 2) \
                 or (selected == 1 and autoc == 0) \
                 or (selected == 2 and autoc == 1):
-            player_1 = 0
+            return 0
         else:
-            player_1 = 1
+            return 1
 
     def freeze(self):
         self.pierre.setAcceptHoverEvents(False)

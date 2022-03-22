@@ -1,8 +1,7 @@
 #
 # Generic slider
 #
-from PyQt5 import Qt
-from PyQt5.QtCore import QRectF
+from PyQt5.QtCore import QRectF, Qt
 from PyQt5.QtGui import QBrush, QFont, QColor, QPen
 from PyQt5.QtWidgets import QGraphicsSimpleTextItem, QGraphicsItem
 

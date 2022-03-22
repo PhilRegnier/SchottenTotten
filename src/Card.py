@@ -5,23 +5,28 @@ import sys
 from math import sqrt
 
 from PIL import Image
-from PyQt5 import Qt
-from PyQt5.QtCore import QPointF, QLineF, QPropertyAnimation, QRectF, QRect
+from PyQt5.QtCore import QPointF, QLineF, QPropertyAnimation, QRectF, QRect, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
 
 from src import UserSide, AutoSide
 from src.Ombrage import Ombrage
 from src.image_treatment import enluminure
-from src.variables_globales import N_cards, max_value, colors, card_width, card_height, card, side_height
+from src.variables_globales import max_value, colors, side_height, stone_width
 
 
 class Card(QGraphicsObject):
 
+    cards = []
+    total_cards = len(colors) * max_value
+    width = stone_width - 4
+    height = width * 1.42
+
     def __init__(self, numero, parent=None):
-        if numero < 0 or numero > N_cards - 1:
+        if numero < 0 or numero > Card.total_cards - 1:
             print("Card number must be into [0, 53]. Program stopped")
             sys.exit(0)
+
         super().__init__(parent)
         self.numero = numero
         self.index = -1
@@ -30,7 +35,7 @@ class Card(QGraphicsObject):
         self.couleur = colors[numero // max_value]
 
         image = Image.open('resources/images/' + self.couleur + str(self.valeur) + '.jpg')
-        image.thumbnail((card_width - 2, card_height - 2))
+        image.thumbnail((Card.width - 2, Card.height - 2))
         self.pixmap = QPixmap.fromImage(enluminure(image))
 
         self.setAcceptHoverEvents(False)
@@ -74,7 +79,7 @@ class Card(QGraphicsObject):
         self.ombrage.setEnabled(True)
 
     def mouseMoveEvent(self, event):
-        global dragged, card_nb
+        global dragged
 
         # Check button pressed, card's origin, and that a minimum move has been done
 
@@ -115,7 +120,7 @@ class Card(QGraphicsObject):
                 # get sure that the card dropped is in the foreground
 
                 if item.nCard > 0:
-                    self.setZValue(card[item.index[len(item.index) - 1]].zValue() + 0.1)
+                    self.setZValue(Card.cards[item.index[len(item.index) - 1]].zValue() + 0.1)
 
     def mouseReleaseEvent(self, event):
         self.setCursor(Qt.ArrowCursor)
@@ -167,8 +172,8 @@ class Card(QGraphicsObject):
 
     def boundingRect(self):
         pen_width = 1.0
-        return QRectF(-pen_width / 2, -pen_width / 2, card_width + pen_width, side_height + pen_width)
+        return QRectF(-pen_width / 2, -pen_width / 2, Card.width + pen_width, side_height + pen_width)
 
     def paint(self, painter, option, widget):
-        rect = QRect(-1, -1, int(card_width), int(card_height))
+        rect = QRect(-1, -1, int(Card.width), int(Card.height))
         painter.drawPixmap(rect, self.pixmap)

@@ -8,9 +8,7 @@ from PyQt5.QtGui import QColor
 
 colors = ['jaune', 'vert', 'rouge', 'brun', 'bleu', 'violet']
 max_value = 9
-N_cards = len(colors) * max_value
 N_hand = 6
-card = []
 difficulT = 1
 N_rounds = 1
 sounds = False
@@ -24,8 +22,6 @@ pen_width = 1.
 stone_marge = 4.
 marge = 5.
 stone_width = (mainWindow_width - 2 * mainWindow_marge - 8 * stone_marge - 40) / 9 - 2 * pen_width
-card_width = stone_width - 4
-card_height = card_width * 1.42
 stone_height = stone_width * 0.58
 side_height = card_height * 1.667
 mainWindow_height = int(
@@ -39,17 +35,6 @@ userType = 100000
 clicked = False
 selected = -1  # 0= feuille; 1=ciseaux; 2=pierre; 10=settings; 11=starting; 20=ok ; 21=cancel;
 player_1 = 0  # O=user (default); 1=automate
-
-# Global Variables managing cards movements between graphics items
-
-side_nb = -1  # to point on the side of the drop
-card_nb = -1  # to point on card dropped
-hand_nb = -1  # to point on the hand's index of the card dragged
-dragged = False
-userWantToReorganize = False
-card_hover = -1
-card_dx = 0.
-z_max = 0.
 
 # cotations for cards combinations
 

@@ -10,20 +10,21 @@ from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
 
 from src import UserSide
 from src.AutoSide import AutoSide
+from src.Card import Card
 from src.Chifoumi import Chifoumi
 from src.Curtain import Curtain
 from src.Deck import Deck
 from src.Home import Home
 from src.Memo import Memo
+from src.MovingCard import MovingCard
 from src.PlayerDeck import PlayerDeck
 from src.Statistics import Statistics
 from src.Stone import Stone
 from src.TextInForeground import TextInForeground
 from src.variables_globales import mainWindow_width, background_color, N_rounds, N_hand, stone_marge, stone_width, \
-    mainWindow_marge, stone_height, side_height, user_side_color0, user_side_pen, card, marge, card_width, \
-    auto_side_color0, auto_side_color1, auto_side_pen, mainWindow_height, card_height, difficulT, cote_both, \
-    cote_brelan, cote_couleur, cote_suite, N_cards, dragged, clicked, side_nb, card_nb, player_1, user_side_color1, \
-    z_max, userWantToReorganize, card_hover, card_dx, hand_nb
+    mainWindow_marge, stone_height, side_height, user_side_color0, user_side_pen, marge, \
+    auto_side_color0, auto_side_color1, auto_side_pen, mainWindow_height, difficulT, cote_both, \
+    cote_brelan, cote_couleur, cote_suite, clicked, player_1, user_side_color1
 
 
 class Game(QGraphicsView):
@@ -71,7 +72,7 @@ class Game(QGraphicsView):
 
         # starting the game
 
-        self.itemsSelected = []
+        self.items_selected = []
         self.i_round += 1
 
         # Switch the first player between each round
@@ -132,28 +133,28 @@ class Game(QGraphicsView):
         self.user_deck = PlayerDeck(user_side_color0, user_side_color1, user_side_pen)
 
         for i in range(N_hand):
-            card[self.user_hand[i]].setParentItem(self.user_deck)
-            card[self.user_hand[i]].setPos((i + 1) * marge + i * card_width, marge)
-            card[self.user_hand[i]].setAnchorPoint(card[self.user_hand[i]].pos())
-            card[self.user_hand[i]].setDraggable(True)
-            card[self.user_hand[i]].setVisible(True)
-            card[self.user_hand[i]].setIndex(i)
+            Card.cards[self.user_hand[i]].setParentItem(self.user_deck)
+            Card.cards[self.user_hand[i]].setPos((i + 1) * marge + i * Card.width, marge)
+            Card.cards[self.user_hand[i]].setAnchorPoint(Card.cards[self.user_hand[i]].pos())
+            Card.cards[self.user_hand[i]].setDraggable(True)
+            Card.cards[self.user_hand[i]].setVisible(True)
+            Card.cards[self.user_hand[i]].setIndex(i)
 
         # Computer's hand cards items [CHEAT MODE]
 
         self.auto_deck = PlayerDeck(auto_side_color0, auto_side_color1, auto_side_pen)
 
         for i in range(N_hand):
-            card[self.auto_hand[i]].setParentItem(self.auto_deck)
-            card[self.auto_hand[i]].setPos((i + 1) * marge + i * card_width, marge)
-            card[self.auto_hand[i]].setAnchorPoint(card[self.auto_hand[i]].pos())
-            card[self.auto_hand[i]].setVisible(True)
+            Card.cards[self.auto_hand[i]].setParentItem(self.auto_deck)
+            Card.cards[self.auto_hand[i]].setPos((i + 1) * marge + i * Card.width, marge)
+            Card.cards[self.auto_hand[i]].setAnchorPoint(Card.cards[self.auto_hand[i]].pos())
+            Card.cards[self.auto_hand[i]].setVisible(True)
 
         self.auto_deck.setScale(0.6)
 
         # Set items positions
 
-        bottom_y = mainWindow_height - 5 * mainWindow_marge - card_height - 2 * marge
+        bottom_y = mainWindow_height - 5 * mainWindow_marge - Card.height - 2 * marge
 
         self.deck.setPosInit(1000, bottom_y)
         self.user_deck.setPos(10, bottom_y)
@@ -172,11 +173,9 @@ class Game(QGraphicsView):
 
         # Set zValue max
 
-        global z_max
-
-        z_max = 0.
+        MovingCard.reset_zmax()
         for item in self.board.items():
-            z_max = max(z_max, item.zValue())
+            MovingCard.set_zmax(item.zValue())
 
     def autoHandView(self):
         """
@@ -190,7 +189,7 @@ class Game(QGraphicsView):
     def mouseMoveEvent(self, event):
         QGraphicsView.mouseMoveEvent(self, event)
 
-        if dragged:
+        if MovingCard.isDragged():
 
             # Enlightment for user's side hovered
 
@@ -206,7 +205,7 @@ class Game(QGraphicsView):
                 if not item in items:
                     item.setOpacity(0.5)
 
-            # Management for reardering the user's hand
+            # Management for reordering the user's hand
 
             # self.mouseMoveHand()
 
@@ -214,47 +213,44 @@ class Game(QGraphicsView):
         """
         Reorganization of the user's hand
         """
-        global userWantToReorganize, card_hover, card_dx
+        MovingCard.UserDontWantToReorganize()
 
-        userWantToReorganize = False
-        card_hover = -1
-
-        col_items = card[card_nb].collidingItems()
+        col_items = Card.cards[MovingCard.card_id].collidingItems()
 
         if col_items:
             shortest_dist = 100000.
             for item in col_items:
 
-                if item == card[card_nb].parentItem():
+                if item == Card.cards[MovingCard.card_id].parentItem():
                     continue
 
-                if item.parentItem() == card[card_nb].parentItem():
+                if item.parentItem() == Card.cards[MovingCard.card_id].parentItem():
                     line = QLineF(item.sceneBoundingRect().center(),
-                                  card[card_nb].sceneBoundingRect().center())
+                                  Card.cards[MovingCard.card_id].sceneBoundingRect().center())
                     if line.length() < shortest_dist:
                         shortest_dist = line.length()
                         # if card_hover != item.numero or card_dx*line.dx() < 0:
-                        userWantToReorganize = True
+                        MovingCard.userWantToReorganize()
 
                         card_dx = line.dx()
                         card_hover = item.numero
 
-        if userWantToReorganize:
+        if MovingCard.isMovedToReorganize():
             self.new_order = self.user_hand
         else:
             return
 
         # Set the concerned cards
 
-        if card[card_nb].index - card[card_hover].index < 0:
-            i1 = card[card_nb].index + 1
-            i2 = card[card_hover].index
+        if Card.cards[MovingCard.card_id].index - Card.cards[card_hover].index < 0:
+            i1 = Card.cards[MovingCard.card_id].index + 1
+            i2 = Card.cards[card_hover].index
             sens = -1
             if card_dx > 0:
                 i2 += 1
         else:
-            i1 = card[card_hover].index
-            i2 = card[card_nb].index
+            i1 = Card.cards[card_hover].index
+            i2 = Card.cards[MovingCard.card_id].index
             sens = 1
             if card_dx > 0:
                 i1 += 1
@@ -264,9 +260,9 @@ class Game(QGraphicsView):
         self.anims = QParallelAnimationGroup()
 
         for i in range(i1, i2):
-            anim = QPropertyAnimation(card[self.user_hand[i]], b"pos")
-            pos1 = card[self.user_hand[i]].anchorPoint
-            pos2 = card[self.user_hand[i + sens]].anchorPoint
+            anim = QPropertyAnimation(Card.cards[self.user_hand[i]], b"pos")
+            pos1 = Card.cards[self.user_hand[i]].anchorPoint
+            pos2 = Card.cards[self.user_hand[i + sens]].anchorPoint
             dx = pos1.x() - pos2.x()
             dy = pos1.y() - pos2.y()
             duration = sqrt(dx ** 2 + dy ** 2) / 1
@@ -279,35 +275,34 @@ class Game(QGraphicsView):
         self.anims.start()
 
     def mouseReleaseEvent(self, event):
-        global side_nb, card_nb, dragged
 
         QGraphicsView.mouseReleaseEvent(self, event)
 
         # Events from Cards: If cards has been moved to a droppable zone
 
-        if dragged:
+        if MovingCard.isDragged():
 
             # Card moved on user's deck
 
-            if userWantToReorganize:
+            if MovingCard.isMovedToReorganize():
                 self.user_hand = self.new_order
 
             # Card moved on side or no ?
 
-            if side_nb >= 0:
+            if MovingCard.side_id() >= 0:
 
                 # position in the hand
 
-                i = card[card_nb].index
+                i = Card.cards[MovingCard.card_id()].index
 
                 # Memorize initial position for new card from the deck
 
-                pos = card[card_nb].anchorPoint
+                pos = Card.cards[MovingCard.card_id()].anchorPoint
 
                 # Add the card drop to the side
 
-                self.user_side[side_nb].addCard(card_nb)
-                self.user_side[side_nb].setOpacity(0.5)
+                self.user_side[MovingCard.side_id()].addCard(MovingCard.card_id)
+                self.user_side[MovingCard.side_id()].setOpacity(0.5)
 
                 # Draw a new card
 
@@ -317,17 +312,17 @@ class Game(QGraphicsView):
                         self.ending = True
                 else:
                     self.user_hand[i] = self.deck.draw()
-                    card[self.user_hand[i]].setVisible(True)
-                    card[self.user_hand[i]].setDraggable(True)
-                    card[self.user_hand[i]].setAnchorPoint(pos)
-                    card[self.user_hand[i]].moveTo(self.deck.pos() - self.user_deck.pos(), pos)
-                    card[self.user_hand[i]].setParentItem(self.user_deck)
-                    card[self.user_hand[i]].setIndex(i)
+                    Card.cards[self.user_hand[i]].setVisible(True)
+                    Card.cards[self.user_hand[i]].setDraggable(True)
+                    Card.cards[self.user_hand[i]].setAnchorPoint(pos)
+                    Card.cards[self.user_hand[i]].moveTo(self.deck.pos() - self.user_deck.pos(), pos)
+                    Card.cards[self.user_hand[i]].setParentItem(self.user_deck)
+                    Card.cards[self.user_hand[i]].setIndex(i)
 
                 # Actions if the side is full
 
-                if self.user_side[side_nb].nCard == 3:
-                    self.book(self.user_side[side_nb])
+                if self.user_side[MovingCard.side_id()].nCard == 3:
+                    self.book(self.user_side[MovingCard.side_id()])
 
                 self.judge()
 
@@ -347,7 +342,7 @@ class Game(QGraphicsView):
                 side_nb = -1
                 card_nb = -1
             else:
-                card[card_nb].moveTo(card[card_nb].pos(), card[card_nb].anchorPoint)
+                card[MovingCard.card_id].moveTo(card[MovingCard.card_id].pos(), card[MovingCard.card_id].anchorPoint)
 
             dragged = False
             self.update()
