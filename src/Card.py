@@ -10,6 +10,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
 
 from src import UserSide, AutoSide
+from src.MovingCard import MovingCard
 from src.Ombrage import Ombrage
 from src.image_treatment import enluminure
 from src.variables_globales import max_value, colors, side_height, stone_width
@@ -79,7 +80,6 @@ class Card(QGraphicsObject):
         self.ombrage.setEnabled(True)
 
     def mouseMoveEvent(self, event):
-        global dragged
 
         # Check button pressed, card's origin, and that a minimum move has been done
 
@@ -92,7 +92,7 @@ class Card(QGraphicsObject):
 
         # All staff when a card is dragged from the user's hand
 
-        dragged = True
+        MovingCard.dragged()
         card_nb = self.numero
         QGraphicsObject.mouseMoveEvent(self, event)
         self.ombrage.setEnabled(True)
@@ -111,10 +111,9 @@ class Card(QGraphicsObject):
         self.setZValue(zvalue)
 
     def setCardOnSide(self, item):
-        global side_nb
         if item.Type == UserSide.Type:
             if item.nCard < 3:
-                side_nb = item.numero
+                MovingCard.set_side_id(item.numero)
                 self.setDraggable(False)
 
                 # get sure that the card dropped is in the foreground
@@ -124,7 +123,7 @@ class Card(QGraphicsObject):
 
     def mouseReleaseEvent(self, event):
         self.setCursor(Qt.ArrowCursor)
-        if dragged:
+        if MovingCard.dragged():
             col_items = self.collidingItems()
             if col_items:
                 closest_item = col_items[0]

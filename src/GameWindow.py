@@ -25,9 +25,8 @@ class GameWindow(QMainWindow):
 
         # Setting all the playing cards
 
-        global card
         for i in range(N_cards):
-            card.append(Card(i))
+            Card.cards.append(Card(i))
 
         self.create_game()
         self.create_menu()

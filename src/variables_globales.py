@@ -7,12 +7,7 @@ __version__ = "1.1"
 from PyQt5.QtGui import QColor
 
 colors = ['jaune', 'vert', 'rouge', 'brun', 'bleu', 'violet']
-max_value = 9
-N_hand = 6
-difficulT = 1
-N_rounds = 1
-sounds = False
-variant = False
+
 
 # Objects dimensions & geometries
 
@@ -34,7 +29,6 @@ parentId = 0
 userType = 100000
 clicked = False
 selected = -1  # 0= feuille; 1=ciseaux; 2=pierre; 10=settings; 11=starting; 20=ok ; 21=cancel;
-player_1 = 0  # O=user (default); 1=automate
 
 # cotations for cards combinations
 

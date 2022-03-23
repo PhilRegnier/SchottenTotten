@@ -10,6 +10,14 @@ from src.variables_globales import variant, N_rounds, sounds, difficulT
 
 class Settings(Curtain):
 
+    __max_value = 9
+    __hand_nb = 6
+    __difficulty = 1
+    __rounds_nb = 1
+    __sounds = False
+    __variant = False
+    __first_player = 0  # O=user (default); 1=automate
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -33,14 +41,14 @@ class Settings(Curtain):
 
         self.rounds_selector.setRange(1, 5)
 
-        if sounds:
+        if Settings.__sounds:
             self.sound_selector.setSliderPosition(1)
 
         if variant:
             self.variant_selector.setSliderPosition(1)
 
-        self.difficulty_selector.setSliderPosition(difficulT)
-        self.rounds_selector.setSliderPosition(N_rounds - 1)
+        self.difficulty_selector.setSliderPosition(Settings.__difficulty)
+        self.rounds_selector.setSliderPosition(Settings.__rounds_nb - 1)
 
         # Set "OK" and "CANCEL" buttons
 
@@ -63,8 +71,39 @@ class Settings(Curtain):
         self.ok.setPos(lw, y)
         self.cancel.setPos(lw + self.difficulty_selector.width, y)
 
+    @staticmethod
     def setValues(self):
-        global N_rounds, sounds, difficulT
-        N_rounds = self.rounds_selector.value()
-        sounds = self.sound_selector.value() == 1
-        difficulT = self.difficulty_selector.value()
+        Settings.__rounds_nb = self.rounds_selector.value()
+        Settings.__sounds = self.sound_selector.value() == 1
+        Settings.__difficulty = self.difficulty_selector.value()
+
+    @staticmethod
+    def get_rounds_nb():
+        return Settings.__rounds_nb
+
+    @staticmethod
+    def get_difficulty():
+        return Settings.__difficulty
+
+    @staticmethod
+    def get_sounds():
+        return Settings.__sounds
+
+    @staticmethod
+    def get_hand_nb():
+        return Settings.__hand_nb
+
+    @staticmethod
+    def switch_first_player():
+        if Settings.__first_player == 1:
+            Settings.__first_player = 0
+        else:
+            Settings.__first_player = 1
+
+    @staticmethod
+    def get_first_player():
+        return Settings.__first_player
+
+
+
+

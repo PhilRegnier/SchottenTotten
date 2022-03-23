@@ -5,7 +5,9 @@ from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QLinearGradient, QBrush, QPen
 from PyQt5.QtWidgets import QGraphicsItem
 
-from src.variables_globales import N_hand, card_width, marge, card_height, pen_width, side_height, rBound
+from src.Card import Card
+from src.Settings import Settings
+from src.variables_globales import marge, pen_width, side_height, rBound
 
 
 class PlayerDeck(QGraphicsItem):
@@ -15,8 +17,8 @@ class PlayerDeck(QGraphicsItem):
         self.gcolor1 = color1
         self.gcolor2 = color2
         self.pcolor = color3
-        self.width = 1.0 * (N_hand * (card_width + marge) + marge)
-        self.height = card_height + marge * 2.0
+        self.width = 1.0 * (Settings.get_hand_nb() * (Card.width + marge) + marge)
+        self.height = Card.height + marge * 2.0
 
     def boundingRect(self):
         return QRectF(-pen_width / 2, -pen_width / 2, self.width + pen_width, self.height + pen_width)
