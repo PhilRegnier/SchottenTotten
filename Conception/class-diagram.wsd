@@ -1,0 +1,196 @@
+@startuml Schotten Totten
+
+left to right direction
+
+package "PyQt5" {
+
+    package "QtGui" {
+        class QColor
+        class QPixmap
+    }
+    package "QtCore" {
+        class QPointF
+        class QLineF
+        class QPropertyAnimation
+        class QRectF
+        class QRect
+        class Qt
+    }
+
+    class QMainWindow
+
+    package "QtWidgets" {
+        class QApplication
+        abstract class QGraphicsObject {
+            + __init__(parent)
+            + setVisible(boolean)
+            + setPos(int,int)
+            + {abstract} QRectF boundingRect()
+            + {abstract} void paint(painter: QPainter, option: QStyleOptionGraphicsItem, [widget: QWidget])
+        }
+        abstract class QGraphicsItem
+        class QGraphicsSimpleTextItem
+        class QGraphicsPixmapItem
+    }
+    class QGraphicsDropShadowEffect
+    class QGraphicsView
+
+}
+
+package "PIL" {
+    class Image
+    class ImageDraw
+    class ImageQt
+}
+
+class Card {
+    - {static} int total_cards
+    + List cards
+    + width
+    + height
+    numero
+    index
+    ==
+
+    --
+}
+QGraphicsObject <|-- Card
+QPointF "1" - Card
+QPixmap "1" - Card : - pixmap 
+
+class Stone {
+
+}
+QGraphicsObject <|-- Stone
+
+together {
+    class Side {
+        + __init__(numero: int, color0: Color, color1: Color, pen: Pen, parent)
+        + QRectF boundingRect()
+        + void paint(painter: QPainter, option: QStyleOptionGraphicsItem, [widget: QWidget])
+        + addCardToSide(i,pos)
+    }
+
+    class UserSide {
+
+    }
+
+    class AutoSide {
+        + __init__(numero, parent)
+        + addCard(i)
+    }
+}
+Side <|-- UserSide
+Side <|-- AutoSide
+Card <|-- AutoSide
+Style <|-- AutoSide
+Statistics <|-- AutoSide
+QGraphicsItem <|-- Side
+
+class Curtain {
+    ==
+    + __init__(parent)
+    + QrectF boundingRect()
+    + void paint(painter: QPainter, option: QStyleOptionGraphicsItem, [widget: QWidget])
+    + void animate_incoming()
+    + animate_leaving()
+    + remove()
+}
+QGraphicsObject <|-- Curtain
+
+class Chifoumi {
+
+}
+Curtain <|-- Chifoumi
+
+class Home {
+
+}
+Curtain <|-- Home
+
+class Clickable {
+
+}
+QGraphicsPixmapItem <|-- Clickable
+
+class Deck {
+
+}
+QGraphicsPixmapItem <|-- Deck
+
+class MovingCard {
+
+}
+
+class Ombrage {
+
+}
+QGraphicsDropShadowEffect <|-- Ombrage
+
+class PlayerDeck {
+
+}
+QGraphicsItem <|-- PlayerDeck
+
+class Game {}
+QGraphicsView <-- Game
+
+class GameWindow {
+
+}
+QMainWindow <|-- GameWindow
+
+class Handler {
+
+}
+QGraphicsItem <|-- Handler
+
+class Slider {
+
+}
+QGraphicsItem <|-- Slider
+
+class Memo
+
+class Settings {
+
+}
+Curtain <|-- Settings
+
+class Statistics {
+
+}
+
+class TextInForeground {
+
+}
+QGraphicsSimpleTextItem <|-- TextInForeground
+
+class ImageTreatment {
+    ==
+    {static} Image round_corners(image: Image, r: int)
+    {static} Image enluminure(image: Image, r: int, ow: int, oh: int)
+}
+
+class Style {
+    {static} Color cadre_color
+    {static} Color relief_color
+    {static} Color relief_color2
+    {static} QColor ombrage_color
+    {static} QColor ombrage_color_bt
+    {static} QColor background_color
+
+    {static} QColor user_side_color0
+    {static} QColor user_side_color1
+    {static} QColor user_side_pen
+    {static} QColor user_hand_color
+    {static} QColor user_hand_pen
+
+    {static} QColor auto_side_color0
+    {static} QColor auto_side_color1
+    {static} QColor auto_side_pen
+    {static} QColor auto_hand_color
+    {static} QColor auto_hand_pen
+}
+
+@enduml

@@ -1,0 +1,25 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>Space for diagram notest</help_text><element><id>UMLClass</id><coordinates><x>510</x><y>130</y><w>210</w><h>60</h></coordinates><panel_attributes>PIL::ImageDraw
+--
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>790</x><y>130</y><w>210</w><h>60</h></coordinates><panel_attributes>QRectF
+--
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>790</x><y>230</y><w>210</w><h>60</h></coordinates><panel_attributes>QPropertyAnimation
+--
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>790</x><y>310</y><w>210</w><h>60</h></coordinates><panel_attributes>QLineF
+--
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1010</x><y>230</y><w>210</w><h>60</h></coordinates><panel_attributes>QPointF
+--
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1020</x><y>310</y><w>210</w><h>60</h></coordinates><panel_attributes>Qt
+--
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1010</x><y>130</y><w>210</w><h>60</h></coordinates><panel_attributes>QRect
+--
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLPackage</id><coordinates><x>750</x><y>100</y><w>500</w><h>290</h></coordinates><panel_attributes>QtCore</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>560</x><y>480</y><w>190</w><h>150</h></coordinates><panel_attributes>/QGraphicsObject/
+--
+--
++ __init__(parent)
+/+ boundingRect(): QrectF/
+/+ void paint(painter: QPainter,/
+/                    option: QStyleOptionGraphicsItem,/
+/                    [widget: QWidget])/
+--
++ setVisible(boolean)
++ setPos(int,int)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLPackage</id><coordinates><x>540</x><y>440</y><w>660</w><h>320</h></coordinates><panel_attributes>QWidgets</panel_attributes><additional_attributes></additional_attributes></element></diagram>
