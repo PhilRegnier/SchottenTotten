@@ -7,7 +7,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
 from src.Ombrage import Ombrage
-from src.image_treatment import enluminure
+from src.ImageTreatment import enluminure
 from src.variables_globales import ombrage_color_bt, clicked, selected
 
 

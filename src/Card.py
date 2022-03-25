@@ -10,9 +10,9 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
 
 from src import UserSide, AutoSide
+from src.ImageTreatment import ImageTreatment
 from src.MovingCard import MovingCard
 from src.Ombrage import Ombrage
-from src.image_treatment import enluminure
 from src.variables_globales import max_value, colors, side_height, stone_width
 
 
@@ -37,7 +37,7 @@ class Card(QGraphicsObject):
 
         image = Image.open('resources/images/' + self.couleur + str(self.valeur) + '.jpg')
         image.thumbnail((Card.width - 2, Card.height - 2))
-        self.pixmap = QPixmap.fromImage(enluminure(image))
+        self.pixmap = QPixmap.fromImage(ImageTreatment.enluminure(image))
 
         self.setAcceptHoverEvents(False)
         self.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)

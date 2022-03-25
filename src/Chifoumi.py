@@ -12,7 +12,7 @@ from src.Card import Card
 from src.Clickable import Clickable
 from src.Curtain import Curtain
 from src.TextInForeground import TextInForeground
-from src.image_treatment import enluminure
+from src.ImageTreatment import enluminure
 from src.variables_globales import selected
 
 

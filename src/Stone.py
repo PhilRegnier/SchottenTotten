@@ -6,7 +6,7 @@ from PyQt5.QtCore import QRectF, QRect, QPropertyAnimation, QPointF
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsObject
 
-from src.image_treatment import enluminure
+from src.ImageTreatment import enluminure
 from src.variables_globales import userType, stone_width, stone_height
 
 

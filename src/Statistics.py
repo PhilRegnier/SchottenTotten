@@ -14,17 +14,13 @@ class Statistics:
     user_ls = []
 
     def __init__(self):
-        global auto_lh, auto_ls, auto_ls0, auto_ls1, auto_ls2, user_lh, user_ls
-
         # record for indexes avaiable
 
-        auto_lh = [0, 1, 2, 3, 4, 5]
-        auto_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-        auto_ls0 = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-        auto_ls1 = []
-        auto_ls2 = []
-        user_lh = [0, 1, 2, 3, 4, 5]
-        user_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        Statistics.auto_lh = [0, 1, 2, 3, 4, 5]
+        Statistics.auto_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        Statistics.auto_ls0 = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        Statistics.user_lh = [0, 1, 2, 3, 4, 5]
+        Statistics.user_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
         # data for cards played
 
@@ -42,34 +38,27 @@ class Statistics:
         self.csn = 54
 
     def autoLh(self):
-        global auto_lh
         return auto_lh
 
     def autoLs(self):
-        global auto_ls
         return auto_ls
 
     def autoLs0(self):
-        global auto_ls0
         return auto_ls0
 
     def autoLs1(self):
-        global auto_ls1
         return auto_ls1
 
     def autoLs2(self):
-        global auto_ls2
         return auto_ls2
 
     def removeAutoHand(self, index):
-        global auto_lh
         for i in range(len(auto_lh)):
             if auto_lh[i] == index:
                 del auto_lh[i]
                 break
 
     def addCardToAutoSide(self, side):
-        global side_nb, auto_ls, auto_ls0, auto_ls1, auto_ls2
 
         if side.nCard == 1:
             auto_ls1.append(side_nb)

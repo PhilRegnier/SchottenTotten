@@ -37,7 +37,7 @@ class Side(QGraphicsItem):
         rect = QRectF(0., 0., float(stone_width), float(side_height))
         painter.drawRoundedRect(rect, rBound, rBound)
 
-    def addCard(self, i, pos):
+    def addCardToSide(self, i, pos):
         self.index.append(i)
         Card.cards[i].setAnchorPoint(pos)
         Card.cards[i].setParentItem(self)
