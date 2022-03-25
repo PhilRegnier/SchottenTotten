@@ -17,11 +17,11 @@ class Side(QGraphicsItem):
         self.nCard = 0
         self.index = []
         self.somme = 0
-        self.setFlag(QGraphicsItem.ItemDoesntPropagateOpacityToChildren)
-        self.setOpacity(0.5)
         self.color0 = color0
         self.color1 = color1
         self.pen = pen
+        self.setFlag(QGraphicsItem.ItemDoesntPropagateOpacityToChildren)
+        self.setOpacity(0.5)
 
     def boundingRect(self):
         pen_width = 1.0

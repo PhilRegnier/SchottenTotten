@@ -13,77 +13,84 @@ class Statistics:
     user_lh = []
     user_ls = []
 
-    def __init__(self):
+    def __init__(cls):
         # record for indexes avaiable
 
-        Statistics.auto_lh = [0, 1, 2, 3, 4, 5]
-        Statistics.auto_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-        Statistics.auto_ls0 = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-        Statistics.user_lh = [0, 1, 2, 3, 4, 5]
-        Statistics.user_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        cls.auto_lh = [0, 1, 2, 3, 4, 5]
+        cls.auto_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        cls.auto_ls0 = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        cls.user_lh = [0, 1, 2, 3, 4, 5]
+        cls.user_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
         # data for cards played
 
-        self.cjc = [[colors[0], 0], [colors[1], 0], [colors[2], 0],
+        cls.cjc = [[colors[0], 0], [colors[1], 0], [colors[2], 0],
                     [colors[3], 0], [colors[4], 0], [colors[5], 0]]
 
-        self.cjv = [range(9), 0]
-        self.cjn = 0
+        cls.cjv = [range(9), 0]
+        cls.cjn = 0
 
         # data for cards in the deck or in the other hand
 
-        self.csc = [[colors[0], 9], [colors[1], 9], [colors[2], 9],
+        cls.csc = [[colors[0], 9], [colors[1], 9], [colors[2], 9],
                     [colors[3], 9], [colors[4], 9], [colors[5], 9]]
-        self.csv = [range(9), 6]
-        self.csn = 54
+        cls.csv = [range(9), 6]
+        cls.csn = 54
 
-    def autoLh(self):
-        return auto_lh
+    @classmethod
+    def autoLh(cls):
+        return cls.auto_lh
 
-    def autoLs(self):
-        return auto_ls
+    @classmethod
+    def autoLs(cls):
+        return cls.auto_ls
 
-    def autoLs0(self):
-        return auto_ls0
+    @classmethod
+    def autoLs0(cls):
+        return cls.auto_ls0
 
-    def autoLs1(self):
-        return auto_ls1
+    @classmethod
+    def autoLs1(cls):
+        return cls.auto_ls1
 
-    def autoLs2(self):
-        return auto_ls2
+    @classmethod
+    def autoLs2(cls):
+        return cls.auto_ls2
 
-    def removeAutoHand(self, index):
-        for i in range(len(auto_lh)):
-            if auto_lh[i] == index:
-                del auto_lh[i]
+    @classmethod
+    def removeAutoHand(cls, index):
+        for i in range(len(cls.auto_lh)):
+            if cls.auto_lh[i] == index:
+                del cls.auto_lh[i]
                 break
 
-    def addCardToAutoSide(self, side):
+    @classmethod
+    def addCardToAutoSide(cls, side):
 
         if side.nCard == 1:
-            auto_ls1.append(side_nb)
-            auto_ls1.sort()
-            for i in range(len(auto_ls0)):
-                if auto_ls0[i] == side_nb:
-                    del auto_ls0[i]
+            cls.auto_ls1.append(side_nb)
+            cls.auto_ls1.sort()
+            for i in range(len(cls.auto_ls0)):
+                if cls.auto_ls0[i] == side_nb:
+                    del cls.auto_ls0[i]
                     break
 
         elif side.nCard == 2:
-            for i in range(len(auto_ls1)):
-                if auto_ls1[i] == side_nb:
-                    del auto_ls1[i]
+            for i in range(len(cls.auto_ls1)):
+                if cls.auto_ls1[i] == side_nb:
+                    del cls.auto_ls1[i]
                     break
 
-            auto_ls2.append(side_nb)
-            auto_ls2.sort()
+            cls.auto_ls2.append(side_nb)
+            cls.auto_ls2.sort()
 
         else:
-            for i in range(len(auto_ls)):
-                if auto_ls[i] == side_nb:
-                    del auto_ls[i]
+            for i in range(len(cls.auto_ls)):
+                if cls.auto_ls[i] == side_nb:
+                    del cls.auto_ls[i]
                     break
 
-            for i in range(len(auto_ls2)):
-                if auto_ls2[i] == side_nb:
-                    del auto_ls2[i]
+            for i in range(len(cls.auto_ls2)):
+                if cls.auto_ls2[i] == side_nb:
+                    del cls.auto_ls2[i]
                     break

@@ -4,7 +4,6 @@
 __version__ = "1.1"
 
 # Game set
-from PyQt5.QtGui import QColor
 
 colors = ['jaune', 'vert', 'rouge', 'brun', 'bleu', 'violet']
 

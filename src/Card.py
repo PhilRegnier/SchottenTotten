@@ -29,6 +29,7 @@ class Card(QGraphicsObject):
             sys.exit(0)
 
         super().__init__(parent)
+        self.parent = parent
         self.numero = numero
         self.index = -1
         self.anchorPoint = QPointF()

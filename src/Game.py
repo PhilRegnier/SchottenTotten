@@ -14,6 +14,7 @@ from src.Card import Card
 from src.Chifoumi import Chifoumi
 from src.Curtain import Curtain
 from src.Deck import Deck
+from src.Hand import Hand
 from src.Home import Home
 from src.Memo import Memo
 from src.MovingCard import MovingCard
@@ -21,11 +22,12 @@ from src.PlayerDeck import PlayerDeck
 from src.Settings import Settings
 from src.Statistics import Statistics
 from src.Stone import Stone
+from src.Style import Style
 from src.TextInForeground import TextInForeground
-from src.variables_globales import mainWindow_width, background_color, N_rounds, N_hand, stone_marge, stone_width, \
-    mainWindow_marge, stone_height, side_height, user_side_color0, user_side_pen, marge, \
-    auto_side_color0, auto_side_color1, auto_side_pen, mainWindow_height, difficulT, cote_both, \
-    cote_brelan, cote_couleur, cote_suite, clicked, player_1, user_side_color1
+from src.variables_globales import mainWindow_width, N_rounds, N_hand, stone_marge, stone_width, \
+    mainWindow_marge, stone_height, side_height, marge, \
+    mainWindow_height, cote_both, \
+    cote_brelan, cote_couleur, cote_suite, clicked, player_1,
 
 
 class Game(QGraphicsView):
@@ -49,7 +51,7 @@ class Game(QGraphicsView):
         self.parent = parent
         self.setRenderHint(QPainter.Antialiasing)
         self.setViewportUpdateMode(QGraphicsView.SmartViewportUpdate)
-        self.setBackgroundBrush(QBrush(background_color))
+        self.setBackgroundBrush(QBrush(Style.background_color))
         self.setScene(self.board)
 
         # Home screen
@@ -62,7 +64,13 @@ class Game(QGraphicsView):
 
         self.timer = QTimer(self)
 
-    def newRound(self):
+        # Prepare the board
+
+        self.deck = Deck()
+        self.user_hand = Hand()
+        self.auto_hand = Hand()
+
+    def new_round(self):
 
         # ending the game
 
@@ -78,38 +86,29 @@ class Game(QGraphicsView):
 
         # Switch the first player between each round
 
-        global player_1
-
         if self.i_round > 1:
-            if player_1 == 0:
-                player_1 = 1
-            else:
-                player_1 = 0
+            Settings.switch_first_player()
 
         # Set the board
 
-        self.deck = Deck()
-        self.setupHands()
-        self.setupBoard()
+        self._setup_hands()
+        self._setup_board()
 
         self.ending = False
 
-        global statistics
-        statistics = Statistics()
+        Statistics.reset()
 
-    def setupHands(self):
+    def _setup_hands(self):
         """
         Create players' hands
         """
-        self.user_hand = []
-        self.auto_hand = []
         self.new_order = []
 
         for i in range(N_hand):
-            self.user_hand.append(self.deck.draw())
-            self.auto_hand.append(self.deck.draw())
+            self.user_hand.add(self.deck.draw())
+            self.auto_hand.add(self.deck.draw())
 
-    def setupBoard(self):
+    def _setup_board(self):
         """
         Create board game items and set the board scene
         """
@@ -131,19 +130,19 @@ class Game(QGraphicsView):
 
         # User's hand cards items
 
-        self.user_deck = PlayerDeck(user_side_color0, user_side_color1, user_side_pen)
+        self.user_deck = PlayerDeck(Style.user_side_color0, Style.user_side_color1, Style.user_side_pen)
 
-        for i in range(N_hand):
-            Card.cards[self.user_hand[i]].setParentItem(self.user_deck)
-            Card.cards[self.user_hand[i]].setPos((i + 1) * marge + i * Card.width, marge)
-            Card.cards[self.user_hand[i]].setAnchorPoint(Card.cards[self.user_hand[i]].pos())
+        for i in range():
+            Card.cards[self.user_hand.get(i)].setParentItem(self.user_deck)
+            Card.cards[self.user_hand.get(i)].setPos((i + 1) * marge + i * Card.width, marge)
+            Card.cards[self.user_hand.get(i)].setAnchorPoint(Card.cards[self.user_hand[i]].pos())
             Card.cards[self.user_hand[i]].setDraggable(True)
             Card.cards[self.user_hand[i]].setVisible(True)
             Card.cards[self.user_hand[i]].setIndex(i)
 
         # Computer's hand cards items [CHEAT MODE]
 
-        self.auto_deck = PlayerDeck(auto_side_color0, auto_side_color1, auto_side_pen)
+        self.auto_deck = PlayerDeck(Style.auto_side_color0, Style.auto_side_color1, Style.auto_side_pen)
 
         for i in range(N_hand):
             Card.cards[self.auto_hand[i]].setParentItem(self.auto_deck)
@@ -290,7 +289,9 @@ class Game(QGraphicsView):
 
             # Card moved on side or no ?
 
-            if MovingCard.side_id() >= 0:
+            side_id = MovingCard.side_id()
+
+            if side_id >= 0:
 
                 # position in the hand
 
@@ -302,8 +303,8 @@ class Game(QGraphicsView):
 
                 # Add the card drop to the side
 
-                self.user_side[MovingCard.side_id()].addCard(MovingCard.card_id)
-                self.user_side[MovingCard.side_id()].setOpacity(0.5)
+                self.user_side[side_id].addCard(MovingCard.card_id)
+                self.user_side[side_id].setOpacity(0.5)
 
                 # Draw a new card
 
@@ -322,13 +323,13 @@ class Game(QGraphicsView):
 
                 # Actions if the side is full
 
-                if self.user_side[MovingCard.side_id()].nCard == 3:
-                    self.book(self.user_side[MovingCard.side_id()])
+                if self.user_side[side_id].nCard == 3:
+                    self.book(self.user_side[side_id])
 
-                self.judge()
+                self.judge(side_id)
 
-                side_nb = -1
-                card_nb = -1
+                MovingCard.set_side_id(-1)
+                MovingCard.set_card_id(-1)
 
                 # Run automate's turn
 
@@ -338,10 +339,10 @@ class Game(QGraphicsView):
                     self.auto_side[side_nb].droppable = False
                     self.book(self.auto_side[side_nb])
 
-                self.judge()
+                self.judge(side_id)
 
-                side_nb = -1
-                card_nb = -1
+                MovingCard.set_side_id(-1)
+                MovingCard.set_card_id(-1)
             else:
                 Card.cards[MovingCard.card_id].moveTo(Card.cards[MovingCard.card_id].pos(), Card.cards[MovingCard.card_id].anchorPoint)
 
@@ -407,7 +408,6 @@ class Game(QGraphicsView):
     # Choose the automate and play the card on the side
     # --------------------------------------------------------------------------------------------------
     def automate(self):
-        global side_nb, card_nb, hand_nb
 
         if Settings.get_difficulty() == 1:
             self.cervo1()
@@ -416,37 +416,39 @@ class Game(QGraphicsView):
 
         # move the card and draw a new one
 
-        card_nb = self.auto_hand[hand_nb]
-        pos = Card.cards[card_nb].anchorPoint
-        self.auto_side[side_nb].addCard(card_nb)
-        pos0 = self.auto_deck.pos() - self.auto_side[side_nb].pos() + pos
-        Card.cards[card_nb].moveTo(pos0, Card.cards[card_nb].anchorPoint)
+        ms = MovingCard.side_id()
+        mh = MovingCard.hand_id()
+        MovingCard.set_card_id(self.auto_hand[mh])
+        mc = MovingCard.card_id()
+
+        pos = Card.cards[mc].anchorPoint
+        self.auto_side[ms].addCard(mc)
+        pos0 = self.auto_deck.pos() - self.auto_side[ms].pos() + pos
+        Card.cards[mc].moveTo(pos0, Card.cards[mc].anchorPoint)
 
         if self.deck.isEmpty():
-            self.auto_hand[hand_nb] = -1
-            statistics.removeAutoHand(hand_nb)
+            self.auto_hand[mh] = -1
+            Statistics.removeAutoHand(mh)
             if sum(self.auto_hand) == -6:
                 self.ending = True
         else:
-            self.auto_hand[hand_nb] = self.deck.draw()
-            Card.cards[self.auto_hand[hand_nb]].setVisible(True)
-            Card.cards[self.auto_hand[hand_nb]].setParentItem(self.auto_deck)
-            Card.cards[self.auto_hand[hand_nb]].setAnchorPoint(pos)
-            Card.cards[self.auto_hand[hand_nb]].setPos(pos)
+            self.auto_hand[mh] = self.deck.draw()
+            Card.cards[self.auto_hand[mh]].setVisible(True)
+            Card.cards[self.auto_hand[mh]].setParentItem(self.auto_deck)
+            Card.cards[self.auto_hand[mh]].setAnchorPoint(pos)
+            Card.cards[self.auto_hand[mh]].setPos(pos)
 
     # --------------------------------------------------------------------------------------------------
     # Automate 0 : random card and random stone
     # --------------------------------------------------------------------------------------------------
     def cervo0(self):
-        global side_nb, hand_nb
-        hand_nb = choice(statistics.autoLh())
-        side_nb = choice(statistics.autoLs())
+        MovingCard.set_hand_id(choice(Statistics.autoLh()))
+        MovingCard.set_side_id(choice(Statistics.autoLs()))
 
     # --------------------------------------------------------------------------------------------------
     # Automate 1 : first steps choice
     # --------------------------------------------------------------------------------------------------
     def cervo1(self):
-        global side_nb, hand_nb
 
         # Settings for memorization of relevant combinations
 
@@ -457,14 +459,14 @@ class Game(QGraphicsView):
         v = [0 for i in range(6)]
         c = ["0" for i in range(6)]
 
-        for i in statistics.autoLh():
+        for i in Statistics.autoLh():
             v[i] = Card.cards[self.auto_hand[i]].valeur
             c[i] = Card.cards[self.auto_hand[i]].couleur
 
         # 1 Looking in the hand
 
-        for i in statistics.autoLh():
-            for j in statistics.autoLh():
+        for i in Statistics.autoLh():
+            for j in Statistics.autoLh():
                 if i != j:
 
                     dvij = v[i] - v[j]
@@ -472,7 +474,7 @@ class Game(QGraphicsView):
                     # For flush pair(s)
 
                     if c[i] == c[j] and 3 > dvij > -3:
-                        for k in statistics.autoLs1():
+                        for k in Statistics.autoLs1():
                             if c[i] == Card.cards[self.auto_side[k].index[0]].couleur:
                                 dvik = v[i] - Card.cards[self.auto_side[k].index[0]].valeur
                                 if (dvij == 2 and dvik == 1) \
@@ -484,14 +486,14 @@ class Game(QGraphicsView):
                     # For pair(s)
 
                     if dvij == 0:
-                        for k in statistics.autoLs1():
+                        for k in Statistics.autoLs1():
                             if v[i] == Card.cards[self.auto_side[k].index[0]].valeur:
                                 memo.append(Memo(i, k, cote_brelan))
 
         # 2 Search in the sides with 2 cards
 
-        for i in statistics.autoLh():
-            for k in statistics.autoLs2():
+        for i in Statistics.autoLh():
+            for k in Statistics.autoLs2():
 
                 dvij = v[i] - Card.cards[self.auto_side[k].index[0]].valeur
                 dvik = v[i] - Card.cards[self.auto_side[k].index[1]].valeur
@@ -528,8 +530,8 @@ class Game(QGraphicsView):
 
         # 3 Search in the sides with 1 card
 
-        for i in statistics.autoLh():
-            for k in statistics.autoLs1():
+        for i in Statistics.autoLh():
+            for k in Statistics.autoLs1():
 
                 dvij = v[i] - Card.cards[self.auto_side[k].index[0]].valeur
 
@@ -566,24 +568,23 @@ class Game(QGraphicsView):
                 if c == memo[i].cote:
                     k = i
 
-            hand_nb = memo[k].hand
-            side_nb = memo[k].side
+            MovingCard.set_hand_id(memo[k].hand)
+            MovingCard.set_side_id(memo[k].side)
             return
 
         # 4 Play a random card on a random free side
 
-        if statistics.autoLs0():
-            side_nb = choice(statistics.autoLs0())
-            hand_nb = choice(statistics.autoLh())
+        if Statistics.autoLs0():
+            MovingCard.set_side_id(choice(Statistics.autoLs0()))
+            MovingCard.set_hand_id(choice(Statistics.autoLh()))
             return
 
         # 5 Last call...
 
         self.cervo0()
 
-    # --------------------------------------------------------------------------------------------------
     # Test after a third card has been played on a side
-    # --------------------------------------------------------------------------------------------------
+
     def book(self, side):
 
         i = side.index[0]
@@ -617,22 +618,21 @@ class Game(QGraphicsView):
         elif Card.cards[i].valeur == Card.cards[j].valeur == Card.cards[k].valeur:
             side.somme += cote_brelan
 
-    # --------------------------------------------------------------------------------------------------
     # Compare sides and test for victory
-    # --------------------------------------------------------------------------------------------------
-    def judge(self):
+
+    def judge(self, side_id):
 
         # if 3 cards have been played on each side, test for claim of the stone
 
-        if self.user_side[side_nb].nCard == 3 and self.auto_side[side_nb].nCard == 3:
-            if self.user_side[side_nb].somme > self.auto_side[side_nb].somme:
-                self.stone[side_nb].winner = "user"
-                self.stone[side_nb].moveStoneTo(side_height + 6 + stone_height)
-            elif self.user_side[side_nb].somme < self.auto_side[side_nb].somme:
-                self.stone[side_nb].winner = "auto"
-                self.stone[side_nb].moveStoneTo(-side_height - 6 - stone_height)
+        if self.user_side[side_id].nCard == 3 and self.auto_side[side_id].nCard == 3:
+            if self.user_side[side_id].somme > self.auto_side[side_id].somme:
+                self.stone[side_id].winner = "user"
+                self.stone[side_id].moveStoneTo(side_height + 6 + stone_height)
+            elif self.user_side[side_id].somme < self.auto_side[side_id].somme:
+                self.stone[side_id].winner = "auto"
+                self.stone[side_id].moveStoneTo(-side_height - 6 - stone_height)
             else:
-                self.stone[side_nb].winner = "equal"
+                self.stone[side_id].winner = "equal"
 
         # party endding
 
@@ -713,10 +713,9 @@ class Game(QGraphicsView):
                 self.victory("auto")
             else:
                 self.victory("draw")
-                # --------------------------------------------------------------------------------------------------
 
     # show the endround/endgame's message
-    # --------------------------------------------------------------------------------------------------
+
     def victory(self, winner):
 
         # test who won
@@ -752,7 +751,7 @@ class Game(QGraphicsView):
         self.frame.setVisible(True)
         self.frame.animate_incoming()
 
-        for i in range(N_cards):
+        for i in range(Card.total_cards):
             Card.cards[i].setDraggable(False)
             Card.cards[i].setZValue(0)
 

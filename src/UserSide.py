@@ -5,7 +5,7 @@ from PyQt5.QtCore import QPointF
 
 from src.Card import Card
 from src.Side import Side
-from src.variables_globales import userType, user_side_color0, user_side_color1, user_side_pen
+from src.variables_globales import userType
 
 
 class UserSide(Side):

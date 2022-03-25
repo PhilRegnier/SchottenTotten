@@ -12,7 +12,7 @@ from src.Card import Card
 from src.Clickable import Clickable
 from src.Curtain import Curtain
 from src.TextInForeground import TextInForeground
-from src.ImageTreatment import enluminure
+from src.ImageTreatment import ImageTreatment
 from src.variables_globales import selected
 
 
@@ -31,9 +31,9 @@ class Chifoumi(Curtain):
         # set the items
 
         self.interro = QGraphicsPixmapItem()
-        image = Image.open('images/interrogation.jpg')
+        image = Image.open('resources/images/interrogation.jpg')
         image.thumbnail((cw, cw))
-        self.guess = QPixmap.fromImage(enluminure(image))
+        self.guess = QPixmap.fromImage(ImageTreatment.enluminure(image))
         self.interro.setPixmap(self.guess)
         self.interro.setParentItem(self)
 

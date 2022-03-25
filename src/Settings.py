@@ -11,7 +11,7 @@ from src.variables_globales import variant, N_rounds, sounds, difficulT
 class Settings(Curtain):
 
     __max_value = 9
-    __hand_nb = 6
+    number_max_of_cards_in_hand = 6
     __difficulty = 1
     __rounds_nb = 1
     __sounds = False
