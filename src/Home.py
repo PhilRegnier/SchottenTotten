@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QGraphicsPixmapItem
 
 from src.Clickable import Clickable
 from src.Curtain import Curtain
-from src.Settings import Settings
+from src.SettingsManager import Settings
 from src.variables_globales import card_height
 
 
@@ -33,8 +33,8 @@ class Home(Curtain):
 
         # settings and starting buttons
 
-        self.settings = Clickable('engrenages.jpg', cw, cw, 10, self)
-        self.starting = Clickable('run.jpg', cw, cw, 11, self)
+        self.settings = Clickable('resources/images/engrenages.jpg', cw, cw, 10, self)
+        self.starting = Clickable('resources/images/run.jpg', cw, cw, 11, self)
 
         # settings panel item
 

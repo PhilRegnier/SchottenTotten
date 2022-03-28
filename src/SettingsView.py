@@ -1,21 +1,12 @@
-#
-# Control panel
-#
+
 from src.Clickable import Clickable
 from src.Curtain import Curtain
+from src.SettingsManager import Settings
 from src.Slider import Slider
 from src.TextInForeground import TextInForeground
 
 
-class Settings(Curtain):
-
-    __max_value = 9
-    number_max_of_cards_in_hand = 6
-    __difficulty = 1
-    __number_of_rounds = 1
-    __sounds = False
-    __variant = False
-    __first_player = 0  # O=user (default); 1=automate
+class SettingsView(Curtain):
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -74,34 +65,3 @@ class Settings(Curtain):
         Settings.__number_of_rounds = self.rounds_selector.value()
         Settings.__sounds = self.sound_selector.value() == 1
         Settings.__difficulty = self.difficulty_selector.value()
-
-    @staticmethod
-    def get_rounds_nb():
-        return Settings.__number_of_rounds
-
-    @staticmethod
-    def get_difficulty():
-        return Settings.__difficulty
-
-    @staticmethod
-    def get_sounds():
-        return Settings.__sounds
-
-    @staticmethod
-    def get_hand_nb():
-        return Settings.__hand_nb
-
-    @staticmethod
-    def switch_first_player():
-        if Settings.__first_player == 1:
-            Settings.__first_player = 0
-        else:
-            Settings.__first_player = 1
-
-    @staticmethod
-    def get_first_player():
-        return Settings.__first_player
-
-
-
-

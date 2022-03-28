@@ -21,7 +21,7 @@ from src.Memo import Memo
 from src.MovingCard import MovingCard
 from src.Player import Player
 from src.UserDeck import PlayerDeck
-from src.Settings import Settings
+from src.SettingsManager import Settings
 from src.Stone import Stone
 from src.Style import Style
 from src.TextInForeground import TextInForeground

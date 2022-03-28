@@ -1,7 +1,7 @@
 # class Hand to manage user's and automate's hands
 
 from src.Card import Card
-from src.Settings import Settings
+from src.SettingsManager import Settings
 
 
 class Hand:

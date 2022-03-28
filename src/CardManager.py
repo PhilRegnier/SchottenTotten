@@ -1,7 +1,9 @@
 # manager for the playing cards
 # TODO: singleton
+from src.Card import Card
 
-class Dealer:
+
+class CardManager(Singleton):
 
     max_value = 9
     colors = ['jaune', 'vert', 'rouge', 'brun', 'bleu', 'violet']
@@ -12,8 +14,5 @@ class Dealer:
 
         # Setting all the playing cards
 
-        for i in range(N_cards):
-            Card.cards.append(Card(i))
-        if numero < 0 or numero > Card.total_cards - 1:
-            print("Card number must be into [0, 53]. Program stopped")
-            sys.exit(0)
+        for i in range(CardManager.total_cards):
+            CardManager.cards.append(Card(i, CardManager.max_value))

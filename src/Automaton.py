@@ -1,7 +1,7 @@
 from random import choice
 
 from src.Player import Player
-from src.Settings import Settings
+from src.SettingsManager import Settings
 from src.Statistics import Statistics
 
 

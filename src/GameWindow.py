@@ -7,28 +7,25 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QStatusBar, QWidget, QLabel, QSpinBox, QPushButton, QVBoxLayout, QHBoxLayout, \
     QMessageBox, QAction
 
-from src.Card import Card
 from src.Game import Game
-from src.variables_globales import mainWindow_width, mainWindow_height, N_cards, __version__, card, difficulT, N_rounds
+from src.SettingsManager import SettingsManager
+from src.variables_globales import mainWindow_width, mainWindow_height, __version__
 
 
 class GameWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.init_ui()
 
-    def init_ui(self):
         self.setFixedSize(mainWindow_width, mainWindow_height)
         self.setWindowTitle('Schotten Totten')
         self.setWindowIcon(QIcon('resources/images/logo.png'))
 
-        # Setting all the playing cards
+        # Create a new Schotten Totten game
 
-        for i in range(N_cards):
-            Card.cards.append(Card(i))
-
-        self.create_game()
+        self.settings = SettingsManager()
+        self.game = Game(self)
+        self.setCentralWidget(self.game)
         self.create_menu()
         self.show()
 
@@ -57,7 +54,7 @@ class GameWindow(QMainWindow):
         self.sound_act = QAction('Play sounds', self, checkable=True)
         self.sound_act.setStatusTip('Play sounds in the game')
 
-        self.round_nb = QAction('Rounds...\t (' + str(N_rounds) + ')', self)
+        self.round_nb = QAction('Rounds...\t (' + str(self.settings.get_number_of_rounds()) + ')', self)
         self.round_nb.triggered.connect(self.set_rounds)
         self.round_nb.setStatusTip('Set the number of rounds for a match')
 
@@ -97,19 +94,17 @@ class GameWindow(QMainWindow):
         self.setStatusBar(QStatusBar(self))
 
     def set_level0(self):
-        global difficulT
         self.level0.setChecked(True)
         self.level1.setChecked(False)
-        difficulT = 0
+        self.settings.set_difficulty(0)
 
     def set_level1(self):
-        global difficulT
         self.level0.setChecked(False)
         self.level1.setChecked(True)
-        difficulT = 1
+        self.settings.set_difficulty(1)
 
     def set_rounds(self):
-        self.new_N_rounds = N_rounds
+        self.new_N_rounds = self.settings.get_number_of_rounds()
 
         self.rounds_window = QWidget()
 
@@ -118,7 +113,7 @@ class GameWindow(QMainWindow):
         self.sbox = QSpinBox(self)
         self.sbox.setRange(1, 10)
         self.sbox.setSingleStep(1)
-        self.sbox.setValue(N_rounds)
+        self.sbox.setValue(self.settings.get_number_of_rounds())
         self.sbox.valueChanged.connect(self.newNRounds)
 
         okb = QPushButton("Ok", self)
@@ -143,8 +138,8 @@ class GameWindow(QMainWindow):
         self.new_N_rounds = self.sbox.value()
 
     def set_nrounds(self):
-        if self.new_N_rounds != N_rounds:
-            N_rounds = self.new_N_rounds
+        if self.new_N_rounds != self.settings.get_number_of_rounds():
+            self.settings.set_number_of_rounds(self.new_N_rounds)
         self.rounds_window.close()
 
     def show_rules(self):
@@ -154,12 +149,12 @@ class GameWindow(QMainWindow):
               "et possède une force allant de 1 à 9 (1 étant la force la " \
               "plus faible)."
 
-        helpBox = QMessageBox()
-        helpBox.setIcon(QMessageBox.Question)
-        helpBox.setWindowTitle("Les règles du jeu")
-        helpBox.setText(msg)
-        helpBox.setStandardButtons(QMessageBox.Ok)
-        helpBox.exec_()
+        help_box = QMessageBox()
+        help_box.setIcon(QMessageBox.Question)
+        help_box.setWindowTitle("Les règles du jeu")
+        help_box.setText(msg)
+        help_box.setStandardButtons(QMessageBox.Ok)
+        help_box.exec_()
 
     def show_info(self):
         QMessageBox.about(self, "About Schotten Totten",
@@ -183,19 +178,11 @@ class GameWindow(QMainWindow):
         msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         msg.setDefaultButton(QMessageBox.No)
 
-        returnValue = msg.exec()
-
-        if returnValue == QMessageBox.Yes:
-            self.createGame()
+        if msg.exec() == QMessageBox.Yes:
+            self.game = Game()
+            self.setCentralWidget(self.game)
         else:
             pass
-
-    def create_game(self):
-        """
-        Create a new Schotten Totten game
-        """
-        self.game = Game(self)
-        self.setCentralWidget(self.game)
 
     def keyPressEvent(self, event):
         """
