@@ -6,7 +6,7 @@ from PyQt5 import QtCore, QtGui
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
-from src.Ombrage import Ombrage
+from src.Shader import Shader
 from src.ImageTreatment import enluminure
 from src.variables_globales import ombrage_color_bt, clicked, selected
 
@@ -27,7 +27,7 @@ class Clickable(QGraphicsPixmapItem):
         self.setParentItem(parent_item)
         self.setAcceptHoverEvents(True)
 
-        self.ombrage = Ombrage()
+        self.ombrage = Shader()
         self.setGraphicsEffect(self.ombrage)
 
     def hoverEnterEvent(self, event):

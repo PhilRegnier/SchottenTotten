@@ -1,12 +1,11 @@
-#------------------------------------------------------------------------------------------------------
 # Shadow on movable or clickable items
-#------------------------------------------------------------------------------------------------------
+
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
 
 from src.Style import Style
 
 
-class Ombrage(QGraphicsDropShadowEffect):
+class Shader(QGraphicsDropShadowEffect):
 
     def __init__(self, parent=None):
         super().__init__(parent)

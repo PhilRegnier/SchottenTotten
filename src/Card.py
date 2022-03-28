@@ -12,27 +12,21 @@ from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
 from src import UserSide, AutoSide
 from src.ImageTreatment import ImageTreatment
 from src.MovingCard import MovingCard
-from src.Ombrage import Ombrage
-from src.variables_globales import max_value, colors, side_height, stone_width
+from src.Shader import Shader
+from src.variables_globales import colors, side_height, stone_width
 
 
 class Card(QGraphicsObject):
 
-    cards = []
-    total_cards = len(colors) * max_value
     width = stone_width - 4
     height = width * 1.42
 
-    def __init__(self, numero, parent=None):
-        if numero < 0 or numero > Card.total_cards - 1:
-            print("Card number must be into [0, 53]. Program stopped")
-            sys.exit(0)
-
+    def __init__(self, numero, max_value, parent=None):
         super().__init__(parent)
         self.parent = parent
         self.numero = numero
         self.index = -1
-        self.anchorPoint = QPointF()
+        self.anchor_point = QPointF()
         self.valeur = numero % max_value + 1
         self.couleur = colors[numero // max_value]
 
@@ -43,10 +37,12 @@ class Card(QGraphicsObject):
         self.setAcceptHoverEvents(False)
         self.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
 
-        self.ombrage = Ombrage()
-        self.setGraphicsEffect(self.ombrage)
+        self.shade = Shader()
+        self.setGraphicsEffect(self.shade)
 
-    def setDraggable(self, draggable=True):
+        self.dragStartPosition = None
+
+    def set_draggable(self, draggable=True):
         if draggable:
             self.setFlag(QGraphicsItem.ItemIsMovable, True)
             self.setAcceptHoverEvents(True)
@@ -54,21 +50,21 @@ class Card(QGraphicsObject):
             self.setFlag(QGraphicsItem.ItemIsMovable, False)
             self.setAcceptHoverEvents(False)
 
-    def setAnchorPoint(self, anchorPoint):
-        self.anchorPoint = anchorPoint
+    def set_anchor_point(self, anchor_point):
+        self.anchor_point = anchor_point
 
-    def setIndex(self, index):
+    def set_index(self, index):
         self.index = index
 
     def hoverEnterEvent(self, event):
         self.setCursor(Qt.OpenHandCursor)
         self.setPos(self.x() - 2, self.y() - 2)
-        self.ombrage.setEnabled(True)
+        self.shade.setEnabled(True)
 
     def hoverLeaveEvent(self, event):
         self.setCursor(Qt.ArrowCursor)
-        self.setPos(self.anchorPoint)
-        self.ombrage.setEnabled(False)
+        self.setPos(self.anchor_point)
+        self.shade.setEnabled(False)
 
     def mousePressEvent(self, event):
         if not event.button() == Qt.LeftButton:
@@ -78,7 +74,7 @@ class Card(QGraphicsObject):
 
         self.dragStartPosition = event.pos()
         self.setCursor(Qt.ClosedHandCursor)
-        self.ombrage.setEnabled(True)
+        self.shade.setEnabled(True)
 
     def mouseMoveEvent(self, event):
 
@@ -96,7 +92,7 @@ class Card(QGraphicsObject):
         MovingCard.dragged()
         card_nb = self.numero
         QGraphicsObject.mouseMoveEvent(self, event)
-        self.ombrage.setEnabled(True)
+        self.shade.setEnabled(True)
         self.setOpacity(0.9)
         self.setCursor(Qt.ClosedHandCursor)
 
@@ -111,11 +107,11 @@ class Card(QGraphicsObject):
 
         self.setZValue(zvalue)
 
-    def setCardOnSide(self, item):
-        if item.Type == UserSide.Type:
+    def set_on_side(self, side):
+        if Type == UserSide.Type:
             if item.nCard < 3:
                 MovingCard.set_side_id(item.numero)
-                self.setDraggable(False)
+                self.set_draggable(False)
 
                 # get sure that the card dropped is in the foreground
 
@@ -143,10 +139,10 @@ class Card(QGraphicsObject):
                     self.setCardOnSide(closest_item)
 
             QGraphicsObject.mouseReleaseEvent(self, event)
-            self.ombrage.setEnabled(False)
+            self.shade.setEnabled(False)
             self.setOpacity(1)
 
-    def moveTo(self, pos1, pos2):
+    def move_to(self, pos1, pos2):
 
         # animation for the move
 
@@ -163,11 +159,11 @@ class Card(QGraphicsObject):
 
         self.moveCard.start()
 
-    def setOnTop(self):
+    def set_on_top(self):
         self.z_old = self.zValue()
         self.setZValue(1000)
 
-    def setOnGround(self):
+    def set_on_ground(self):
         self.setZValue(self.z_old)
 
     def boundingRect(self):

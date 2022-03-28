@@ -15,20 +15,25 @@ from src.variables_globales import userType, rBound
 
 class Deck(QGraphicsPixmapItem):
     Type = userType + 2
-    Nc = Card.total_cards
 
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        # geometry
+
         self.x1 = 0
         self.y1 = 0
+        self.width = 0
+        self.height = 0
 
-        self.empilement()
+        self.__stack()
         self.empty = False
 
-        # Create a random deck
+        self.nc = Card.total_cards
 
-        liste_cartes = [i for i in range(Card.total_cards)]
+        # making a random deck
+
+        liste_cartes = [i for i in range(self.nc)]
         shuffle(liste_cartes)
 
         self.index = liste_cartes
@@ -38,28 +43,28 @@ class Deck(QGraphicsPixmapItem):
             Card.cards[i].setPos(0, 0)
             Card.cards[i].setVisible(False)
 
-    def isEmpty(self):
+    def is_empty(self):
         return self.empty
 
     def draw(self):
         card = self.index[0]
         del self.index[0]
-        self.Nc -= 1
-        if self.Nc == 0:
+        self.nc -= 1
+        if self.nc == 0:
             self.setVisible(False)
             self.empty = True
         else:
-            self.empilement()
-            self.setPos(self.x1 - self.wi, self.y1 - self.he)
+            self.__stack()
+            self.setPos(self.x1 - self.width, self.y1 - self.height)
 
         return card
 
-    def setPosInit(self, x0, y0):
-        self.x1 = x0 + self.wi
-        self.y1 = y0 + self.he
+    def set_pos_init(self, x0, y0):
+        self.x1 = x0 + self.width
+        self.y1 = y0 + self.height
         self.setPos(x0, y0)
 
-    def empilement(self):
+    def __stack(self):
         r = rBound
         t = 1
         ow = 1
@@ -70,7 +75,7 @@ class Deck(QGraphicsPixmapItem):
         cadre = Image.new('RGBA', (im.width + 2 * t, im.height + 2 * t), Style.cadre_color)
         cadre = ImageTreatment.round_corners(cadre, int(r + t))
         cadre.paste(im, (t, t), im)
-        nc2 = int(self.Nc / 2)
+        nc2 = int(self.nc / 2)
         trame = Image.new('RGBA', (cadre.width + nc2 * ow, cadre.height + nc2 * oh), (0, 0, 0, 0))
         relief1 = Image.new('RGBA', (cadre.width, cadre.height), Style.relief_color2)
         relief1 = ImageTreatment.round_corners(relief1, int(r + t))
@@ -84,6 +89,7 @@ class Deck(QGraphicsPixmapItem):
         trame.paste(cadre, (0, 0), cadre)
         image = ImageQt.ImageQt(trame)
         pixmap = QPixmap.fromImage(image)
+
         self.setPixmap(pixmap)
-        self.wi = pixmap.width()
-        self.he = pixmap.height()
+        self.width = pixmap.width()
+        self.height = pixmap.height()

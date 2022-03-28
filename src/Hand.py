@@ -22,3 +22,8 @@ class Hand:
     def get(self, index):
         return self.card[index]
 
+    def show(self):
+        return self.card
+
+
+

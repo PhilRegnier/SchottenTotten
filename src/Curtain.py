@@ -30,20 +30,20 @@ class Curtain(QGraphicsObject):
         painter.drawRoundedRect(rect, rBound, rBound)
 
     def animate_incoming(self):
-        self.anim = QPropertyAnimation(self, b"pos")
-        self.anim.setDuration(800)
-        self.anim.setStartValue(QPointF(0, -self.boundingRect().height()))
-        self.anim.setEndValue(QPointF(0, 0))
+        anim = QPropertyAnimation(self, b"pos")
+        anim.setDuration(800)
+        anim.setStartValue(QPointF(0, -self.boundingRect().height()))
+        anim.setEndValue(QPointF(0, 0))
         self.setVisible(True)
-        self.anim.start()
+        anim.start()
 
     def animate_leaving(self):
-        self.anim = QPropertyAnimation(self, b"pos")
-        self.anim.setDuration(800)
-        self.anim.setStartValue(QPointF(0, 0))
-        self.anim.setEndValue(QPointF(0, -self.boundingRect().height()))
-        self.anim.finished.connect(self.remove)
-        self.anim.start()
+        anim = QPropertyAnimation(self, b"pos")
+        anim.setDuration(800)
+        anim.setStartValue(QPointF(0, 0))
+        anim.setEndValue(QPointF(0, -self.boundingRect().height()))
+        anim.finished.connect(self.remove)
+        anim.start()
 
     def remove(self):
         self.setVisible(False)

@@ -5,92 +5,82 @@ from src.variables_globales import colors
 
 
 class Statistics:
-    auto_lh = []  # index where there is a card in the hand
-    auto_ls = []  # index where there is a place or more in the side
-    auto_ls0 = []  # index where there is no card in the side
-    auto_ls1 = []  # index where there is one only card in the side
-    auto_ls2 = []  # index where there are two cards in the side
-    user_lh = []
-    user_ls = []
 
-    def __init__(cls):
+    def __init__(self):
+
         # record for indexes avaiable
 
-        cls.auto_lh = [0, 1, 2, 3, 4, 5]
-        cls.auto_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-        cls.auto_ls0 = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-        cls.user_lh = [0, 1, 2, 3, 4, 5]
-        cls.user_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        self.auto_lh = [0, 1, 2, 3, 4, 5]               # index where there is a card in the hand
+        self.auto_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]      # index where there is a place or more in the side
+        self.auto_ls0 = [0, 1, 2, 3, 4, 5, 6, 7, 8]     # index where there is no card in the side
+        self.user_lh = [0, 1, 2, 3, 4, 5]
+        self.user_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+
+        self.auto_ls1 = []                              # index where there is one only card in the side
+        self.auto_ls2 = []                              # index where there are two cards in the side
 
         # data for cards played
 
-        cls.cjc = [[colors[0], 0], [colors[1], 0], [colors[2], 0],
+        self.cjc = [[colors[0], 0], [colors[1], 0], [colors[2], 0],
                     [colors[3], 0], [colors[4], 0], [colors[5], 0]]
 
-        cls.cjv = [range(9), 0]
-        cls.cjn = 0
+        self.cjv = [range(9), 0]
+        self.cjn = 0
 
         # data for cards in the deck or in the other hand
 
-        cls.csc = [[colors[0], 9], [colors[1], 9], [colors[2], 9],
+        self.csc = [[colors[0], 9], [colors[1], 9], [colors[2], 9],
                     [colors[3], 9], [colors[4], 9], [colors[5], 9]]
-        cls.csv = [range(9), 6]
-        cls.csn = 54
+        self.csv = [range(9), 6]
+        self.csn = 54
 
-    @classmethod
-    def autoLh(cls):
-        return cls.auto_lh
+    def auto_lh(self):
+        return self.auto_lh
 
-    @classmethod
-    def autoLs(cls):
-        return cls.auto_ls
+    def auto_ls(self):
+        return self.auto_ls
 
-    @classmethod
-    def autoLs0(cls):
-        return cls.auto_ls0
+    def auto_ls0(self):
+        return self.auto_ls0
 
-    @classmethod
-    def autoLs1(cls):
-        return cls.auto_ls1
+    def auto_ls1(self):
+        return self.auto_ls1
 
-    @classmethod
-    def autoLs2(cls):
-        return cls.auto_ls2
+    def auto_ls2(self):
+        return self.auto_ls2
 
-    @classmethod
-    def removeAutoHand(cls, index):
-        for i in range(len(cls.auto_lh)):
-            if cls.auto_lh[i] == index:
-                del cls.auto_lh[i]
+    def remove_auto_hand(self, index):
+        for i in range(len(self.auto_lh)):
+            if self.auto_lh[i] == index:
+                del self.auto_lh[i]
                 break
 
-    @classmethod
-    def addCardToAutoSide(cls, side):
+    def add_card_to_autoside(self, side):
 
         if side.nCard == 1:
-            cls.auto_ls1.append(side_nb)
-            cls.auto_ls1.sort()
-            for i in range(len(cls.auto_ls0)):
-                if cls.auto_ls0[i] == side_nb:
-                    del cls.auto_ls0[i]
+            self.auto_ls1.append(side_nb)
+            self.auto_ls1.sort()
+            for i in range(len(self.auto_ls0)):
+                if self.auto_ls0[i] == side_nb:
+                    del self.auto_ls0[i]
                     break
 
         elif side.nCard == 2:
-            for i in range(len(cls.auto_ls1)):
-                if cls.auto_ls1[i] == side_nb:
-                    del cls.auto_ls1[i]
+            for i in range(len(self.auto_ls1)):
+                if self.auto_ls1[i] == side_nb:
+                    del self.auto_ls1[i]
                     break
 
-            cls.auto_ls2.append(side_nb)
-            cls.auto_ls2.sort()
+            self.auto_ls2.append(side_nb)
+            self.auto_ls2.sort()
 
         else:
-            for i in range(len(cls.auto_ls)):
-                if cls.auto_ls[i] == side_nb:
-                    del cls.auto_ls[i]
+            for i in range(len(self.auto_ls)):
+                if self.auto_ls[i] == side_nb:
+                    del self.auto_ls[i]
                     break
 
-            for i in range(len(cls.auto_ls2)):
-                if cls.auto_ls2[i] == side_nb:
-                    del cls.auto_ls2[i]
+            for i in range(len(self.auto_ls2)):
+                if self.auto_ls2[i] == side_nb:
+                    del self.auto_ls2[i]
                     break

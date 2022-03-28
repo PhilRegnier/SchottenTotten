@@ -143,7 +143,6 @@ class GameWindow(QMainWindow):
         self.new_N_rounds = self.sbox.value()
 
     def set_nrounds(self):
-        global N_rounds
         if self.new_N_rounds != N_rounds:
             N_rounds = self.new_N_rounds
         self.rounds_window.close()

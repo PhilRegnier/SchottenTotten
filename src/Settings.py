@@ -5,7 +5,6 @@ from src.Clickable import Clickable
 from src.Curtain import Curtain
 from src.Slider import Slider
 from src.TextInForeground import TextInForeground
-from src.variables_globales import variant, N_rounds, sounds, difficulT
 
 
 class Settings(Curtain):
@@ -13,7 +12,7 @@ class Settings(Curtain):
     __max_value = 9
     number_max_of_cards_in_hand = 6
     __difficulty = 1
-    __rounds_nb = 1
+    __number_of_rounds = 1
     __sounds = False
     __variant = False
     __first_player = 0  # O=user (default); 1=automate
@@ -44,11 +43,11 @@ class Settings(Curtain):
         if Settings.__sounds:
             self.sound_selector.setSliderPosition(1)
 
-        if variant:
+        if Settings.__variant:
             self.variant_selector.setSliderPosition(1)
 
         self.difficulty_selector.setSliderPosition(Settings.__difficulty)
-        self.rounds_selector.setSliderPosition(Settings.__rounds_nb - 1)
+        self.rounds_selector.setSliderPosition(Settings.__number_of_rounds - 1)
 
         # Set "OK" and "CANCEL" buttons
 
@@ -71,15 +70,14 @@ class Settings(Curtain):
         self.ok.setPos(lw, y)
         self.cancel.setPos(lw + self.difficulty_selector.width, y)
 
-    @staticmethod
-    def setValues(self):
-        Settings.__rounds_nb = self.rounds_selector.value()
+    def set_values(self):
+        Settings.__number_of_rounds = self.rounds_selector.value()
         Settings.__sounds = self.sound_selector.value() == 1
         Settings.__difficulty = self.difficulty_selector.value()
 
     @staticmethod
     def get_rounds_nb():
-        return Settings.__rounds_nb
+        return Settings.__number_of_rounds
 
     @staticmethod
     def get_difficulty():

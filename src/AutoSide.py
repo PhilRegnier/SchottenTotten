@@ -16,8 +16,8 @@ class AutoSide(Side):
     def __init__(self, numero, parent=None):
         super().__init__(numero, Style.auto_side_color0, Style.auto_side_color1, Style.auto_side_pen, parent)
 
-    def addCard(self, i):
+    def add_card(self, i):
         pos = QPointF(3, 3 + (2 - self.nCard) * Card.height * 0.32)
         # card[i].moveTo(card[i].pos(),pos)
-        Side.addCardToSide(self, i, pos)
-        Statistics.addCardToAutoSide(self)
+        Side.add_card_to_side(self, i, pos)
+        Statistics.add_cardToAutoSide(self)
