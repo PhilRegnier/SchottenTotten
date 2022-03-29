@@ -16,7 +16,7 @@ class Handler(QGraphicsItem):
         self.setAcceptHoverEvents(True)
         self.setCacheMode(QGraphicsItem.DeviceCoordinateCache)
         self.setParentItem(parent_item)
-        self.anchorPoint = QPointF()
+        self.anchor_point = QPointF()
 
         self.r = self.parentItem().r
         self.xmin = self.parentItem().x()

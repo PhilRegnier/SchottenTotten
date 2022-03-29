@@ -7,7 +7,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QStatusBar, QWidget, QLabel, QSpinBox, QPushButton, QVBoxLayout, QHBoxLayout, \
     QMessageBox, QAction
 
-from src.Game import Game
+from src.GameManager import Game
 from src.SettingsManager import SettingsManager
 from src.variables_globales import mainWindow_width, mainWindow_height, __version__
 

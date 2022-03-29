@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
 from src import UserSide
 from src.AutoSide import AutoSide
 from src.Automaton import Automaton
+from src.Board import Board
 from src.Card import Card
 from src.Chifoumi import Chifoumi
 from src.Curtain import Curtain
@@ -21,7 +22,7 @@ from src.Memo import Memo
 from src.MovingCard import MovingCard
 from src.Player import Player
 from src.UserDeck import PlayerDeck
-from src.SettingsManager import Settings
+from src.SettingsManager import Settings, SettingsManager
 from src.Stone import Stone
 from src.Style import Style
 from src.TextInForeground import TextInForeground
@@ -30,7 +31,7 @@ from src.variables_globales import mainWindow_width, stone_marge, stone_width, \
     mainWindow_height, cote_both, cote_brelan, cote_couleur, cote_suite, clicked
 
 
-class Game(QGraphicsView):
+class GameManager(QGraphicsView):
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -42,8 +43,9 @@ class Game(QGraphicsView):
 
         # Preset the scene and the view
 
-        self.board = QGraphicsScene(self)
-        self.board.setSceneRect(0, 0, mainWindow_width - 40, mainWindow_height - 60)
+        self.settings = SettingsManager()
+        self.board = Board(self)
+        self.chifoumi = None
 
         # Set the view with QGraphicsView parent's methods
 
@@ -63,17 +65,17 @@ class Game(QGraphicsView):
 
         self.timer = QTimer(self)
 
-        # Prepare the board et the players
+        # Prepare the board and the players
 
         self.deck = Deck()
-        self.user = Player()
-        self.auto = Automaton()
+        self.player = Player()
+        self.automaton = Automaton()
 
     def __new_round(self):
 
         # ending the game
 
-        if self.current_round == Settings.get_rounds_nb():
+        if self.current_round == self.settings.get_rounds_nb():
             self.home.setVisible(True)
             self.home.animate_incoming()
             return
@@ -391,9 +393,8 @@ class Game(QGraphicsView):
             clicked = False
             selected = -1
 
-    # --------------------------------------------------------------------------------------------------
     # Leave chifoumi curtain and launch the game
-    # --------------------------------------------------------------------------------------------------
+
     def letsGo(self):
         self.text.setVisible(False)
         self.chifoumi.animate_leaving()

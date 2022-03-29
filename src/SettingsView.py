@@ -1,7 +1,7 @@
 
 from src.Clickable import Clickable
 from src.Curtain import Curtain
-from src.SettingsManager import Settings
+from src.SettingsManager import SettingsManager
 from src.Slider import Slider
 from src.TextInForeground import TextInForeground
 
@@ -10,6 +10,10 @@ class SettingsView(Curtain):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        # get the instance of SettingsManager
+
+        settings = SettingsManager()
 
         # prepare geometry
 
@@ -24,17 +28,17 @@ class SettingsView(Curtain):
 
         # Set selectors
 
-        self.sound_selector = Slider(self, 'Sound')
-        self.variant_selector = Slider(self, 'Variant')
-        self.difficulty_selector = Slider(self, 'Difficulty', 2, ['dumb', 'spicy'])
-        self.rounds_selector = Slider(self, 'Number of rounds', 5, ['1', '2', '3', '4', '5'])
+        self.sound_slider = Slider(self, 'Sound')
+        self.variant_slider = Slider(self, 'Variant')
+        self.difficulty_slider = Slider(self, 'Difficulty', 2, ['dumb', 'spicy'])
+        self.rounds_slider = Slider(self, 'Number of rounds', 5, ['1', '2', '3', '4', '5'])
 
-        self.rounds_selector.setRange(1, 5)
+        self.rounds_slider.setRange(1, 5)
 
-        if Settings.__sounds:
-            self.sound_selector.setSliderPosition(1)
+        if settings.__sounds:
+            self.sound_slider.setSliderPosition(1)
 
-        if Settings.__variant:
+        if settings.__variant:
             self.variant_selector.setSliderPosition(1)
 
         self.difficulty_selector.setSliderPosition(Settings.__difficulty)
