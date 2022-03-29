@@ -44,14 +44,10 @@ class Clickable(QGraphicsPixmapItem):
         self.ombrage.setEnabled(False)
 
     def mousePressEvent(self, event):
-        global clicked
-        if not event.button() == QtCore.Qt.LeftButton:
-            return
-
-        clicked = True
+        if event.button() == QtCore.Qt.LeftButton:
+            clicked = True
 
     def mouseReleaseEvent(self, event):
-        global selected
         if clicked:
             selected = self.id
             self.ombrage.setColor(Style.ombrage_color_bt)

@@ -8,12 +8,12 @@ from src.TextInForeground import TextInForeground
 
 class SettingsView(Curtain):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         super().__init__(parent)
 
         # get the instance of SettingsManager
 
-        settings = SettingsManager()
+        self.settings = SettingsManager()
 
         # prepare geometry
 
@@ -35,37 +35,45 @@ class SettingsView(Curtain):
 
         self.rounds_slider.setRange(1, 5)
 
-        if settings.__sounds:
+        if self.settings.is_sounds_enabled():
             self.sound_slider.setSliderPosition(1)
 
-        if settings.__variant:
-            self.variant_selector.setSliderPosition(1)
+        if self.settings.get_variant():
+            self.variant_slider.setSliderPosition(1)
 
-        self.difficulty_selector.setSliderPosition(Settings.__difficulty)
-        self.rounds_selector.setSliderPosition(Settings.__number_of_rounds - 1)
+        self.difficulty_slider.setSliderPosition(self.settings.get_difficulty())
+        self.rounds_slider.setSliderPosition(self.settings.get_number_of_rounds() - 1)
 
         # Set "OK" and "CANCEL" buttons
 
-        self.ok = Clickable('ok.png', 50, 50, 20, self, True)
-        self.cancel = Clickable('cancel.png', 50, 50, 21, self, True)
+        self.ok_button = Clickable('ok.png', 50, 50, 20, self, True)
+        self.cancel_button = Clickable('cancel.png', 50, 50, 21, self, True)
 
         # Set the scene
 
         y = mh
         self.title.setPos(lw, y)
         y += mh + self.title.boundingRect().height() + 60
-        self.sound_selector.setPos(lw, y)
-        y += mh + self.sound_selector.height
-        self.difficulty_selector.setPos(lw, y)
-        y += mh + self.difficulty_selector.height
-        self.rounds_selector.setPos(lw, y)
-        y += mh + self.rounds_selector.height
-        self.variant_selector.setPos(lw, y)
-        y += mh + self.variant_selector.height
-        self.ok.setPos(lw, y)
-        self.cancel.setPos(lw + self.difficulty_selector.width, y)
+        self.sound_slider.setPos(lw, y)
+        y += mh + self.sound_slider.height
+        self.difficulty_slider.setPos(lw, y)
+        y += mh + self.difficulty_slider.height
+        self.rounds_slider.setPos(lw, y)
+        y += mh + self.rounds_slider.height
+        self.variant_slider.setPos(lw, y)
+        y += mh + self.variant_slider.height
 
-    def set_values(self):
-        Settings.__number_of_rounds = self.rounds_selector.value()
-        Settings.__sounds = self.sound_selector.value() == 1
-        Settings.__difficulty = self.difficulty_selector.value()
+        self.ok_button.setPos(lw, y)
+        self.cancel_button.setPos(lw + self.difficulty_slider.width, y)
+
+    def get_number_of_rounds_selected(self):
+        return self.rounds_slider.value()
+
+    def get_sounds_enabled_selected(self):
+        return self.sound_slider.value() == 1
+
+    def get_difficulty_selected(self):
+        return self.difficulty_slider.value()
+
+    def get_variant_selected(self):
+        return self.variant_slider.value()

@@ -3,9 +3,6 @@
 #
 __version__ = "1.1"
 
-# Game set
-
-
 # Objects dimensions & geometries
 
 mainWindow_width = 1200

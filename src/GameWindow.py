@@ -7,7 +7,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QStatusBar, QWidget, QLabel, QSpinBox, QPushButton, QVBoxLayout, QHBoxLayout, \
     QMessageBox, QAction
 
-from src.GameManager import Game
+from src.GameManager import GameManager
 from src.SettingsManager import SettingsManager
 from src.variables_globales import mainWindow_width, mainWindow_height, __version__
 
@@ -24,7 +24,7 @@ class GameWindow(QMainWindow):
         # Create a new Schotten Totten game
 
         self.settings = SettingsManager()
-        self.game = Game(self)
+        self.game = GameManager(self)
         self.setCentralWidget(self.game)
         self.create_menu()
         self.show()
@@ -164,7 +164,7 @@ class GameWindow(QMainWindow):
                           <p>Copyright &copy; 2016-2019 IELLO for the 
                           original cards game.
                           <p>Copyright &copy; 2020 Philippe Régnier for
-                          this video game.""" % (__version__))
+                          this video game.""" % __version__)
 
     def new_game(self):
         """
@@ -179,23 +179,21 @@ class GameWindow(QMainWindow):
         msg.setDefaultButton(QMessageBox.No)
 
         if msg.exec() == QMessageBox.Yes:
-            self.game = Game()
+            self.game = GameManager()
             self.setCentralWidget(self.game)
         else:
             pass
 
-    def keyPressEvent(self, event):
-        """
-        Hidden short-cut pressed handler
-        """
-        if int(event.modifiers()) == Qt.ControlModifier:
-            if event.key() == Qt.Key_A:
-                self.game.autoHandView()
+    # Hidden short-cut pressed handler
 
-    def keyReleaseEvent(self, event):  # NOT WORKING !!!
-        """
-        Hidden short-cut release handler
-        """
+    def keyPressEvent(self, event):
         if int(event.modifiers()) == Qt.ControlModifier:
             if event.key() == Qt.Key_A:
-                self.game.autoHandClose()
+                self.game.show_automaton_hand_view()
+
+    # Hidden short-cut release handler
+
+    def keyReleaseEvent(self, event):
+        if int(event.modifiers()) == Qt.ControlModifier:
+            if event.key() == Qt.Key_A:
+                self.game.hide_automaton_hand_view()

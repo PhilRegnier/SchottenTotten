@@ -13,7 +13,7 @@ from src import UserSide, AutoSide
 from src.ImageTreatment import ImageTreatment
 from src.MovingCard import MovingCard
 from src.Shader import Shader
-from src.variables_globales import colors, side_height, stone_width
+from src.variables_globales import side_height, stone_width
 
 
 class Card(QGraphicsObject):

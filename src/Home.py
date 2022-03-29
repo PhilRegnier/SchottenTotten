@@ -5,22 +5,22 @@ from PIL import Image, ImageQt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
+from src.Card import Card
 from src.Clickable import Clickable
 from src.Curtain import Curtain
-from src.SettingsManager import Settings
-from src.variables_globales import card_height
+from src.SettingsView import SettingsView
 
 
 class Home(Curtain):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         super().__init__(parent)
 
         # prepare geometry
 
         ww = self.boundingRect().width()
         wh = self.boundingRect().height()
-        cw = 2 * card_height
+        cw = 2 * Card.card_height
         ew = 80
 
         # title
@@ -33,34 +33,34 @@ class Home(Curtain):
 
         # settings and starting buttons
 
-        self.settings = Clickable('resources/images/engrenages.jpg', cw, cw, 10, self)
-        self.starting = Clickable('resources/images/run.jpg', cw, cw, 11, self)
+        self.settings_button = Clickable('resources/images/engrenages.jpg', cw, cw, 10, self)
+        self.starting_button = Clickable('resources/images/run.jpg', cw, cw, 11, self)
 
         # settings panel item
 
-        self.settings_panel = Settings()
-        self.settings_panel.setParentItem(self)
-        self.settings_panel.setVisible(False)
+        self.settings_view = SettingsView(self)
+        self.settings_view.setParentItem(self)
+        self.settings_view.setVisible(False)
 
         # continue geometry
 
-        cw = self.settings.boundingRect().width()
-        # ch = self.settings.boundingRect().height()
+        cw = self.settings_button.boundingRect().width()
+        # ch = self.settings_button.boundingRect().height()
 
         # set the scene
 
         self.titre.setPos((ww - self.titre.boundingRect().width()) / 2,
                           wh / 2 - ew - self.titre.boundingRect().height())
-        self.settings.setPos(ww / 2 - ew - cw, wh / 2 + ew)
-        self.starting.setPos(ww / 2 + ew, wh / 2 + ew)
+        self.settings_button.setPos(ww / 2 - ew - cw, wh / 2 + ew)
+        self.starting_button.setPos(ww / 2 + ew, wh / 2 + ew)
 
-    def setValues(self):
-        self.settings_panel.setValues()
-        self.closeSettings()
+    def set_values(self):
+        self.settings_view.get_values(number_of_rounds, sounds_enabled, difficulty)
+        self.settings.set_number_of_rounds(self.rounds_selector.value())
+        self.settings.set_sounds_enabled(self.sound_selector.value() == 1)
+        self.settings.set_difficulty(self.difficulty_selector.value())
+        self.settings_view.animate_leaving()
 
-    def closeSettings(self):
-        self.settings_panel.animate_leaving()
-
-    def openSettings(self):
-        self.settings_panel.setVisible(True)
-        self.settings_panel.animate_incoming()
+    def open_settings_view(self):
+        self.settingsView.setVisible(True)
+        self.settingsView.animate_incoming()

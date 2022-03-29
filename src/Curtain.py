@@ -10,7 +10,7 @@ from src.variables_globales import side_height, mainWindow_width, mainWindow_hei
 
 class Curtain(QGraphicsObject):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         super().__init__(parent)
         self.setVisible(False)
         self.setPos(0, 0)

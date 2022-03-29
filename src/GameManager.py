@@ -40,6 +40,7 @@ class GameManager(QGraphicsView):
 
         self.current_round = 0
         self.items_selected = []
+        self.ending = False
 
         # Preset the scene and the view
 
@@ -75,7 +76,7 @@ class GameManager(QGraphicsView):
 
         # ending the game
 
-        if self.current_round == self.settings.get_rounds_nb():
+        if self.current_round == self.settings.get_number_of_rounds():
             self.home.setVisible(True)
             self.home.animate_incoming()
             return
@@ -174,15 +175,6 @@ class GameManager(QGraphicsView):
         MovingCard.reset_zmax()
         for item in self.board.items():
             MovingCard.set_zmax(item.zValue())
-
-    def autoHandView(self):
-        """
-        Showing computer's hand cards in a subwindow
-        """
-        self.board.addItem(self.auto_deck)
-
-    def autoHandClose(self):
-        self.board.removeItem(self.auto_deck)
 
     def mouseMoveEvent(self, event):
         QGraphicsView.mouseMoveEvent(self, event)
@@ -574,3 +566,11 @@ class GameManager(QGraphicsView):
             Card.cards[i].setZValue(0)
 
         QTimer.singleShot(3000, self.__new_round)
+
+    # cheat mode: show automaton's hand in a subwindow
+
+    def show_automaton_hand_view(self):
+        self.board.addItem(self.auto_deck)
+
+    def hide_automaton_hand_view(self):
+        self.board.removeItem(self.auto_deck)
