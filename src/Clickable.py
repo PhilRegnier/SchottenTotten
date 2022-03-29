@@ -6,9 +6,10 @@ from PyQt5 import QtCore, QtGui
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
+from src.ImageTreatment import ImageTreatment
 from src.Shader import Shader
-from src.ImageTreatment import enluminure
-from src.variables_globales import ombrage_color_bt, clicked, selected
+from src.Style import Style
+from src.variables_globales import clicked, selected
 
 
 class Clickable(QGraphicsPixmapItem):
@@ -22,23 +23,24 @@ class Clickable(QGraphicsPixmapItem):
             image = Image.composite(image, back_img, image)
 
         image.thumbnail((width, height))
-        self.setPixmap(QPixmap.fromImage(enluminure(image)))
+        self.setPixmap(QPixmap.fromImage(ImageTreatment.enluminure(image)))
         self.id = num
         self.setParentItem(parent_item)
         self.setAcceptHoverEvents(True)
 
         self.ombrage = Shader()
         self.setGraphicsEffect(self.ombrage)
+        self.anchor_point = None
 
     def hoverEnterEvent(self, event):
         self.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.anchorPoint = self.pos()
+        self.anchor_point = self.pos()
         self.setPos(self.x() - 2, self.y() - 2)
         self.ombrage.setEnabled(True)
 
     def hoverLeaveEvent(self, event):
         self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        self.setPos(self.anchorPoint)
+        self.setPos(self.anchor_point)
         self.ombrage.setEnabled(False)
 
     def mousePressEvent(self, event):
@@ -52,7 +54,7 @@ class Clickable(QGraphicsPixmapItem):
         global selected
         if clicked:
             selected = self.id
-            self.ombrage.setColor(ombrage_color_bt)
+            self.ombrage.setColor(Style.ombrage_color_bt)
 
     def width(self):
         return self.boundingRect().width()

@@ -18,6 +18,7 @@ from src.variables_globales import colors, side_height, stone_width
 
 class Card(QGraphicsObject):
 
+    colors = ['jaune', 'vert', 'rouge', 'brun', 'bleu', 'violet']
     width = stone_width - 4
     height = width * 1.42
 
@@ -28,7 +29,7 @@ class Card(QGraphicsObject):
         self.index = -1
         self.anchor_point = QPointF()
         self.valeur = numero % max_value + 1
-        self.couleur = colors[numero // max_value]
+        self.couleur = Card.colors[numero // max_value]
 
         image = Image.open('resources/images/' + self.couleur + str(self.valeur) + '.jpg')
         image.thumbnail((Card.width - 2, Card.height - 2))
@@ -43,12 +44,8 @@ class Card(QGraphicsObject):
         self.dragStartPosition = None
 
     def set_draggable(self, draggable=True):
-        if draggable:
-            self.setFlag(QGraphicsItem.ItemIsMovable, True)
-            self.setAcceptHoverEvents(True)
-        else:
-            self.setFlag(QGraphicsItem.ItemIsMovable, False)
-            self.setAcceptHoverEvents(False)
+        self.setFlag(QGraphicsItem.ItemIsMovable, draggable)
+        self.setAcceptHoverEvents(draggable)
 
     def set_anchor_point(self, anchor_point):
         self.anchor_point = anchor_point

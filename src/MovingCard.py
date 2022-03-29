@@ -15,15 +15,15 @@ class MovingCard:
         self.__movedToReorganize = False
         self.__dragged = False
 
-    @staticmethod
+    @classmethod
     def set_zmax(valeur):
         MovingCard.__zmax = max(MovingCard.__zmax, valeur)
 
-    @staticmethod
+    @classmethod
     def get_zmax():
         return MovingCard.__zmax
 
-    @staticmethod
+    @classmethod
     def reset_zmax():
         MovingCard.__zmax = 0.
 
@@ -43,7 +43,7 @@ class MovingCard:
     def dragged():
         MovingCard.__dragged = True
 
-    def unDragged():
+    def undragged():
         MovingCard.__dragged = False
 
     def set_card_id(id):

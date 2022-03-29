@@ -4,6 +4,8 @@
 from src.Singleton import Singleton
 
 
+# TODO : loading personal settings saved
+
 class SettingsManager(Singleton):
 
     __max_card_value = 9
@@ -15,7 +17,6 @@ class SettingsManager(Singleton):
     __first_player = None
 
     def __init__(self):
-        # TODO : loading personal settings saved
         pass
 
     @classmethod

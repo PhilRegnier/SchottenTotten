@@ -5,8 +5,6 @@ __version__ = "1.1"
 
 # Game set
 
-colors = ['jaune', 'vert', 'rouge', 'brun', 'bleu', 'violet']
-
 
 # Objects dimensions & geometries
 

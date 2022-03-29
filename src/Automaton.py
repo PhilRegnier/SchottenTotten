@@ -14,7 +14,10 @@ class Automaton(Player):
     # Ask the automaton to play a card on his side
 
     def play_a_card(self):
-        if Settings.get_difficulty() == 1:
+
+        settings = Settings()
+
+        if settings.get_difficulty() == 1:
             self.cervo1()
         else:
             self.cervo0()
