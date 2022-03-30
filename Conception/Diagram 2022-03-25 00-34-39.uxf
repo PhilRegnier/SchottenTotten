@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
   <help_text>Space for diagram notest</help_text>
-  <zoom_level>2</zoom_level>
+  <zoom_level>6</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>94</x>
-      <y>294</y>
-      <w>42</w>
-      <h>12</h>
+      <x>282</x>
+      <y>198</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>PIL::ImageDraw
 --
@@ -18,10 +18,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>548</x>
-      <y>270</y>
-      <w>42</w>
-      <h>12</h>
+      <x>1644</x>
+      <y>126</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>QRectF
 --
@@ -31,10 +31,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
-      <y>304</y>
-      <w>42</w>
-      <h>14</h>
+      <x>1650</x>
+      <y>228</y>
+      <w>126</w>
+      <h>42</h>
     </coordinates>
     <panel_attributes>QPropertyAnimation
 --
@@ -44,10 +44,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>504</x>
-      <y>270</y>
-      <w>42</w>
-      <h>12</h>
+      <x>1512</x>
+      <y>126</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>QLineF
 --
@@ -57,10 +57,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>594</x>
-      <y>288</y>
-      <w>42</w>
-      <h>12</h>
+      <x>1782</x>
+      <y>180</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>QPointF
 --
@@ -70,10 +70,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>594</x>
-      <y>306</y>
-      <w>42</w>
-      <h>12</h>
+      <x>1782</x>
+      <y>234</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>Qt
 --
@@ -83,10 +83,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>592</x>
-      <y>270</y>
-      <w>42</w>
-      <h>12</h>
+      <x>1776</x>
+      <y>126</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>QRect
 --
@@ -96,10 +96,10 @@
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>502</x>
-      <y>264</y>
-      <w>140</w>
-      <h>58</h>
+      <x>1506</x>
+      <y>108</y>
+      <w>420</w>
+      <h>174</h>
     </coordinates>
     <panel_attributes>QtCore
 fg=blue</panel_attributes>
@@ -108,10 +108,10 @@ fg=blue</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>260</x>
-      <y>280</y>
-      <w>38</w>
-      <h>30</h>
+      <x>780</x>
+      <y>156</y>
+      <w>114</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>/QGraphicsDropShadowEffect/
 bg=gray
@@ -128,10 +128,10 @@ bg=gray
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>200</x>
-      <y>228</y>
-      <w>264</w>
-      <h>102</h>
+      <x>600</x>
+      <y>0</y>
+      <w>792</w>
+      <h>306</h>
     </coordinates>
     <panel_attributes>QWidgets
 
@@ -141,10 +141,10 @@ fg=red</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>80</x>
-      <y>316</y>
-      <w>72</w>
-      <h>16</h>
+      <x>240</x>
+      <y>264</y>
+      <w>216</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>ImageTreatment
 --
@@ -156,10 +156,10 @@ _+ enluminure(image: Image, r: int, ow: int, oh: int): Image_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>350</x>
-      <y>244</y>
-      <w>42</w>
-      <h>34</h>
+      <x>1050</x>
+      <y>48</y>
+      <w>126</w>
+      <h>102</h>
     </coordinates>
     <panel_attributes>/QGraphicsItem/
 bg=orange
@@ -177,10 +177,10 @@ bg=orange
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>458</x>
-      <y>738</y>
-      <w>108</w>
-      <h>50</h>
+      <x>1374</x>
+      <y>1530</y>
+      <w>324</w>
+      <h>150</h>
     </coordinates>
     <panel_attributes>/Side/
 bg=orange
@@ -203,10 +203,10 @@ bg=orange
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>48</x>
-      <y>534</y>
-      <w>82</w>
-      <h>90</h>
+      <x>144</x>
+      <y>918</y>
+      <w>246</w>
+      <h>270</h>
     </coordinates>
     <panel_attributes>Card
 bg=cyan
@@ -242,10 +242,10 @@ _+ height: int_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>350</x>
-      <y>600</y>
-      <w>52</w>
-      <h>54</h>
+      <x>1050</x>
+      <y>1116</y>
+      <w>156</w>
+      <h>162</h>
     </coordinates>
     <panel_attributes>GameManager
 bg=green
@@ -263,10 +263,10 @@ bg=green
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>304</x>
-      <y>292</y>
-      <w>88</w>
-      <h>30</h>
+      <x>912</x>
+      <y>192</y>
+      <w>264</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>/QGraphicsView/
 bg=green
@@ -282,10 +282,10 @@ bg=green
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>262</x>
-      <y>568</y>
-      <w>42</w>
-      <h>20</h>
+      <x>786</x>
+      <y>1020</y>
+      <w>126</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>Home
 bg=cyan
@@ -298,10 +298,10 @@ bg=cyan
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>302</x>
-      <y>580</y>
-      <w>52</w>
-      <h>38</h>
+      <x>906</x>
+      <y>1056</y>
+      <w>156</w>
+      <h>114</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -311,10 +311,10 @@ home</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>212</x>
-      <y>282</y>
-      <w>38</w>
-      <h>30</h>
+      <x>636</x>
+      <y>162</y>
+      <w>114</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>/QGraphicsObject/
 bg=cyan
@@ -333,10 +333,10 @@ bg=cyan
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>264</x>
-      <y>510</y>
-      <w>48</w>
-      <h>26</h>
+      <x>792</x>
+      <y>846</y>
+      <w>144</w>
+      <h>78</h>
     </coordinates>
     <panel_attributes>/Curtain/
 bg=cyan
@@ -353,10 +353,10 @@ bg=cyan
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>280</x>
-      <y>534</y>
-      <w>12</w>
-      <h>38</h>
+      <x>840</x>
+      <y>918</y>
+      <w>36</w>
+      <h>114</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>40.0;10.0;10.0;170.0</additional_attributes>
@@ -364,10 +364,10 @@ bg=cyan
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>504</x>
-      <y>306</y>
-      <w>42</w>
-      <h>12</h>
+      <x>1512</x>
+      <y>234</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>QTimer
 --
@@ -377,10 +377,10 @@ bg=cyan
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>550</x>
-      <y>288</y>
-      <w>42</w>
-      <h>12</h>
+      <x>1650</x>
+      <y>180</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>QParallelAnimationGroup
 --
@@ -390,10 +390,10 @@ bg=cyan
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>386</x>
-      <y>316</y>
-      <w>134</w>
-      <h>288</h>
+      <x>1158</x>
+      <y>264</y>
+      <w>402</w>
+      <h>864</h>
     </coordinates>
     <panel_attributes>lt=-
 m2=1
@@ -403,10 +403,10 @@ timer</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>234</x>
-      <y>604</y>
-      <w>30</w>
-      <h>44</h>
+      <x>702</x>
+      <y>1128</y>
+      <w>90</w>
+      <h>132</h>
     </coordinates>
     <panel_attributes>Deck
 bg=blue
@@ -430,10 +430,10 @@ bg=blue
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>262</x>
-      <y>612</y>
-      <w>92</w>
-      <h>34</h>
+      <x>786</x>
+      <y>1152</y>
+      <w>276</w>
+      <h>102</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -443,10 +443,10 @@ deck</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>410</x>
-      <y>822</y>
-      <w>42</w>
-      <h>38</h>
+      <x>1230</x>
+      <y>1782</y>
+      <w>126</w>
+      <h>114</h>
     </coordinates>
     <panel_attributes>Hand
 --
@@ -460,10 +460,10 @@ deck</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>314</x>
-      <y>888</y>
-      <w>42</w>
-      <h>38</h>
+      <x>942</x>
+      <y>1980</y>
+      <w>126</w>
+      <h>114</h>
     </coordinates>
     <panel_attributes>Statistics
 --
@@ -476,10 +476,10 @@ deck</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>72</x>
-      <y>376</y>
-      <w>42</w>
-      <h>16</h>
+      <x>216</x>
+      <y>444</y>
+      <w>126</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>Shader
 bg=gray
@@ -490,10 +490,10 @@ bg=gray
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>54</x>
-      <y>390</y>
-      <w>34</w>
-      <h>148</h>
+      <x>162</x>
+      <y>486</y>
+      <w>102</w>
+      <h>444</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -503,10 +503,10 @@ shade</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>134</x>
-      <y>652</y>
-      <w>62</w>
-      <h>90</h>
+      <x>402</x>
+      <y>1272</y>
+      <w>186</w>
+      <h>270</h>
     </coordinates>
     <panel_attributes>Board
 bg=yellow
@@ -519,10 +519,10 @@ bg=yellow
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>306</x>
-      <y>816</y>
-      <w>42</w>
-      <h>38</h>
+      <x>918</x>
+      <y>1764</y>
+      <w>126</w>
+      <h>114</h>
     </coordinates>
     <panel_attributes>Automaton
 --
@@ -535,10 +535,10 @@ bg=yellow
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>362</x>
-      <y>736</y>
-      <w>42</w>
-      <h>38</h>
+      <x>1086</x>
+      <y>1524</y>
+      <w>126</w>
+      <h>114</h>
     </coordinates>
     <panel_attributes>Player
 --
@@ -551,10 +551,10 @@ bg=yellow
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>338</x>
-      <y>772</y>
-      <w>46</w>
-      <h>48</h>
+      <x>1014</x>
+      <y>1632</y>
+      <w>138</w>
+      <h>144</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-
 Extends &gt;</panel_attributes>
@@ -563,10 +563,10 @@ Extends &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>318</x>
-      <y>852</y>
-      <w>22</w>
-      <h>40</h>
+      <x>954</x>
+      <y>1872</y>
+      <w>66</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -576,10 +576,10 @@ statistics</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>402</x>
-      <y>754</y>
-      <w>60</w>
-      <h>10</h>
+      <x>1206</x>
+      <y>1578</y>
+      <w>180</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=-
 m2=1
@@ -589,10 +589,10 @@ side</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>394</x>
-      <y>772</y>
-      <w>32</w>
-      <h>54</h>
+      <x>1182</x>
+      <y>1632</y>
+      <w>96</w>
+      <h>162</h>
     </coordinates>
     <panel_attributes>lt=-
 m2=1
@@ -602,10 +602,10 @@ hand</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>114</x>
-      <y>818</y>
-      <w>60</w>
-      <h>76</h>
+      <x>342</x>
+      <y>1770</y>
+      <w>180</w>
+      <h>228</h>
     </coordinates>
     <panel_attributes> CardManager
 --
@@ -637,10 +637,10 @@ _+ side_id(): int_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>74</x>
-      <y>622</y>
-      <w>64</w>
-      <h>200</h>
+      <x>222</x>
+      <y>1182</y>
+      <w>192</w>
+      <h>600</h>
     </coordinates>
     <panel_attributes>lt=-
 m2=n
@@ -650,10 +650,10 @@ cards</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>340</x>
-      <y>526</y>
-      <w>42</w>
-      <h>46</h>
+      <x>1020</x>
+      <y>894</y>
+      <w>126</w>
+      <h>138</h>
     </coordinates>
     <panel_attributes>Chifoumi
 bg=cyan
@@ -676,10 +676,10 @@ bg=cyan
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>310</x>
-      <y>530</y>
-      <w>34</w>
-      <h>22</h>
+      <x>930</x>
+      <y>906</y>
+      <w>102</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;150.0;90.0</additional_attributes>
@@ -687,10 +687,10 @@ bg=cyan
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>304</x>
-      <y>250</y>
-      <w>42</w>
-      <h>12</h>
+      <x>912</x>
+      <y>66</y>
+      <w>126</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>/QGraphicsPixmapItem/
 bg=blue
@@ -700,10 +700,10 @@ bg=blue
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>316</x>
-      <y>408</y>
-      <w>48</w>
-      <h>42</h>
+      <x>948</x>
+      <y>540</y>
+      <w>144</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>Clickable
 bg=blue
@@ -725,10 +725,10 @@ bg=blue
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>332</x>
-      <y>448</y>
-      <w>26</w>
-      <h>82</h>
+      <x>996</x>
+      <y>660</y>
+      <w>78</w>
+      <h>246</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=3
@@ -738,10 +738,10 @@ m1=3
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>112</x>
-      <y>382</y>
-      <w>208</w>
-      <h>50</h>
+      <x>336</x>
+      <y>462</y>
+      <w>624</w>
+      <h>150</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1</panel_attributes>
@@ -750,22 +750,22 @@ m1=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>172</x>
-      <y>828</y>
-      <w>138</w>
-      <h>70</h>
+      <x>516</x>
+      <y>1800</y>
+      <w>414</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 fg=red</panel_attributes>
-    <additional_attributes>10.0;330.0;670.0;10.0</additional_attributes>
+    <additional_attributes>10.0;180.0;670.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>70</x>
-      <y>762</y>
-      <w>42</w>
-      <h>22</h>
+      <x>210</x>
+      <y>1602</y>
+      <w>126</w>
+      <h>66</h>
     </coordinates>
     <panel_attributes>Memo
 --
@@ -779,10 +779,10 @@ fg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>166</x>
-      <y>642</y>
-      <w>72</w>
-      <h>180</h>
+      <x>498</x>
+      <y>1242</y>
+      <w>216</w>
+      <h>540</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 fg=red</panel_attributes>
@@ -791,22 +791,22 @@ fg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>196</x>
-      <y>588</y>
-      <w>34</w>
-      <h>188</h>
+      <x>588</x>
+      <y>1080</y>
+      <w>120</w>
+      <h>480</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 fg=green</panel_attributes>
-    <additional_attributes>150.0;920.0;10.0;10.0</additional_attributes>
+    <additional_attributes>180.0;780.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>222</x>
-      <y>772</y>
-      <w>44</w>
-      <h>70</h>
+      <x>684</x>
+      <y>1548</y>
+      <w>132</w>
+      <h>210</h>
     </coordinates>
     <panel_attributes>SettingsManager
 --
@@ -835,10 +835,10 @@ _+ get_first_player(): int_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>198</x>
-      <y>934</y>
-      <w>44</w>
-      <h>24</h>
+      <x>594</x>
+      <y>2118</y>
+      <w>132</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>/Singleton/
 --
@@ -851,10 +851,10 @@ _+ get_first_player(): int_
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>162</x>
-      <y>892</y>
-      <w>56</w>
-      <h>46</h>
+      <x>486</x>
+      <y>1992</y>
+      <w>168</w>
+      <h>138</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>260.0;210.0;10.0;10.0</additional_attributes>
@@ -862,21 +862,21 @@ _+ get_first_player(): int_
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>218</x>
-      <y>840</y>
-      <w>26</w>
-      <h>98</h>
+      <x>654</x>
+      <y>1752</y>
+      <w>96</w>
+      <h>378</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;470.0;110.0;10.0</additional_attributes>
+    <additional_attributes>10.0;610.0;140.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>166</x>
-      <y>540</y>
-      <w>56</w>
-      <h>50</h>
+      <x>498</x>
+      <y>936</y>
+      <w>168</w>
+      <h>150</h>
     </coordinates>
     <panel_attributes>SettingsView
 bg=cyan
@@ -901,9 +901,9 @@ bg=cyan
     <id>UMLClass</id>
     <coordinates>
       <x>0</x>
-      <y>386</y>
-      <w>56</w>
-      <h>16</h>
+      <y>474</y>
+      <w>168</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>TextInForeground
 bg=red
@@ -913,10 +913,10 @@ bg=red
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>260</x>
-      <y>242</y>
-      <w>42</w>
-      <h>26</h>
+      <x>780</x>
+      <y>42</y>
+      <w>126</w>
+      <h>78</h>
     </coordinates>
     <panel_attributes>/QGraphicsSimpleTextItem/
 bg=red
@@ -932,10 +932,10 @@ bg=red
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>532</y>
-      <w>48</w>
-      <h>28</h>
+      <x>660</x>
+      <y>912</y>
+      <w>144</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>220.0;10.0;10.0;120.0</additional_attributes>
@@ -943,10 +943,10 @@ bg=red
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>118</x>
-      <y>422</y>
-      <w>52</w>
-      <h>86</h>
+      <x>354</x>
+      <y>582</y>
+      <w>156</w>
+      <h>258</h>
     </coordinates>
     <panel_attributes>Slider
 bg=orange
@@ -981,10 +981,10 @@ bg=orange
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>138</x>
-      <y>506</y>
-      <w>58</w>
-      <h>38</h>
+      <x>414</x>
+      <y>834</y>
+      <w>174</w>
+      <h>114</h>
     </coordinates>
     <panel_attributes>lt=-
 m2=4
@@ -994,10 +994,10 @@ contient &gt;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>210</x>
-      <y>430</y>
-      <w>46</w>
-      <h>50</h>
+      <x>630</x>
+      <y>606</y>
+      <w>138</w>
+      <h>150</h>
     </coordinates>
     <panel_attributes>Handler
 bg=orange
@@ -1021,10 +1021,10 @@ bg=orange
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>168</x>
-      <y>446</y>
-      <w>46</w>
-      <h>10</h>
+      <x>504</x>
+      <y>654</y>
+      <w>138</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=-
 m2=1
@@ -1034,10 +1034,10 @@ contient &gt;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>208</x>
-      <y>242</y>
-      <w>38</w>
-      <h>30</h>
+      <x>624</x>
+      <y>42</y>
+      <w>114</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>/QGraphicsScene/
 bg=yellow
@@ -1050,10 +1050,10 @@ bg=yellow
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>194</x>
-      <y>622</y>
-      <w>160</w>
-      <h>82</h>
+      <x>582</x>
+      <y>1182</y>
+      <w>480</w>
+      <h>246</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -1063,10 +1063,10 @@ board</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>326</x>
-      <y>652</y>
-      <w>40</w>
-      <h>168</h>
+      <x>978</x>
+      <y>1272</y>
+      <w>120</w>
+      <h>504</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -1076,10 +1076,10 @@ automate</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>370</x>
-      <y>652</y>
-      <w>16</w>
-      <h>90</h>
+      <x>1110</x>
+      <y>1272</y>
+      <w>48</w>
+      <h>270</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -1089,22 +1089,22 @@ player</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>252</x>
-      <y>646</y>
-      <w>102</w>
-      <h>130</h>
+      <x>774</x>
+      <y>1254</y>
+      <w>288</w>
+      <h>306</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 fg=green</panel_attributes>
-    <additional_attributes>10.0;630.0;490.0;10.0</additional_attributes>
+    <additional_attributes>10.0;490.0;460.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>354</x>
-      <y>570</y>
-      <w>20</w>
-      <h>34</h>
+      <x>1062</x>
+      <y>1026</y>
+      <w>60</w>
+      <h>102</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -1114,10 +1114,10 @@ chifoumi</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>580</y>
-      <w>46</w>
-      <h>12</h>
+      <x>660</x>
+      <y>1056</y>
+      <w>138</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -1127,10 +1127,10 @@ settingsView</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>208</x>
-      <y>448</y>
-      <w>116</w>
-      <h>96</h>
+      <x>624</x>
+      <y>660</y>
+      <w>348</w>
+      <h>288</h>
     </coordinates>
     <panel_attributes>lt=-
 m2=2
@@ -1140,10 +1140,10 @@ contient &gt;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>450</x>
-      <y>572</y>
-      <w>68</w>
-      <h>120</h>
+      <x>1350</x>
+      <y>1032</y>
+      <w>204</w>
+      <h>360</h>
     </coordinates>
     <panel_attributes>GameWindow
 bg=black
@@ -1160,10 +1160,10 @@ Responsibilities
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>402</x>
-      <y>290</y>
-      <w>56</w>
-      <h>32</h>
+      <x>1206</x>
+      <y>186</y>
+      <w>168</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes>/QMainWindow/
 bg=black
@@ -1181,10 +1181,10 @@ bg=black
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>64</x>
-      <y>234</y>
-      <w>96</w>
-      <h>102</h>
+      <x>192</x>
+      <y>18</y>
+      <w>288</w>
+      <h>306</h>
     </coordinates>
     <panel_attributes>Pillow (PIL)
 fg=magenta</panel_attributes>
@@ -1193,10 +1193,10 @@ fg=magenta</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>400</x>
-      <y>622</y>
-      <w>54</w>
-      <h>10</h>
+      <x>1200</x>
+      <y>1182</y>
+      <w>162</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
@@ -1206,13 +1206,13 @@ m1=1
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>264</x>
-      <y>646</y>
-      <w>190</w>
-      <h>152</h>
+      <x>810</x>
+      <y>1254</y>
+      <w>552</w>
+      <h>372</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 fg=green</panel_attributes>
-    <additional_attributes>10.0;740.0;930.0;10.0</additional_attributes>
+    <additional_attributes>10.0;600.0;900.0;10.0</additional_attributes>
   </element>
 </diagram>
