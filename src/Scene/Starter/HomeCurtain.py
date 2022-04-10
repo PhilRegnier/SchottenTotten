@@ -12,9 +12,9 @@ from src.Scene.Starter.Curtain import Curtain
 from src.Scene.Starter.SettingsCurtain import SettingsView
 
 
-class Home(Curtain):
+class HomeCurtain(Curtain):
 
-    def __init__(self, parent):
+    def __init__(self, parent = None):
         super().__init__(parent)
 
         # prepare geometry

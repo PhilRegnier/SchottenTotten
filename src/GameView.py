@@ -36,7 +36,7 @@ class GameView(QGraphicsView):
 
         # Preset the scene and the view
 
-        self.settings = SettingsManager()
+        self.settings_manager = SettingsManager()
         self.board = GameScene(self)
 
         # Set the view with QGraphicsView parent's methods
@@ -47,21 +47,9 @@ class GameView(QGraphicsView):
         self.setBackgroundBrush(QBrush(Style.background_color))
         self.setScene(self.board)
 
-        # Home screen
-
-        self.home = Home()
-        self.board.addItem(self.home)
-        self.home.setVisible(True)
-
         # Prepare a timer
 
         self.timer = QTimer(self)
-
-        # Prepare the board and the players
-
-        self.deck = Deck()
-        self.player = Player()
-        self.automaton = Automaton()
 
     def __new_round(self):
 
@@ -79,7 +67,7 @@ class GameView(QGraphicsView):
         # Switch the first player between each round
 
         if self.current_round > 1:
-            Settings.switch_first_player()
+            self.settings_manager.switch_first_player()
 
         # Set the board
 
@@ -94,7 +82,7 @@ class GameView(QGraphicsView):
         """
         self.new_order = []
 
-        for i in range(Settings.get_hand_nb()):
+        for i in range(self.settings_manager.get_hand_nb()):
             self.user.hand.add(self.deck.draw())
             self.auto_hand.add(self.deck.draw())
 
@@ -286,10 +274,10 @@ class GameView(QGraphicsView):
             if selected < 3:
                 self.chifoumi.choosePlayer()
 
-                if Settings.get_first_player() == -1:
+                if self.settings_manager.get_first_player() == -1:
                     self.chifoumi.restart()
                 else:
-                    if Settings.get_first_player() == 0:
+                    if self.settings_manager.get_first_player() == 0:
                         self.text = TextInForeground("YOU ARE FIRST PLAYER !!", self.chifoumi)
                     else:
                         self.text = TextInForeground("AUTOMATE IS FIRST PLAYER !!", self.chifoumi)
@@ -464,7 +452,7 @@ class GameView(QGraphicsView):
             text = "AUTOMA WON ROUND " + str(self.current_round) + " !!!"
             self.auto_score += 1
 
-        if self.current_round < Settings.get_rounds_nb():
+        if self.current_round < self.settings_manager.get_rounds_nb():
             text += "ROUND " + str(self.current_round) + " !!!"
         else:
             if self.user_score > self.auto_score:

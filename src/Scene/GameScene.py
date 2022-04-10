@@ -1,5 +1,10 @@
 from PyQt5.QtWidgets import QGraphicsScene
 
+from src.Scene.Game.Automaton import Automaton
+from src.Scene.Game.Deck import Deck
+from src.Scene.Game.Player import Player
+from src.Scene.Game.Stone import Stone
+from src.Scene.Starter.HomeCurtain import HomeCurtain
 from src.variables_globales import mainWindow_width, mainWindow_height
 
 
@@ -10,15 +15,21 @@ class GameScene(QGraphicsScene):
 
         self.setSceneRect(0, 0, mainWindow_width - 40, mainWindow_height - 60)
 
+        self.home = HomeCurtain()
+        self.addItem(self.home)
+        self.home.setVisible(True)
+
+        self.deck = Deck()
+        self.player = Player()
+        self.automaton = Automaton()
+
+        self.stones = [Stone(i) for i in range(9)]
+
+    # Create board game items and set the board scene
+
     def setup(self):
-        """
-        Create board game items and set the board scene
-        """
 
         # Frontier items
-
-        self.stone = [Stone(i) for i in range(9)]
-        self.user_side = [UserSide(i) for i in range(9)]
 
         for i in range(9):
             x = i * stone_marge + i * stone_width + mainWindow_marge

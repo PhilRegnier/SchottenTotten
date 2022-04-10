@@ -9,20 +9,26 @@ class HelpMenuBar:
 
         # Create actions for help menu
 
-        self.rules_act = QAction(QIcon('resources/images/help.png'), 'Rules', self)
-        self.rules_act.setShortcut('F1')
-        self.rules_act.setStatusTip('See the rules of Schotten Totten')
-        self.rules_act.triggered.connect(self.show_rules)
+        self.rules_action = QAction(QIcon('resources/images/help.png'), 'Rules', self)
+        self.rules_action.setShortcut('F1')
+        self.rules_action.setStatusTip('See the rules of Schotten Totten')
+        self.rules_action.triggered.connect(self._show_rules)
 
-        self.about_act = QAction(
+        self.about_action = QAction(
             QIcon('resources/images/info.png'),
             'About Schotten Totten...',
             self
         )
-        self.about_act.triggered.connect(lambda: self.show_info(window))
+        self.about_action.triggered.connect(lambda: self._show_info(window))
+
+    def get_rules_action(self):
+        return self.rules_action
+
+    def get_about_action(self):
+        return self.about_action
 
     @staticmethod
-    def show_rules(self):
+    def _show_rules(self):
         msg = "Les cartes Clan représentent les membres de votre tribu " \
               "écossaise que vous envoyez sur le terrain pour défendre les " \
               "Bornes. Chaque carte Clan existe en six couleurs différentes " \
@@ -37,7 +43,7 @@ class HelpMenuBar:
         help_box.exec_()
 
     @staticmethod
-    def show_info(self, window):
+    def _show_info(self, window):
         QMessageBox.about(window, "About Schotten Totten",
                           """<b> Schotten Totten</b> v %s
                           <p>Adaptation of the cards game developped
