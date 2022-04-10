@@ -1,7 +1,6 @@
 #
 # Card definition
 #
-import sys
 from math import sqrt
 
 from PIL import Image
@@ -9,10 +8,10 @@ from PyQt5.QtCore import QPointF, QLineF, QPropertyAnimation, QRectF, QRect, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
 
-from src import UserSide, AutoSide
+from src.Scene.Game import UserSide, AutoSide
 from src.ImageTreatment import ImageTreatment
-from src.MovingCard import MovingCard
-from src.Shader import Shader
+from src.Scene.Game.MovingCard import MovingCard
+from src.Scene.Game.Shader import Shader
 from src.variables_globales import side_height, stone_width
 
 

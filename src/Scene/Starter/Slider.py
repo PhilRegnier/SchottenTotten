@@ -5,7 +5,7 @@ from PyQt5.QtCore import QRectF, Qt
 from PyQt5.QtGui import QBrush, QFont, QColor, QPen
 from PyQt5.QtWidgets import QGraphicsSimpleTextItem, QGraphicsItem
 
-from src.Handler import Handler
+from src.Scene.Starter.Handler import Handler
 from src.variables_globales import pen_width
 
 

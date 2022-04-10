@@ -7,7 +7,7 @@ from PIL import ImageQt, Image
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
-from src.Card import Card
+from src.Scene.Game.Card import Card
 from src.ImageTreatment import ImageTreatment
 from src.Style import Style
 from src.variables_globales import userType, rBound

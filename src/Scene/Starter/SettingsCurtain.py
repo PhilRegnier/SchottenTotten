@@ -1,8 +1,8 @@
 
-from src.Clickable import Clickable
-from src.Curtain import Curtain
+from src.Scene.Clickable import Clickable
+from src.Scene.Starter.Curtain import Curtain
 from src.SettingsManager import SettingsManager
-from src.Slider import Slider
+from src.Scene.Starter.Slider import Slider
 from src.TextInForeground import TextInForeground
 
 
@@ -46,8 +46,8 @@ class SettingsView(Curtain):
 
         # Set "OK" and "CANCEL" buttons
 
-        self.ok_button = Clickable('ok.png', 50, 50, 20, self, True)
-        self.cancel_button = Clickable('cancel.png', 50, 50, 21, self, True)
+        self.ok_button = Clickable('reources/images/ok.png', 50, 50, 20, self, True)
+        self.cancel_button = Clickable('resources/images/cancel.png', 50, 50, 21, self, True)
 
         # Set the scene
 

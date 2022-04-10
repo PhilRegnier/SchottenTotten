@@ -7,7 +7,7 @@
 
 """
 
-from src.Card import Card
+from src.Scene.Game.Card import Card
 from src.Singleton import Singleton
 
 

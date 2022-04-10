@@ -5,7 +5,7 @@ from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QLinearGradient, QBrush, QPen
 from PyQt5.QtWidgets import QGraphicsItem
 
-from src.Card import Card
+from src.Scene.Game.Card import Card
 from src.SettingsManager import Settings
 from src.variables_globales import marge, pen_width, side_height, rBound
 

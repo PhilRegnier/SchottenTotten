@@ -1,8 +1,8 @@
 from random import choice
 
-from src.Player import Player
+from src.Scene.Game.Player import Player
 from src.SettingsManager import Settings
-from src.Statistics import Statistics
+from src.Scene.Game.Statistics import Statistics
 
 
 class Automaton(Player):

@@ -1,5 +1,4 @@
 # class contener for variables managing cards movements between graphics items
-from src.Side import Side
 
 
 class MovingCard:

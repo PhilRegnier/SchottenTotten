@@ -3,8 +3,8 @@
 #
 from PyQt5.QtCore import QPointF
 
-from src.Card import Card
-from src.Side import Side
+from src.Scene.Game.Card import Card
+from src.Scene.Game.Side import Side
 from src.Style import Style
 from src.variables_globales import userType
 

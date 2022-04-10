@@ -5,7 +5,6 @@ from PyQt5.QtCore import QRectF, QPointF
 from PyQt5.QtGui import QLinearGradient, QBrush, QPen
 from PyQt5.QtWidgets import QGraphicsItem
 
-from src.Card import Card
 from src.variables_globales import stone_width, side_height, rBound
 
 
@@ -44,5 +43,4 @@ class Side(QGraphicsItem):
         card.setIndex(-1)
         self.nCard += 1
         self.somme += card.valeur
-
         card.setPos(pos)

@@ -8,9 +8,9 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QPixmap, QPen, QColor
 from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsLineItem
 
-from src.Card import Card
-from src.Clickable import Clickable
-from src.Curtain import Curtain
+from src.Scene.Game.Card import Card
+from src.Scene.Clickable import Clickable
+from src.Scene.Starter.Curtain import Curtain
 from src.TextInForeground import TextInForeground
 from src.ImageTreatment import ImageTreatment
 from src.variables_globales import selected

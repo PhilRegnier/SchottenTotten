@@ -2,36 +2,28 @@
 # Game definition
 #
 from math import sqrt
-from random import choice
 
 from PyQt5.QtCore import QPropertyAnimation, QLineF, QTimer, QParallelAnimationGroup
 from PyQt5.QtGui import QPainter, QBrush
-from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
+from PyQt5.QtWidgets import QGraphicsView
 
-from src import UserSide
-from src.AutoSide import AutoSide
-from src.Automaton import Automaton
-from src.Board import Board
-from src.Card import Card
-from src.Chifoumi import Chifoumi
-from src.Curtain import Curtain
-from src.Deck import Deck
-from src.Hand import Hand
-from src.Home import Home
-from src.Memo import Memo
-from src.MovingCard import MovingCard
-from src.Player import Player
-from src.UserDeck import PlayerDeck
-from src.SettingsManager import Settings, SettingsManager
-from src.Stone import Stone
+from src.Scene.Game import UserSide
+from src.Scene.Game.Automaton import Automaton
+from src.Scene.GameScene import GameScene
+from src.Scene.Game.Card import Card
+from src.Scene.Starter.ChifoumiCurtain import Chifoumi
+from src.Scene.Starter.Curtain import Curtain
+from src.Scene.Game.Deck import Deck
+from src.Scene.Starter.HomeCurtain import Home
+from src.Scene.Game.MovingCard import MovingCard
+from src.Scene.Game.Player import Player
+from src.SettingsManager import SettingsManager
 from src.Style import Style
 from src.TextInForeground import TextInForeground
-from src.variables_globales import mainWindow_width, stone_marge, stone_width, \
-    mainWindow_marge, stone_height, side_height, marge, \
-    mainWindow_height, cote_both, cote_brelan, cote_couleur, cote_suite, clicked
+from src.variables_globales import stone_height, side_height, cote_both, cote_brelan, cote_couleur, cote_suite
 
 
-class GameManager(QGraphicsView):
+class GameView(QGraphicsView):
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -45,8 +37,7 @@ class GameManager(QGraphicsView):
         # Preset the scene and the view
 
         self.settings = SettingsManager()
-        self.board = Board(self)
-        self.chifoumi = None
+        self.board = GameScene(self)
 
         # Set the view with QGraphicsView parent's methods
 
@@ -93,7 +84,7 @@ class GameManager(QGraphicsView):
         # Set the board
 
         self._setup_hands()
-        self._setup_board()
+        self.board.setup()
 
         self.ending = False
 
@@ -107,74 +98,7 @@ class GameManager(QGraphicsView):
             self.user.hand.add(self.deck.draw())
             self.auto_hand.add(self.deck.draw())
 
-    def __setup_board(self):
-        """
-        Create board game items and set the board scene
-        """
 
-        # Frontier items
-
-        self.auto_side = [AutoSide(i) for i in range(9)]
-        self.stone = [Stone(i) for i in range(9)]
-        self.user_side = [UserSide(i) for i in range(9)]
-
-        for i in range(9):
-            x = i * stone_marge + i * stone_width + mainWindow_marge
-            y = mainWindow_marge + stone_height + stone_marge
-            self.auto_side[i].setPos(x, y)
-            y += side_height + stone_marge
-            self.stone[i].setPos(x - 2, y - 2)
-            y += stone_height + stone_marge
-            self.user_side[i].setPos(x, y)
-
-        # User's hand cards items
-
-        self.user_deck = PlayerDeck(Style.user_side_color0, Style.user_side_color1, Style.user_side_pen)
-
-        for i in range(Settings.get_hand_nb()):
-            Card.cards[self.user_hand.get(i)].setParentItem(self.user_deck)
-            Card.cards[self.user_hand.get(i)].setPos((i + 1) * marge + i * Card.width, marge)
-            Card.cards[self.user_hand.get(i)].setAnchorPoint(Card.cards[self.user_hand[i]].pos())
-            Card.cards[self.user_hand[i]].setDraggable(True)
-            Card.cards[self.user_hand[i]].setVisible(True)
-            Card.cards[self.user_hand[i]].setIndex(i)
-
-        # Computer's hand cards items [CHEAT MODE]
-
-        self.auto_deck = PlayerDeck(Style.auto_side_color0, Style.auto_side_color1, Style.auto_side_pen)
-
-        for i in range(Settings.get_hand_nb()):
-            Card.cards[self.auto_hand[i]].setParentItem(self.auto_deck)
-            Card.cards[self.auto_hand[i]].setPos((i + 1) * marge + i * Card.width, marge)
-            Card.cards[self.auto_hand[i]].setAnchorPoint(Card.cards[self.auto_hand[i]].pos())
-            Card.cards[self.auto_hand[i]].setVisible(True)
-
-        self.auto_deck.setScale(0.6)
-
-        # Set items positions
-
-        bottom_y = mainWindow_height - 5 * mainWindow_marge - Card.height - 2 * marge
-
-        self.deck.set_pos_init(1000, bottom_y)
-        self.user_deck.setPos(10, bottom_y)
-        self.auto_deck.setPos(400, 10)
-
-        # Game board assembly
-
-        self.board.addItem(self.deck)
-
-        for i in range(9):
-            self.board.addItem(self.auto_side[i])
-            self.board.addItem(self.user_side[i])
-            self.board.addItem(self.stone[i])
-
-        self.board.addItem(self.user_deck)
-
-        # Set zValue max
-
-        MovingCard.reset_zmax()
-        for item in self.board.items():
-            MovingCard.set_zmax(item.zValue())
 
     def mouseMoveEvent(self, event):
         QGraphicsView.mouseMoveEvent(self, event)

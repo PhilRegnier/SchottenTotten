@@ -1,6 +1,5 @@
-from src.Deck import Deck
-from src.Hand import Hand
-from src.Side import Side
+from src.Scene.Game.Hand import Hand
+from src.Scene.Game.Side import Side
 
 
 class Player:
@@ -8,5 +7,5 @@ class Player:
     def __init__(self, name):
         self.score = 0
         self.hand = Hand()
-        self.side = Side()
+        self.side = [Side(i) for i in range(9)]
         self.name = name

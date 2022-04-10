@@ -6,7 +6,7 @@ from PyQt5.QtCore import QRectF, QRect, QPropertyAnimation, QPointF
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsObject
 
-from src.ImageTreatment import enluminure
+from src.ImageTreatment import ImageTreatment
 from src.variables_globales import userType, stone_width, stone_height
 
 
@@ -18,8 +18,9 @@ class Stone(QGraphicsObject):
         self.numero = numero
         image = Image.open('resources/images/borne' + str(self.numero + 1) + '.jpg')
         image.thumbnail((stone_width - 1, stone_height - 1))
-        self.pixmap = QPixmap.fromImage(enluminure(image, ow=2, oh=2))
-        self.winner = ""
+        self.pixmap = QPixmap.fromImage(ImageTreatment.enluminure(image, ow=2, oh=2))
+        self.winner = None
+        self.animation = QPropertyAnimation(self, b"pos")
 
     def boundingRect(self):
         pen_width = 1.0
@@ -31,9 +32,8 @@ class Stone(QGraphicsObject):
 
     # Animation for claimed stones
 
-    def moveStoneTo(self, dy):
-        self.moveStone = QPropertyAnimation(self, b"pos")
-        self.moveStone.setDuration(800)
-        self.moveStone.setStartValue(self.pos())
-        self.moveStone.setEndValue(QPointF(self.x(), self.y() + dy))
-        self.moveStone.start()
+    def move_to(self, dy):
+        self.animation.setDuration(800)
+        self.animation.setStartValue(self.pos())
+        self.animation.setEndValue(QPointF(self.x(), self.y() + dy))
+        self.animation.start()

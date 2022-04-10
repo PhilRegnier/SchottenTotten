@@ -5,10 +5,11 @@ from PIL import Image, ImageQt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
-from src.Card import Card
-from src.Clickable import Clickable
-from src.Curtain import Curtain
-from src.SettingsView import SettingsView
+from src.Scene.Game.Card import Card
+from src.Scene.Starter.ChifoumiCurtain import Chifoumi
+from src.Scene.Clickable import Clickable
+from src.Scene.Starter.Curtain import Curtain
+from src.Scene.Starter.SettingsCurtain import SettingsView
 
 
 class Home(Curtain):
@@ -64,3 +65,46 @@ class Home(Curtain):
     def open_settings_view(self):
         self.settingsView.setVisible(True)
         self.settingsView.animate_incoming()
+
+    def mouseReleaseEvent(self, event):
+
+            self.chifoumi = Chifoumi()
+            self.board.addItem(self.chifoumi)
+            self.chifoumi.animate_incoming()
+            self.chifoumi.start()
+
+            # ... Chifoumi
+
+        if selected < 3:
+            self.chifoumi.choosePlayer()
+
+            if Settings.get_first_player() == -1:
+                self.chifoumi.restart()
+            else:
+                if Settings.get_first_player() == 0:
+                    self.text = TextInForeground("YOU ARE FIRST PLAYER !!", self.chifoumi)
+                else:
+                    self.text = TextInForeground("AUTOMATE IS FIRST PLAYER !!", self.chifoumi)
+
+                self.text.setVisible(True)
+                self.chifoumi.freeze()
+                QTimer.singleShot(3000, self.letsGo)
+
+            # ... Settings
+
+        if selected == 20:
+            self.home.setValues()
+
+        if selected == 21:
+            self.home.closeSettings()
+
+        clicked = False
+        selected = -1
+
+        # Leave chifoumi curtain and launch the game
+
+    def letsGo(self):
+        self.text.setVisible(False)
+        self.chifoumi.animate_leaving()
+        self.home.animate_leaving()
+        self.__new_round()
