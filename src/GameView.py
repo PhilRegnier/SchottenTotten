@@ -13,14 +13,11 @@ from src.Scene.GameScene import GameScene
 from src.Scene.Game.Card import Card
 from src.Scene.Starter.ChifoumiCurtain import Chifoumi
 from src.Scene.Starter.Curtain import Curtain
-from src.Scene.Game.Deck import Deck
-from src.Scene.Starter.HomeCurtain import Home
-from src.Scene.Game.MovingCard import MovingCard
 from src.Scene.Game.Player import Player
 from src.SettingsManager import SettingsManager
 from src.Style import Style
 from src.TextInForeground import TextInForeground
-from src.variables_globales import stone_height, side_height, cote_both, cote_brelan, cote_couleur, cote_suite
+from src.variables_globales import stone_height, cote_both, cote_brelan, cote_couleur, cote_suite
 
 
 class GameView(QGraphicsView):
@@ -76,22 +73,20 @@ class GameView(QGraphicsView):
 
         self.ending = False
 
+    # Create players' hands
+
     def __setup_hands(self):
-        """
-        Create players' hands
-        """
         self.new_order = []
 
-        for i in range(self.settings_manager.get_hand_nb()):
+        for i in range(self.settings_manager.get_max_cards_in_hand()):
             self.user.hand.add(self.deck.draw())
             self.auto_hand.add(self.deck.draw())
-
 
 
     def mouseMoveEvent(self, event):
         QGraphicsView.mouseMoveEvent(self, event)
 
-        if MovingCard.isDragged():
+        if Card.isDragged():
 
             # Enlightment for user's side hovered
 
@@ -111,10 +106,9 @@ class GameView(QGraphicsView):
 
             # self.mouseMoveHand()
 
+    # Reorganization of the user's hand
+
     def mouseMoveHand(self):
-        """
-        Reorganization of the user's hand
-        """
         MovingCard.UserDontWantToReorganize()
 
         col_items = Card.cards[MovingCard.card_id].collidingItems()

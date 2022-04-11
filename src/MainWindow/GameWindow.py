@@ -10,7 +10,6 @@ from src.GameView import GameView
 from src.MainWindow.MenuBar import MenuBar
 from src.Scene.Game.Card import Card
 from src.Scene.Game.Stone import Stone
-from src.variables_globales import mainWindow_width, mainWindow_height
 
 
 class GameWindow(QMainWindow):
@@ -28,7 +27,7 @@ class GameWindow(QMainWindow):
 
         # Create the main window
 
-        self.setFixedSize(mainWindow_width, self.get_GameWindow_height())
+        self.setFixedSize(GameWindow.width, self.get_GameWindow_height())
         self.setWindowTitle('Schotten Totten')
         self.setWindowIcon(QIcon('resources/images/logo.png'))
         self.setCentralWidget(self.game_view)
