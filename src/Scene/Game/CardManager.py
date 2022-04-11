@@ -4,8 +4,10 @@
     Responsabilities:
         - holding all the instances of cards
         - manage action with the cards
+        - manage cards' shifts
 
 """
+from random import shuffle
 
 from src.Scene.Game.Card import Card
 from src.Singleton import Singleton
@@ -21,9 +23,11 @@ class CardManager(Singleton):
     cards = []
     total_cards = len(Card.colors) * max_value
 
-    card = None
-    side = None
-    hand = None
+    colors = ['jaune', 'vert', 'rouge', 'brun', 'bleu', 'violet']
+
+    shift_card = None
+    shift_side = None
+    shift_hand = None
     dragged = False
     moved_to_reorganize = False
 
@@ -33,15 +37,17 @@ class CardManager(Singleton):
     # Setting all the playing cards
     @classmethod
     def initialize(cls):
-        for i in range(cls.total_cards):
-            cls.cards.append(Card(i, cls.max_value))
+        for numero in range(cls.total_cards):
+            valeur = numero % cls.max_value + 1
+            couleur = cls.colors[numero // cls.max_value]
+            cls.cards.append(Card(numero, valeur, couleur))
 
     @classmethod
     def select(cls, card, side, hand):
-        cls.card = card
-        cls.side = side
-        cls.hand = hand
-        cls.sort = False
+        cls.shift_card = card
+        cls.shift_side = side
+        cls.shift_hand = hand
+        cls.shift_sort = False
         cls.dragged = False
 
     @classmethod
@@ -55,6 +61,10 @@ class CardManager(Singleton):
     @classmethod
     def reset_zmax(cls):
         cls.zmax = 0.
+
+    @classmethod
+    def get_total_cards(cls):
+        return cls.total_cards
 
     @classmethod
     def user_dont_want_to_reorganize(cls):
@@ -74,12 +84,8 @@ class CardManager(Singleton):
         return cls.dragged
 
     @classmethod
-    def dragged(cls):
-        cls.dragged = True
-
-    @classmethod
-    def undragged(cls):
-        cls.dragged = False
+    def set_dragged(cls, flag):
+        cls.dragged = flag
 
     @classmethod
     def set_card_id(cls, card_id):
@@ -90,17 +96,29 @@ class CardManager(Singleton):
         return cls.card_id
 
     @classmethod
-    def set_hand_id(cls, hand_id):
-        cls.__hand_id = hand_id
+    def set_shift_hand(cls, hand):
+        cls.shift_hand = hand
 
     @classmethod
-    def hand_id(cls):
-        return cls.hand_id
+    def get_shift_hand(cls):
+        return cls.shift_hand
 
     @classmethod
-    def set_side_id(cls, side_id):
-        cls.__side_id = side_id
+    def set_shift_side(cls, side):
+        cls.shift_side = side
 
     @classmethod
-    def side_id(cls):
-        return cls.side_id
+    def get_shift_side(cls):
+        return cls.shift_side
+
+    @classmethod
+    def set_deck(cls, deck):
+        shuffle(cls.cards)
+        for card in cls.cards:
+            card.setParentItem(deck)
+            card.setPos(0, 0)
+            card.setVisible(False)
+
+    @classmethod
+    def get_a_card(cls):
+        return cls.cards[0]

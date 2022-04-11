@@ -10,27 +10,25 @@ from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
 
 from src.Scene.Game import UserSide, AutoSide
 from src.ImageTreatment import ImageTreatment
-from src.Scene.Game.MovingCard import MovingCard
 from src.Scene.Game.Shader import Shader
 from src.variables_globales import side_height, stone_width
 
 
 class Card(QGraphicsObject):
 
-    colors = ['jaune', 'vert', 'rouge', 'brun', 'bleu', 'violet']
     width = stone_width - 4
     height = width * 1.42
 
-    def __init__(self, numero, max_value, parent=None):
-        super().__init__(parent)
-        self.parent = parent
+    def __init__(self, numero, valeur, couleur):
+        super().__init__()
+        self.parent = None
         self.numero = numero
-        self.index = -1
+        self.valeur = valeur
+        self.couleur = couleur
         self.anchor_point = QPointF()
-        self.valeur = numero % max_value + 1
-        self.couleur = Card.colors[numero // max_value]
+        self.index = -1
 
-        image = Image.open('resources/images/' + self.couleur + str(self.valeur) + '.jpg')
+        image = Image.open('resources/images/' + couleur + str(valeur) + '.jpg')
         image.thumbnail((Card.width - 2, Card.height - 2))
         self.pixmap = QPixmap.fromImage(ImageTreatment.enluminure(image))
 
@@ -41,6 +39,9 @@ class Card(QGraphicsObject):
         self.setGraphicsEffect(self.shade)
 
         self.dragStartPosition = None
+
+    def set_parent(self, parent):
+        self.parent = parent
 
     def set_draggable(self, draggable=True):
         self.setFlag(QGraphicsItem.ItemIsMovable, draggable)

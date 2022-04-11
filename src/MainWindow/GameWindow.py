@@ -8,21 +8,29 @@ from PyQt5.QtWidgets import QMainWindow, QStatusBar
 
 from src.GameView import GameView
 from src.MainWindow.MenuBar import MenuBar
+from src.Scene.Game.Card import Card
+from src.Scene.Game.Stone import Stone
 from src.variables_globales import mainWindow_width, mainWindow_height
 
 
 class GameWindow(QMainWindow):
 
+    width = 1200
+    marge = 20
+    pen_width = 1.
+
     def __init__(self):
         super().__init__()
-
-        self.setFixedSize(mainWindow_width, mainWindow_height)
-        self.setWindowTitle('Schotten Totten')
-        self.setWindowIcon(QIcon('resources/images/logo.png'))
 
         # Create a new Schotten Totten game
 
         self.game_view = GameView(self)
+
+        # Create the main window
+
+        self.setFixedSize(mainWindow_width, self.get_GameWindow_height())
+        self.setWindowTitle('Schotten Totten')
+        self.setWindowIcon(QIcon('resources/images/logo.png'))
         self.setCentralWidget(self.game_view)
 
         # Menubar : Instanciation
@@ -37,6 +45,10 @@ class GameWindow(QMainWindow):
         # Show the main window
 
         self.show()
+
+    def get_GameWindow_height(self):
+        return int(4 * Stone.height + 4.33 * Card.height
+                   + GameWindow.marge * 2 + 8 * GameWindow.pen_width + 4 * Stone.marge + 40)
 
     def new_game(self):
         self.game_view.close()

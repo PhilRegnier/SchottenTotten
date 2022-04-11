@@ -298,15 +298,15 @@ bg=cyan
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>615</x>
+      <x>590</x>
       <y>890</y>
-      <w>175</w>
-      <h>125</h>
+      <w>200</w>
+      <h>75</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 home</panel_attributes>
-    <additional_attributes>330.0;10.0;10.0;230.0</additional_attributes>
+    <additional_attributes>380.0;10.0;10.0;130.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -431,14 +431,14 @@ bg=blue
     <id>Relation</id>
     <coordinates>
       <x>425</x>
-      <y>1200</y>
-      <w>75</w>
-      <h>325</h>
+      <y>1150</y>
+      <w>50</w>
+      <h>375</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 deck</panel_attributes>
-    <additional_attributes>10.0;630.0;130.0;10.0</additional_attributes>
+    <additional_attributes>10.0;730.0;80.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -503,8 +503,8 @@ shade</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>465</x>
-      <y>980</y>
+      <x>440</x>
+      <y>930</y>
       <w>155</w>
       <h>225</h>
     </coordinates>
@@ -792,20 +792,20 @@ fg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>635</x>
+      <x>600</x>
       <y>815</y>
-      <w>20</w>
-      <h>740</h>
+      <w>55</w>
+      <h>595</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 fg=green</panel_attributes>
-    <additional_attributes>10.0;1460.0;20.0;10.0</additional_attributes>
+    <additional_attributes>10.0;1170.0;90.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>575</x>
-      <y>1545</y>
+      <x>540</x>
+      <y>1400</y>
       <w>110</w>
       <h>175</h>
     </coordinates>
@@ -866,12 +866,12 @@ bg=#3c7a00
     <id>Relation</id>
     <coordinates>
       <x>460</x>
-      <y>1715</y>
-      <w>170</w>
-      <h>330</h>
+      <y>1570</y>
+      <w>135</w>
+      <h>475</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;640.0;320.0;10.0</additional_attributes>
+    <additional_attributes>10.0;930.0;250.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -1053,53 +1053,53 @@ bg=yellow
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>615</x>
+      <x>590</x>
       <y>1010</y>
-      <w>420</w>
-      <h>105</h>
+      <w>445</w>
+      <h>55</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 board</panel_attributes>
-    <additional_attributes>10.0;180.0;820.0;10.0</additional_attributes>
+    <additional_attributes>10.0;80.0;870.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>595</x>
-      <y>1200</y>
-      <w>325</w>
-      <h>830</h>
+      <x>570</x>
+      <y>1150</y>
+      <w>350</w>
+      <h>880</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 automate</panel_attributes>
-    <additional_attributes>630.0;1640.0;10.0;10.0</additional_attributes>
+    <additional_attributes>680.0;1740.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>615</x>
-      <y>1195</y>
-      <w>470</w>
-      <h>595</h>
+      <x>590</x>
+      <y>1145</y>
+      <w>495</w>
+      <h>645</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
 player</panel_attributes>
-    <additional_attributes>920.0;1170.0;10.0;10.0</additional_attributes>
+    <additional_attributes>970.0;1270.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>540</x>
-      <y>1200</y>
-      <w>60</w>
-      <h>355</h>
+      <x>515</x>
+      <y>1150</y>
+      <w>50</w>
+      <h>260</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 fg=green</panel_attributes>
-    <additional_attributes>100.0;690.0;10.0;10.0</additional_attributes>
+    <additional_attributes>80.0;500.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -1209,14 +1209,14 @@ m1=1
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>680</x>
+      <x>645</x>
       <y>1015</y>
-      <w>630</w>
-      <h>595</h>
+      <w>665</w>
+      <h>450</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 fg=green</panel_attributes>
-    <additional_attributes>10.0;1170.0;1240.0;10.0</additional_attributes>
+    <additional_attributes>10.0;880.0;1310.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -1371,5 +1371,53 @@ fg=red</panel_attributes>
 m1=1
 winner</panel_attributes>
     <additional_attributes>10.0;120.0;300.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>645</x>
+      <y>1510</y>
+      <w>390</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+fg=red</panel_attributes>
+    <additional_attributes>10.0;10.0;760.0;560.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1330</x>
+      <y>1840</y>
+      <w>200</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Playmat
+bg=orange
+--
++ gradient_color1
++ gradient_color2
++ pen_color
+- width
+- height
+--
++ __init__(gradient_color1, gradient_color2, pen_color, parent)
+--
++ boundingRect: QRectF
++ void paint(painter, option, widget)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1125</x>
+      <y>1835</y>
+      <w>215</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m2=1
+playmat</panel_attributes>
+    <additional_attributes>10.0;10.0;410.0;50.0</additional_attributes>
   </element>
 </diagram>

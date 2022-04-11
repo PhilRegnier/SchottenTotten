@@ -6,18 +6,21 @@ from PyQt5.QtGui import QLinearGradient, QBrush, QPen
 from PyQt5.QtWidgets import QGraphicsItem
 
 from src.Scene.Game.Card import Card
-from src.SettingsManager import Settings
+from src.SettingsManager import SettingsManager
 from src.variables_globales import marge, pen_width, side_height, rBound
 
 
-class PlayerDeck(QGraphicsItem):
+class Playmat(QGraphicsItem):
 
-    def __init__(self, color1, color2, color3, parent=None):
-        super().__init__(parent)
-        self.gcolor1 = color1
-        self.gcolor2 = color2
-        self.pcolor = color3
-        self.width = 1.0 * (Settings.get_hand_nb() * (Card.width + marge) + marge)
+    def __init__(self, color1, color2, color3):
+        super().__init__()
+
+        settings_manager = SettingsManager()
+
+        self.gradient_color1 = color1
+        self.gradient_color2 = color2
+        self.pen_color = color3
+        self.width = 1.0 * (settings_manager.get_max_cards_in_hand() * (Card.width + marge) + marge)
         self.height = Card.height + marge * 2.0
 
     def boundingRect(self):
@@ -26,9 +29,9 @@ class PlayerDeck(QGraphicsItem):
     def paint(self, painter, option, widget):
         gradient = QLinearGradient(0., side_height, 0., 0.)
         gradient.setSpread(QLinearGradient.ReflectSpread)
-        gradient.setColorAt(0, self.gcolor1)
-        gradient.setColorAt(1, self.gcolor2)
+        gradient.setColorAt(0, self.gradient_color1)
+        gradient.setColorAt(1, self.gradient_color2)
         painter.setBrush(QBrush(gradient))
-        painter.setPen(QPen(self.pcolor, 1))
+        painter.setPen(QPen(self.pen_color, 1))
         rect = QRectF(0., 0., float(self.width), float(self.height))
         painter.drawRoundedRect(rect, rBound, rBound)

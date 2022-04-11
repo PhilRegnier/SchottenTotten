@@ -1,23 +1,23 @@
 from random import choice
 
 from src.Scene.Game.Player import Player
-from src.SettingsManager import Settings
 from src.Scene.Game.Statistics import Statistics
+from src.SettingsManager import SettingsManager
 
 
 class Automaton(Player):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name, gradient_color1, gradient_color2, pen_color):
+        super().__init__(name, gradient_color1, gradient_color2, pen_color)
+
+        self.settingsManager = SettingsManager()
         self.statistics = Statistics()
 
     # Ask the automaton to play a card on his side
 
     def play_a_card(self):
 
-        settings = Settings()
-
-        if settings.get_difficulty() == 1:
+        if self.settingsManager.get_difficulty() == 1:
             self.cervo1()
         else:
             self.cervo0()

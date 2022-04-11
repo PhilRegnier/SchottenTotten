@@ -5,16 +5,11 @@ __version__ = "1.1"
 
 # Objects dimensions & geometries
 
-mainWindow_width = 1200
-mainWindow_marge = 20
-pen_width = 1.
 stone_marge = 4.
 marge = 5.
 stone_width = (mainWindow_width - 2 * mainWindow_marge - 8 * stone_marge - 40) / 9 - 2 * pen_width
 stone_height = stone_width * 0.58
-side_height = card_height * 1.667
-mainWindow_height = int(
-    4 * stone_height + 4.33 * card_height + mainWindow_marge * 2 + 8 * pen_width + 4 * stone_marge + 40)
+
 rBound = 10.0
 
 # Global variables managing scenography
