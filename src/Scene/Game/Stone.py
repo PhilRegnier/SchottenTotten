@@ -7,11 +7,16 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsObject
 
 from src.ImageTreatment import ImageTreatment
+from src.MainWindow.GameWindow import GameWindow
 from src.variables_globales import userType, stone_width, stone_height
 
 
 class Stone(QGraphicsObject):
     Type = userType + 1
+
+    marge = 4.
+    width = (GameWindow.width - 2 * GameWindow.marge - 8 * marge - 40) / 9 - 2 * GameWindow.pen_width
+    height = width * 0.58
 
     def __init__(self, numero, parent=None):
         super().__init__(parent)
