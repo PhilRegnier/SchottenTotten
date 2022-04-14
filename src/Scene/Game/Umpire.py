@@ -48,9 +48,9 @@ class Umpire:
 
         elif side.cards[0].valeur == side.cards[1].valeur == side.cards[2].valeur:
             side.somme += cls.cote_brelan
-
-    # Compare sides and test for victory
-
+    """
+    Compare each sides of the stones and test for victory
+    """
     def judge(self, player, automaton, stones):
 
         # if 3 cards have been played on each side, test for claim of the stone

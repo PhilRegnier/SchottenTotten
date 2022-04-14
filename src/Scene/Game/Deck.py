@@ -30,13 +30,12 @@ class Deck(QGraphicsPixmapItem):
         self.height = 0
 
         self._stack()
-        self.empty = False
 
         self.nombre_cartes = self.cardManager.get_total_cards()
 
         # ask to make a random deck
 
-        self.cardManager.set_deck(self)
+        self.cards = self.cardManager.set_deck(self)
 
     def is_empty(self):
         return self.empty

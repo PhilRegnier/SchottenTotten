@@ -46,7 +46,7 @@ class GameWindow(QMainWindow):
         self.show()
 
     @classmethod
-    def get_height(cls):
+    def height(cls):
         return int(4 * Stone.height + 4.33 * Card.height
                    + cls.marge * 2 + 8 * cls.pen_width + 4 * Stone.marge + 40)
 

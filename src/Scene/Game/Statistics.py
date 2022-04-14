@@ -1,12 +1,11 @@
 #
 # Statistics
 #
-from src.variables_globales import colors
 
 
 class Statistics:
 
-    def __init__(self):
+    def __init__(self, colors):
 
         # record for indexes avaiable
 

@@ -88,28 +88,16 @@ class CardManager(Singleton):
         cls.dragged = flag
 
     @classmethod
-    def set_card_id(cls, card_id):
-        cls.card_id = card_id
-
-    @classmethod
-    def card_id(cls):
-        return cls.card_id
+    def set_shift_card(cls, card):
+        cls.shift_card = card
 
     @classmethod
     def set_shift_hand(cls, hand):
         cls.shift_hand = hand
 
     @classmethod
-    def get_shift_hand(cls):
-        return cls.shift_hand
-
-    @classmethod
     def set_shift_side(cls, side):
         cls.shift_side = side
-
-    @classmethod
-    def get_shift_side(cls):
-        return cls.shift_side
 
     @classmethod
     def set_deck(cls, deck):
@@ -118,6 +106,7 @@ class CardManager(Singleton):
             card.setParentItem(deck)
             card.setPos(0, 0)
             card.setVisible(False)
+        return cls.cards
 
     @classmethod
     def get_a_card(cls):

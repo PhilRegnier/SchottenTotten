@@ -11,12 +11,13 @@ from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
 from src.Scene.Game import UserSide, AutoSide
 from src.ImageTreatment import ImageTreatment
 from src.Scene.Game.Shader import Shader
-from src.variables_globales import side_height, stone_width
+from src.Scene.Game.Side import Side
+from src.Scene.Game.Stone import Stone
 
 
 class Card(QGraphicsObject):
 
-    width = stone_width - 4
+    width = Stone.width - 4
     height = width * 1.42
 
     def __init__(self, numero, valeur, couleur):
@@ -86,7 +87,7 @@ class Card(QGraphicsObject):
 
         # All staff when a card is dragged from the user's hand
 
-        MovingCard.dragged()
+        self.cardManager.dragged()
         card_nb = self.numero
         QGraphicsObject.mouseMoveEvent(self, event)
         self.shade.setEnabled(True)
@@ -165,7 +166,7 @@ class Card(QGraphicsObject):
 
     def boundingRect(self):
         pen_width = 1.0
-        return QRectF(-pen_width / 2, -pen_width / 2, Card.width + pen_width, side_height + pen_width)
+        return QRectF(-pen_width / 2, -pen_width / 2, Card.width + pen_width, Side.height + pen_width)
 
     def paint(self, painter, option, widget):
         rect = QRect(-1, -1, int(Card.width), int(Card.height))

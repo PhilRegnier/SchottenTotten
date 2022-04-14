@@ -24,5 +24,9 @@ class Hand:
     def show(self):
         return self.cards
 
+    def is_empty(self):
+        return not self.cards
+
+
 
 

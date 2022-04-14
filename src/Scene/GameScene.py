@@ -13,7 +13,7 @@ from src.Scene.Game.Side import Side
 from src.Scene.Game.Stone import Stone
 from src.Scene.Starter.ChifoumiCurtain import Chifoumi
 from src.Scene.Starter.HomeCurtain import HomeCurtain
-from src.Style import Style
+from src.Style import Style, PlayerStyle, AutomatonStyle
 from src.TextInForeground import TextInForeground
 
 
@@ -22,7 +22,7 @@ class GameScene(QGraphicsScene):
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.setSceneRect(0, 0, GameWindow.width - 40, GameWindow.height - 60)
+        self.setSceneRect(0, 0, GameWindow.width - 40, GameWindow.height() - 60)
 
         # Starter attributes
 
@@ -34,8 +34,8 @@ class GameScene(QGraphicsScene):
 
         self.cardManager = CardManager()
         self.deck = Deck(self)
-        self.player = Player('humain', Style.user_side_color0, Style.user_side_color1, Style.user_side_pen)
-        self.automaton = Automaton('Bot', Style.auto_side_color0, Style.auto_side_color1, Style.auto_side_pen)
+        self.player = Player('humain')
+        self.automaton = Automaton('Bot')
 
         self.stones = [Stone(i) for i in range(9)]
 
@@ -89,19 +89,19 @@ class GameScene(QGraphicsScene):
 
         # Game board assembly
 
-        self.board.addItem(self.deck)
+        self.addItem(self.deck)
 
         for i in range(9):
-            self.board.addItem(self.automaton.sides[i])
-            self.board.addItem(self.player.sides[i])
-            self.board.addItem(self.stones[i])
+            self.addItem(self.automaton.sides[i])
+            self.addItem(self.player.sides[i])
+            self.addItem(self.stones[i])
 
-        self.board.addItem(self.user_deck)
+        self.addItem(self.user_deck)
 
         # Set zValue max
 
         self.cardManager.reset_zmax()
-        for item in self.board.items():
+        for item in self.items():
             self.cardManager.set_zmax(item.zValue())
 
         # Create players' hands
@@ -131,7 +131,7 @@ class GameScene(QGraphicsScene):
         # Set the board
 
         self._setup_hands()
-        self.board.setup()
+        self.setup()
 
         self.ending = False
 
@@ -144,7 +144,7 @@ class GameScene(QGraphicsScene):
             items = self.items(event.pos())
 
             for item in items:
-                if item.Type == UserSide.Type:
+                if isinstance(item.Type == UserSide.Type:
                     if item.nCard < 3:
                         item.setOpacity(1)
                         self.itemsSelected.append(item)
@@ -350,7 +350,6 @@ class GameScene(QGraphicsScene):
         self.chifoumi.animate_leaving()
         self.home.animate_leaving()
         self.__new_round()
-
 
     # cheat mode: show automaton's hand in a subwindow
 
