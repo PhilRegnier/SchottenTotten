@@ -3,12 +3,6 @@
 #
 __version__ = "1.1"
 
-# Objects dimensions & geometries
-
-marge = 5.
-
-rBound = 10.0
-
 # Global variables managing scenography
 
 parentId = 0

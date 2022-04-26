@@ -5,8 +5,12 @@ from src.Singleton import Singleton
 
 
 # TODO : loading personal settings saved
+# TODO : pointing on player instance instead of using magic number
 
 class SettingsManager(Singleton):
+
+    CONST_PLAYER = 0
+    CONST_AUTOMATON = 1
 
     __max_card_value = 9
     __max_cards_in_hand = 6
@@ -53,19 +57,23 @@ class SettingsManager(Singleton):
         cls.__sounds = flag
 
     @classmethod
-    def get_max_cards_in_hand(cls):
+    def max_cards_in_hand(cls):
         return cls.__max_cards_in_hand
 
     @classmethod
     def switch_first_player(cls):
-        if cls.__first_player == 1:
-            cls.__first_player = 0
+        if cls.__first_player == cls.CONST_AUTOMATON:
+            cls.__first_player = cls.CONST_PLAYER
         else:
-            cls.__first_player = 1
+            cls.__first_player = cls.CONST_AUTOMATON
 
     @classmethod
     def get_first_player(cls):
         return cls.__first_player
+
+    @classmethod
+    def set_first_player(cls, player):
+        cls.__first_player = player
 
     @classmethod
     def get_variant(cls):

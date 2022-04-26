@@ -8,13 +8,13 @@ from PyQt5.QtWidgets import QGraphicsPixmapItem
 
 from src.ImageTreatment import ImageTreatment
 from src.Scene.Game.Shader import Shader
-from src.Style import Style
+from src.Style import GlobalStyle
 from src.variables_globales import clicked
 
 
 class Clickable(QGraphicsPixmapItem):
 
-    def __init__(self, file, width, height, num, parent_item=None, back=False):
+    def __init__(self, file, width, height, num, parent, back=False):
         super().__init__()
 
         image = Image.open('resources/images/' + file)
@@ -24,13 +24,21 @@ class Clickable(QGraphicsPixmapItem):
 
         image.thumbnail((width, height))
         self.setPixmap(QPixmap.fromImage(ImageTreatment.enluminure(image)))
-        self.id = num
-        self.setParentItem(parent_item)
+        self.setParentItem(parent)
         self.setAcceptHoverEvents(True)
 
         self.ombrage = Shader()
         self.setGraphicsEffect(self.ombrage)
         self.anchor_point = None
+        self.clicked = False
+        self.selected = False
+        self.handled = False
+
+    def reset(self):
+        self.anchor_point = None
+        self.clicked = False
+        self.selected = False
+        self.handled = False
 
     def hoverEnterEvent(self, event):
         self.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -45,15 +53,22 @@ class Clickable(QGraphicsPixmapItem):
 
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.LeftButton:
-            clicked = True
+            self.clicked = True
 
     def mouseReleaseEvent(self, event):
-        if clicked:
-            selected = self.id
-            self.ombrage.setColor(Style.ombrage_color_bt)
+        if self.clicked:
+            self.ombrage.setColor(GlobalStyle.ombrage_color_bt)
+            self.clicked = False
+            self.selected = True
 
     def width(self):
         return self.boundingRect().width()
 
     def height(self):
         return self.boundingRect().height()
+
+    def set_handled(self, flag):
+        self.handled = flag
+
+    def unselect(self):
+        self.selected = False

@@ -66,14 +66,11 @@ class SettingsView(Curtain):
         self.ok_button.setPos(lw, y)
         self.cancel_button.setPos(lw + self.difficulty_slider.width, y)
 
-    def get_number_of_rounds_selected(self):
-        return self.rounds_slider.value()
+    def mouseReleaseEvent(self, event):
 
-    def get_sounds_enabled_selected(self):
-        return self.sound_slider.value() == 1
-
-    def get_difficulty_selected(self):
-        return self.difficulty_slider.value()
-
-    def get_variant_selected(self):
-        return self.variant_slider.value()
+        # TODO : implement variant_slider chosen value
+        if self.ok_button.selected:
+            self.settings.set_number_of_rounds(self.rounds_slider.value())
+            self.settings.set_sounds_enabled(self.sound_slider.value() == 1)
+            self.settings.set_difficulty(self.difficulty_slider.value())
+            self.settings_view.animate_leaving()

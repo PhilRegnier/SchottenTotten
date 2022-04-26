@@ -10,7 +10,7 @@ class Player:
         self.score = 0
         self.color = ColorStyle()
         self.hand = Hand()
-        self.sides = [Side(i, self.color) for i in range(9)]
+        self.sides = [Side(i, self, self.color) for i in range(9)]
         self.playmat = Playmat(self.color)
         self.name = name
 

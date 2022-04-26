@@ -34,7 +34,7 @@ class CardManager(Singleton):
     def __init__(self):
         pass
 
-    # Setting all the playing cards
+    # Setting all the instances of playing cards
     @classmethod
     def initialize(cls):
         for numero in range(cls.total_cards):
@@ -106,7 +106,6 @@ class CardManager(Singleton):
             card.setParentItem(deck)
             card.setPos(0, 0)
             card.setVisible(False)
-        return cls.cards
 
     @classmethod
     def get_a_card(cls):

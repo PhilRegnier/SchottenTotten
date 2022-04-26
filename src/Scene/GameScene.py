@@ -1,6 +1,6 @@
 from math import sqrt
 
-from PyQt5.QtCore import QParallelAnimationGroup, QPropertyAnimation, QLineF
+from PyQt5.QtCore import QParallelAnimationGroup, QPropertyAnimation, QLineF, QTimer
 from PyQt5.QtWidgets import QGraphicsScene
 
 from src.MainWindow.GameWindow import GameWindow
@@ -13,7 +13,6 @@ from src.Scene.Game.Side import Side
 from src.Scene.Game.Stone import Stone
 from src.Scene.Starter.ChifoumiCurtain import Chifoumi
 from src.Scene.Starter.HomeCurtain import HomeCurtain
-from src.Style import Style, PlayerStyle, AutomatonStyle
 from src.TextInForeground import TextInForeground
 
 
@@ -31,6 +30,8 @@ class GameScene(QGraphicsScene):
         self.home.setVisible(True)
 
         # Game attributes
+
+        # TODO : test if initialization occured before settings could be changed...
 
         self.cardManager = CardManager()
         self.deck = Deck(self)
@@ -144,7 +145,7 @@ class GameScene(QGraphicsScene):
             items = self.items(event.pos())
 
             for item in items:
-                if isinstance(item.Type == UserSide.Type:
+                if isinstance(item, Side) && item.parentItem == self.player:
                     if item.nCard < 3:
                         item.setOpacity(1)
                         self.itemsSelected.append(item)

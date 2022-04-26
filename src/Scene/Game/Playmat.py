@@ -6,8 +6,9 @@ from PyQt5.QtGui import QLinearGradient, QBrush, QPen
 from PyQt5.QtWidgets import QGraphicsItem
 
 from src.Scene.Game.Card import Card
+from src.Scene.Game.Side import Side
 from src.SettingsManager import SettingsManager
-from src.variables_globales import marge, pen_width, side_height, rBound
+from src.Style import GeometryStyle, GradientStyle
 
 
 class Playmat(QGraphicsItem):
@@ -17,21 +18,23 @@ class Playmat(QGraphicsItem):
 
         settings_manager = SettingsManager()
 
-        self.gradient_color1 = color1
-        self.gradient_color2 = color2
+        self.gradient = GradientStyle(Side.height, color1, color2)
         self.pen_color = color3
-        self.width = 1.0 * (settings_manager.get_max_cards_in_hand() * (Card.width + marge) + marge)
-        self.height = Card.height + marge * 2.0
+
+        self.width = 1.0 * (settings_manager.get_max_cards_in_hand()
+                            * (Card.width + GeometryStyle.marge)
+                            + GeometryStyle.marge)
+
+        self.height = Card.height + GeometryStyle.marge * 2.0
 
     def boundingRect(self):
-        return QRectF(-pen_width / 2, -pen_width / 2, self.width + pen_width, self.height + pen_width)
+        return QRectF(-GeometryStyle.pen_width / 2,
+                      -GeometryStyle.pen_width / 2,
+                      self.width + GeometryStyle.pen_width,
+                      self.height + GeometryStyle.pen_width)
 
-    def paint(self, painter, option, widget):
-        gradient = QLinearGradient(0., side_height, 0., 0.)
-        gradient.setSpread(QLinearGradient.ReflectSpread)
-        gradient.setColorAt(0, self.gradient_color1)
-        gradient.setColorAt(1, self.gradient_color2)
-        painter.setBrush(QBrush(gradient))
+    def paint(self, painter, option, widget=0):
+        painter.setBrush(QBrush(self.gradient))
         painter.setPen(QPen(self.pen_color, 1))
         rect = QRectF(0., 0., float(self.width), float(self.height))
-        painter.drawRoundedRect(rect, rBound, rBound)
+        painter.drawRoundedRect(rect, GeometryStyle.r_bound, GeometryStyle.r_bound)

@@ -8,7 +8,7 @@ from PyQt5.QtCore import QPointF, QLineF, QPropertyAnimation, QRectF, QRect, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
 
-from src.Scene.Game import UserSide, AutoSide
+from src.deprecated import UserSide, AutoSide
 from src.ImageTreatment import ImageTreatment
 from src.Scene.Game.Shader import Shader
 from src.Scene.Game.Side import Side
@@ -22,7 +22,6 @@ class Card(QGraphicsObject):
 
     def __init__(self, numero, valeur, couleur):
         super().__init__()
-        self.parent = None
         self.numero = numero
         self.valeur = valeur
         self.couleur = couleur
@@ -40,9 +39,6 @@ class Card(QGraphicsObject):
         self.setGraphicsEffect(self.shade)
 
         self.dragStartPosition = None
-
-    def set_parent(self, parent):
-        self.parent = parent
 
     def set_draggable(self, draggable=True):
         self.setFlag(QGraphicsItem.ItemIsMovable, draggable)
@@ -168,6 +164,6 @@ class Card(QGraphicsObject):
         pen_width = 1.0
         return QRectF(-pen_width / 2, -pen_width / 2, Card.width + pen_width, Side.height + pen_width)
 
-    def paint(self, painter, option, widget):
+    def paint(self, painter, option, widget=0):
         rect = QRect(-1, -1, int(Card.width), int(Card.height))
         painter.drawPixmap(rect, self.pixmap)

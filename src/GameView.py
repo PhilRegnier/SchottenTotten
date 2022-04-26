@@ -3,19 +3,13 @@
 #
 from math import sqrt
 
-from PyQt5.QtCore import QPropertyAnimation, QLineF, QTimer, QParallelAnimationGroup
+from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QPainter, QBrush
 from PyQt5.QtWidgets import QGraphicsView
 
-from src.Scene.Game import UserSide
 from src.Scene.GameScene import GameScene
-from src.Scene.Game.Card import Card
-from src.Scene.Starter.ChifoumiCurtain import Chifoumi
-from src.Scene.Starter.Curtain import Curtain
 from src.SettingsManager import SettingsManager
-from src.Style import Style
-from src.TextInForeground import TextInForeground
-from src.variables_globales import stone_height, cote_both, cote_brelan, cote_couleur, cote_suite
+from src.Style import GlobalStyle
 
 
 class GameView(QGraphicsView):
@@ -39,7 +33,7 @@ class GameView(QGraphicsView):
         self.parent = parent
         self.setRenderHint(QPainter.Antialiasing)
         self.setViewportUpdateMode(QGraphicsView.SmartViewportUpdate)
-        self.setBackgroundBrush(QBrush(Style.background_color))
+        self.setBackgroundBrush(QBrush(GlobalStyle.background_color))
         self.setScene(self.board)
 
         # Prepare a timer

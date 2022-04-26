@@ -1,6 +1,6 @@
 # Colors
 
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QLinearGradient
 
 
 class GlobalStyle:
@@ -19,3 +19,18 @@ class ColorStyle:
         self.side_pen = QColor(85, 81, 44)
         self.hand = QColor(85, 170, 255, 40)
         self.hand_pen = QColor(10, 11, 8)
+
+
+class GeometryStyle:
+    marge = 5.
+    r_bound = 10.
+    pen_width = 1.
+
+
+class GradientStyle(QLinearGradient):
+    def __init__(self, height, color_up, color_down):
+        super().__init__(0., height, 0., 0.)
+        self.setSpread(QLinearGradient.ReflectSpread)
+        self.setColorAt(0, color_up)
+        self.setColorAt(1, color_down)
+

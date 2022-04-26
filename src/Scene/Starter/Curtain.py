@@ -5,29 +5,30 @@ from PyQt5.QtCore import QRectF, QPointF, QPropertyAnimation
 from PyQt5.QtGui import QColor, QLinearGradient, QBrush, QPen
 from PyQt5.QtWidgets import QGraphicsObject
 
-from src.variables_globales import side_height, mainWindow_width, mainWindow_height, rBound
+from src.MainWindow.GameWindow import GameWindow
+from src.Scene.Game.Side import Side
+from src.Style import GradientStyle, GeometryStyle
 
 
 class Curtain(QGraphicsObject):
 
     def __init__(self, parent):
         super().__init__(parent)
+        self.gradient = GradientStyle(Side.height, QColor(0, 85, 127, 255), QColor(0, 37, 54, 255))
         self.setVisible(False)
         self.setPos(0, 0)
 
     def boundingRect(self):
-        pen_width = 2.0
-        return QRectF(-pen_width / 2, -pen_width / 2, mainWindow_width + pen_width, mainWindow_height + pen_width)
+        return QRectF(-GameWindow.pen_width / 2,
+                      -GameWindow.pen_width / 2,
+                      GameWindow.width + GameWindow.pen_width,
+                      GameWindow.height() + GameWindow.pen_width)
 
-    def paint(self, painter, option, widget):
-        gradient = QLinearGradient(0., side_height, 0., 0.)
-        gradient.setSpread(QLinearGradient.ReflectSpread)
-        gradient.setColorAt(0, QColor(0, 85, 127, 255))
-        gradient.setColorAt(1, QColor(0, 37, 54, 255))
-        painter.setBrush(QBrush(gradient))
+    def paint(self, painter, option, widget=0):
+        painter.setBrush(QBrush(self.gradient))
         painter.setPen(QPen(QColor(68, 68, 68, 255), 2))
-        rect = QRectF(0., 0., float(mainWindow_width), float(mainWindow_height))
-        painter.drawRoundedRect(rect, rBound, rBound)
+        rect = QRectF(0., 0., float(GameWindow.width), float(GameWindow.height()))
+        painter.drawRoundedRect(rect, GeometryStyle.r_bound, GeometryStyle.r_bound)
 
     def animate_incoming(self):
         anim = QPropertyAnimation(self, b"pos")

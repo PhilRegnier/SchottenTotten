@@ -4,6 +4,7 @@
 from random import randint
 
 from PIL import Image
+from PyQt5 import QtCore
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QPixmap, QPen, QColor
 from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsLineItem
@@ -11,6 +12,7 @@ from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsLineItem
 from src.Scene.Game.Card import Card
 from src.Scene.Clickable import Clickable
 from src.Scene.Starter.Curtain import Curtain
+from src.SettingsManager import SettingsManager
 from src.TextInForeground import TextInForeground
 from src.ImageTreatment import ImageTreatment
 from src.variables_globales import selected
@@ -27,6 +29,10 @@ class Chifoumi(Curtain):
         wh = self.boundingRect().height()
         cw = Card.height
         ew = 20
+
+        # get the instance of SettingsManager
+
+        self.settings = SettingsManager()
 
         # set the items
 
@@ -71,42 +77,63 @@ class Chifoumi(Curtain):
     def restart(self):
         self.text2.setVisible(True)
         self.interro.setPixmap(self.guess)
+        self.pierre.reset()
+        self.ciseaux.reset()
+        self.feuille.reset()
         QTimer.singleShot(3000, self.restart_countdown)
 
     def restart_countdown(self):
         self.text2.setVisible(False)
         self.start()
 
-    def choose_player(self):
+    """
+        When the player has chosen his hand, this method
+        compare it with a randomly chosen hand. 
+    """
+    def mouseReleaseEvent(self, event):
 
-        # User's choice
+        if (self.feuille.selected and not self.feuille.handled) \
+                or (self.ciseaux.selected and not self.ciseaux.handled) \
+                or (self.pierre.selected and not self.pierre.handled):
 
-        self.text1.setVisible(False)
-        self.text2.setVisible(False)
+            self.text1.setVisible(False)
+            self.text2.setVisible(False)
 
-        autoc = randint(0, 2)
+            # automaton's choice (0=feuille, 1=ciseaux, 2=pierre)
 
-        # showing auto's choice
+            autoc = randint(0, 2)
 
-        if autoc == 0:
-            self.interro.setPixmap(self.feuille.pixmap())
-        elif autoc == 1:
-            self.interro.setPixmap(self.ciseaux.pixmap())
-        else:
-            self.interro.setPixmap(self.pierre.pixmap())
+            if autoc == 0:
+                self.interro.setPixmap(self.feuille.pixmap())
+                if self.feuille.selected:
+                    self.settings.set_first_player(None)
+            elif autoc == 1:
+                self.interro.setPixmap(self.ciseaux.pixmap())
+                if self.ciseaux.selected:
+                    self.settings.set_first_player(None)
+            else:
+                self.interro.setPixmap(self.pierre.pixmap())
+                if self.pierre.selected:
+                    self.settings.set_first_player(None)
 
-        # verdict
+            # verdict if not equality
 
-        if selected == autoc:
-            return -1
-        elif (selected == 0 and autoc == 2) \
-                or (selected == 1 and autoc == 0) \
-                or (selected == 2 and autoc == 1):
-            return 0
-        else:
-            return 1
+            if (self.feuille.selected and autoc == 2) \
+                    or (self.ciseaux.selected and autoc == 0) \
+                    or (self.pierre.selected == 2 and autoc == 1):
+                self.settings.set_first_player(self.settings.CONST_PLAYER)
+            else:
+                self.settings.set_first_player(self.settings.CONST_AUTOMATON)
+
+            # terminate by setting the choice handled
+
+            self.feuille.set_handled(True)
+            self.ciseaux.set_handled(True)
+            self.pierre.set_handled(True)
 
     def freeze(self):
         self.pierre.setAcceptHoverEvents(False)
         self.ciseaux.setAcceptHoverEvents(False)
         self.feuille.setAcceptHoverEvents(False)
+
+
