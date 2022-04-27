@@ -80,7 +80,6 @@ class HomeCurtain(Curtain):
                 self.chifoumi.start()
 
             else:
-                self.starting_button.unselect()
                 if self.settings.get_first_player() is None:
                     self.chifoumi.restart()
                 else:
@@ -107,5 +106,4 @@ class HomeCurtain(Curtain):
     def start_the_game(self):
         self.text.setVisible(False)
         self.chifoumi.animate_leaving()
-        self.home.animate_leaving()
-        self.__new_round()
+        self.animate_leaving()

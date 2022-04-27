@@ -8,6 +8,8 @@ from src.TextInForeground import TextInForeground
 
 class Umpire:
 
+    final_countdown = False
+
     # cotations for cards combinations
 
     cote_suite = 100
@@ -70,7 +72,7 @@ class Umpire:
         uss = 0
         aus = 0
 
-        if self.ending:
+        if Umpire.final_countdown:
 
             # Finish to claim stones
 

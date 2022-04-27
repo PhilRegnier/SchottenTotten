@@ -31,7 +31,7 @@ class GameScene(QGraphicsScene):
 
         # Game attributes
 
-        # TODO : test if initialization occured before settings could be changed...
+        # TODO : Maybe the initialization occuring before settings change could be a problem
 
         self.cardManager = CardManager()
         self.deck = Deck(self)
@@ -133,8 +133,7 @@ class GameScene(QGraphicsScene):
 
         self._setup_hands()
         self.setup()
-
-        self.ending = False
+        self.judge.final_countdown = False
 
     def mouseMoveEvent(self, event):
 
@@ -224,7 +223,11 @@ class GameScene(QGraphicsScene):
 
     def mouseReleaseEvent(self, event):
 
-        # QGraphicsView.mouseReleaseEvent(self, event)
+        # start the game
+
+        if self.home.starting_button.selected and self.home.starting_button.handled:
+            self.home.starting_button.unselect()
+            self.__new_round()
 
         # Events from Cards: If cards has been moved to a droppable zone
 
@@ -259,7 +262,7 @@ class GameScene(QGraphicsScene):
                 if self.deck.is_empty():
                     self.user_hand[i] = -1
                     if sum(self.user_hand) == -6:
-                        self.ending = True
+                        self.judge.final_countdown = True
                 else:
                     self.user_hand[i] = self.deck.draw()
                     Card.cards[self.user_hand[i]].setVisible(True)
@@ -298,59 +301,6 @@ class GameScene(QGraphicsScene):
             dragged = False
             self.update()
             return
-
-        # Global switch on events from ...
-
-        global clicked, selected
-
-        if clicked and selected >= 0:
-
-            # ... Home
-
-            if selected == 10:
-                self.home.openSettings()
-
-            if selected == 11:
-                self.chifoumi = Chifoumi()
-                self.board.addItem(self.chifoumi)
-                self.chifoumi.animate_incoming()
-                self.chifoumi.start()
-
-            # ... Chifoumi
-
-            if selected < 3:
-                self.chifoumi.choosePlayer()
-
-                if self.settings_manager.get_first_player() == -1:
-                    self.chifoumi.restart()
-                else:
-                    if self.settings_manager.get_first_player() == 0:
-                        self.text = TextInForeground("YOU ARE FIRST PLAYER !!", self.chifoumi)
-                    else:
-                        self.text = TextInForeground("AUTOMATE IS FIRST PLAYER !!", self.chifoumi)
-
-                    self.text.setVisible(True)
-                    self.chifoumi.freeze()
-                    QTimer.singleShot(3000, self.letsGo)
-
-            # ... Settings
-
-            if selected == 20:
-                self.home.setValues()
-
-            if selected == 21:
-                self.home.closeSettings()
-
-            clicked = False
-            selected = -1
-
-    # Leave chifoumi curtain and launch the game
-
-    def letsGo(self):
-        self.text.setVisible(False)
-        self.chifoumi.animate_leaving()
-        self.home.animate_leaving()
-        self.__new_round()
 
     # cheat mode: show automaton's hand in a subwindow
 
