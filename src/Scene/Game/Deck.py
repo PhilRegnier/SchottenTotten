@@ -37,9 +37,8 @@ class Deck(QGraphicsPixmapItem):
     def is_empty(self):
         return self.nombre_cartes == 0
 
-    def draw(self, hand):
+    def draw(self):
         card = self.cardManager.get_a_card()
-        card.setParentItem(hand)
         self.nombre_cartes -= 1
         if self.nombre_cartes == 0:
             self.setVisible(False)

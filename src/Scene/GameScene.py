@@ -11,9 +11,7 @@ from src.Scene.Game.Deck import Deck
 from src.Scene.Game.Player import Player
 from src.Scene.Game.Side import Side
 from src.Scene.Game.Stone import Stone
-from src.Scene.Starter.ChifoumiCurtain import Chifoumi
 from src.Scene.Starter.HomeCurtain import HomeCurtain
-from src.TextInForeground import TextInForeground
 
 
 class GameScene(QGraphicsScene):
@@ -137,67 +135,67 @@ class GameScene(QGraphicsScene):
 
     def mouseMoveEvent(self, event):
 
-        if Card.isDragged():
+        if self.cardManager.is_dragged():
 
             # Enlightment for user's side hovered
 
             items = self.items(event.pos())
 
             for item in items:
-                if isinstance(item, Side) && item.parentItem == self.player:
-                    if item.nCard < 3:
-                        item.setOpacity(1)
+                if isinstance(item, Side) and item.parentItem == self.player:
+                    if len(item.cards) < 3:
+                        item.light_on()
                         self.itemsSelected.append(item)
 
             for item in self.itemsSelected:
                 if item not in items:
-                    item.setOpacity(0.5)
+                    item.light_off()
 
-            # Management for reordering the user's hand
+            # TODO : Management for reordering the user's hand
 
             # self.mouseMoveHand()
 
     # Reorganization of the user's hand
 
     def mouseMoveHand(self):
-        self.cardManager.UserDontWantToReorganize()
+        self.cardManager.user_dont_want_to_reorganize()
 
-        col_items = Card.cards[self.cardManager.card_id].collidingItems()
+        col_items = self.cardManager.shift_card.collidingItems()
 
         if col_items:
             shortest_dist = 100000.
             for item in col_items:
 
-                if item == Card.cards[self.cardManager.card_id].parentItem():
+                if item == self.cardManager.shift_card.parentItem():
                     continue
 
-                if item.parentItem() == Card.cards[self.cardManager.card_id].parentItem():
+                if item.parentItem() == self.cardManager.shift_card.parentItem():
                     line = QLineF(item.sceneBoundingRect().center(),
-                                  Card.cards[self.cardManager.card_id].sceneBoundingRect().center())
+                                  self.cardManager.shift_card.sceneBoundingRect().center())
                     if line.length() < shortest_dist:
                         shortest_dist = line.length()
                         # if card_hover != item.numero or card_dx*line.dx() < 0:
-                        self.cardManager.userWantToReorganize()
+                        self.cardManager.user_want_to_reorganize()
 
                         card_dx = line.dx()
                         card_hover = item.numero
 
-        if self.cardManager.isMovedToReorganize():
-            self.new_order = self.user_hand
+        if self.cardManager.is_moved_to_reorganize():
+        # self.new_order = self.user_hand
         else:
             return
 
         # Set the concerned cards
 
-        if Card.cards[self.cardManager.card_id].index - Card.cards[card_hover].index < 0:
-            i1 = Card.cards[self.cardManager.card_id].index + 1
+        if self.cardManager.shift_card.index - Card.cards[card_hover].index < 0:
+            i1 = self.cardManager.shift_card.index + 1
             i2 = Card.cards[card_hover].index
             sens = -1
             if card_dx > 0:
                 i2 += 1
         else:
             i1 = Card.cards[card_hover].index
-            i2 = Card.cards[self.cardManager.card_id].index
+            i2 = self.cardManager.shift_card.index
             sens = 1
             if card_dx > 0:
                 i1 += 1
@@ -231,72 +229,62 @@ class GameScene(QGraphicsScene):
 
         # Events from Cards: If cards has been moved to a droppable zone
 
-        if self.cardManager.isDragged():
+        if self.cardManager.is_dragged():
 
             # Card moved on user's deck
 
-            if self.cardManager.isMovedToReorganize():
-                self.user_hand = self.new_order
+            if self.cardManager.is_moved_to_reorganize():
+                #self.user_hand = self.new_order
 
-            # Card moved on side or no ?
+            # Card moved on side ?
 
-            side_id = self.cardManager.side_id()
-
-            if side_id >= 0:
-
-                # position in the hand
-
-                i = Card.cards[self.cardManager.card_id()].index
+            if self.cardManager.shift_side is not None:
 
                 # Memorize initial position for new card from the deck
 
-                pos = Card.cards[self.cardManager.card_id()].anchorPoint
+                pos = self.cardManager.shift_card.anchor_point
 
-                # Add the card drop to the side
+                # Add the card dropped to the side
 
-                self.user_side[side_id].addCard(self.cardManager.card_id)
-                self.user_side[side_id].setOpacity(0.5)
+                self.cardManager.shift_side.add_card(self.cardManager.shift_card)
+                self.cardManager.shift_side.light_off()
 
                 # Draw a new card
 
                 if self.deck.is_empty():
-                    self.user_hand[i] = -1
-                    if sum(self.user_hand) == -6:
+                    self.player.hand.lose_a_card()
+                    if self.player.hand.is_empty():
                         self.judge.final_countdown = True
                 else:
-                    self.user_hand[i] = self.deck.draw()
-                    Card.cards[self.user_hand[i]].setVisible(True)
-                    Card.cards[self.user_hand[i]].setDraggable(True)
-                    Card.cards[self.user_hand[i]].setAnchorPoint(pos)
-                    Card.cards[self.user_hand[i]].moveTo(self.deck.pos() - self.user_deck.pos(), pos)
-                    Card.cards[self.user_hand[i]].setParentItem(self.user_deck)
-                    Card.cards[self.user_hand[i]].setIndex(i)
+                    new_card = self.deck.draw()
+                    self.player.hand.add(new_card)
+                    new_card.setAnchorPoint(pos)
+                    new_card.moveTo(self.deck.pos() - self.player.playmat.pos(), pos)
 
-                # Actions if the side is full
+                # Actions if the targetted side is full
 
-                if self.user_side[side_id].nCard == 3:
-                    self.book(self.user_side[side_id])
+                if self.cardManager.shift_side.is_full():
+                    self.book(self.shif)
 
-                self.judge(side_id)
+                self.judge(self.cardManager.shift_side)
 
-                self.cardManager.set_side_id(-1)
-                self.cardManager.set_card_id(-1)
+                self.cardManager.set_shift_side(None)
+                self.cardManager.set_shift_card(None)
 
                 # Run automate's turn
 
                 self.automate()
 
-                if self.auto_side[side_nb].nCard == 3:
-                    self.auto_side[side_nb].droppable = False
-                    self.book(self.auto_side[side_nb])
+                if self.cardManager.shift_side.is_full():
+                    self.book(self.cardManager.shift_side)
 
-                self.judge(side_id)
+                self.judge(self.cardManager.shift_side)
 
-                self.cardManager.set_side_id(-1)
-                self.cardManager.set_card_id(-1)
+                self.cardManager.set_shift_side(None)
+                self.cardManager.set_shift_card(None)
             else:
-                Card.cards[self.cardManager.card_id].moveTo(Card.cards[self.cardManager.card_id].pos(),
-                                                      Card.cards[self.cardManager.card_id].anchorPoint)
+                self.cardManager.shift_card.moveTo(self.cardManager.shift_card.pos(),
+                                                   self.cardManager.shift_card.anchorPoint)
 
             dragged = False
             self.update()

@@ -22,7 +22,7 @@ class Side(QGraphicsItem):
         self.gradient = GradientStyle(Side.height, color1, color2)
         self.pen_color = color3
         self.setFlag(QGraphicsItem.ItemDoesntPropagateOpacityToChildren)
-        self.setOpacity(0.5)
+        self.light_off()
 
     def boundingRect(self):
         return QRectF(-GeometryStyle.pen_width / 2,
@@ -44,3 +44,12 @@ class Side(QGraphicsItem):
         self.cards.append(card)
         self.somme += card.valeur
         card.setPos(pos)
+
+    def light_on(self):
+        self.setOpacity(1.0)
+
+    def light_off(self):
+        self.setOpacity(0.5)
+
+    def is_full(self):
+        return len(self.cards) == 3

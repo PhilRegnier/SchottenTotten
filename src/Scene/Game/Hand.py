@@ -8,30 +8,31 @@ from src.SettingsManager import SettingsManager
 class Hand(QGraphicsItem):
 
     def __init__(self):
+        super().__init__()
         self.nombre_cartes = 0
         self.settingsManager = SettingsManager()
 
-        self.spots = [Spot(true, true) for i in range(self.settingsManager.max_cards_in_hand())]
+        self.spots = [Spot(True, True) for i in range(self.settingsManager.max_cards_in_hand())]
 
     def add(self, card):
         if self.nombre_cartes > self.settingsManager.max_cards_in_hand():
             return False
         else:
-            card.setParentItem(self)
             self.nombre_cartes += 1
+            card.setParentItem(self)
+            card.setVisible(True)
+            card.setDraggable(True)
             return True
 
-    def remove(self, card):
-        self.cards.remove(card)
-
-    def get_card_at(self, index):
-        return self.cards[index]
+    def lose_a_card(self, card):
+        self.nombre_cartes -= 1
+        # TODO: gestion erreur si nombre_cartes = 0
 
     def show(self):
         return self.cards
 
     def is_empty(self):
-        return not self.cards
+        return self.nombre_cartes == 0
 
 
 

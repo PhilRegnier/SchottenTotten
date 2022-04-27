@@ -80,7 +80,7 @@ class CardManager(Singleton):
         return cls.moved_to_reorganize
 
     @classmethod
-    def is_dagged(cls):
+    def is_dragged(cls):
         return cls.dragged
 
     @classmethod

@@ -8,6 +8,7 @@ from PyQt5.QtCore import QPointF, QLineF, QPropertyAnimation, QRectF, QRect, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
 
+from src.Scene.Game.CardManager import CardManager
 from src.deprecated import UserSide, AutoSide
 from src.ImageTreatment import ImageTreatment
 from src.Scene.Game.Shader import Shader
@@ -63,7 +64,7 @@ class Card(QGraphicsObject):
     def mousePressEvent(self, event):
         if not event.button() == Qt.LeftButton:
             return
-        if self.parentItem().Type == UserSide.Type or self.parentItem().Type == AutoSide.Type:
+        if isinstance(self.parentItem(), Side):
             return
 
         self.dragStartPosition = event.pos()
@@ -76,7 +77,7 @@ class Card(QGraphicsObject):
 
         if not (event.buttons() == Qt.LeftButton):
             return
-        if self.parentItem().Type == UserSide.Type or self.parentItem().Type == AutoSide.Type:
+        if isinstance(self.parentItem(), Side):
             return
         if (event.pos() - self.dragStartPosition).manhattanLength() < QApplication.startDragDistance():
             return
@@ -84,7 +85,7 @@ class Card(QGraphicsObject):
         # All staff when a card is dragged from the user's hand
 
         self.cardManager.dragged()
-        card_nb = self.numero
+        CardManager.shift_card = self
         QGraphicsObject.mouseMoveEvent(self, event)
         self.shade.setEnabled(True)
         self.setOpacity(0.9)
@@ -102,7 +103,7 @@ class Card(QGraphicsObject):
         self.setZValue(zvalue)
 
     def set_on_side(self, side):
-        if Type == UserSide.Type:
+        if isinstance(side.parentItem(), :
             if item.nCard < 3:
                 MovingCard.set_side_id(item.numero)
                 self.set_draggable(False)
