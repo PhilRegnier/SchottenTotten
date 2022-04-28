@@ -29,17 +29,23 @@ class Card(QGraphicsObject):
         self.anchor_point = QPointF()
         self.index = -1
 
+        self.cardManager = CardManager()
+
         image = Image.open('resources/images/' + couleur + str(valeur) + '.jpg')
         image.thumbnail((Card.width - 2, Card.height - 2))
         self.pixmap = QPixmap.fromImage(ImageTreatment.enluminure(image))
 
         self.setAcceptHoverEvents(False)
         self.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+        self.dragged = False
 
         self.shade = Shader()
         self.setGraphicsEffect(self.shade)
 
         self.dragStartPosition = None
+
+    def set_dragged(self, dragged):
+        self.dragged = dragged
 
     def set_draggable(self, draggable=True):
         self.setFlag(QGraphicsItem.ItemIsMovable, draggable)
@@ -73,7 +79,7 @@ class Card(QGraphicsObject):
 
     def mouseMoveEvent(self, event):
 
-        # Check button pressed, card's origin, and that a minimum move has been done
+        # Check button pressed, card's origin, and if a minimum move has been done
 
         if not (event.buttons() == Qt.LeftButton):
             return
@@ -84,8 +90,8 @@ class Card(QGraphicsObject):
 
         # All staff when a card is dragged from the user's hand
 
-        self.cardManager.dragged()
-        CardManager.shift_card = self
+        self.cardManager.set_dragged(True)
+        self.cardManager.shift_card = self
         QGraphicsObject.mouseMoveEvent(self, event)
         self.shade.setEnabled(True)
         self.setOpacity(0.9)
@@ -115,7 +121,7 @@ class Card(QGraphicsObject):
 
     def mouseReleaseEvent(self, event):
         self.setCursor(Qt.ArrowCursor)
-        if MovingCard.dragged():
+        if self.dragged:
             col_items = self.collidingItems()
             if col_items:
                 closest_item = col_items[0]
@@ -129,9 +135,9 @@ class Card(QGraphicsObject):
                         closest_item = item
 
                 if closest_item.parentItem():
-                    self.setCardOnSide(closest_item.parentItem())
+                    self.set_on_side(closest_item.parentItem())
                 else:
-                    self.setCardOnSide(closest_item)
+                    self.set_on_side(closest_item)
 
             QGraphicsObject.mouseReleaseEvent(self, event)
             self.shade.setEnabled(False)

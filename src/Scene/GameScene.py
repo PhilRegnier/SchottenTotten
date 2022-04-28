@@ -135,7 +135,7 @@ class GameScene(QGraphicsScene):
 
     def mouseMoveEvent(self, event):
 
-        if self.cardManager.is_dragged():
+        if self.cardManager.shift_card.dragged:
 
             # Enlightment for user's side hovered
 
@@ -229,7 +229,7 @@ class GameScene(QGraphicsScene):
 
         # Events from Cards: If cards has been moved to a droppable zone
 
-        if self.cardManager.is_dragged():
+        if self.cardManager.shift_card.dragged:
 
             # Card moved on user's deck
 
@@ -286,7 +286,7 @@ class GameScene(QGraphicsScene):
                 self.cardManager.shift_card.moveTo(self.cardManager.shift_card.pos(),
                                                    self.cardManager.shift_card.anchorPoint)
 
-            dragged = False
+            self.cardManager.shift_card.set_dragged(False)
             self.update()
             return
 
