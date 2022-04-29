@@ -14,7 +14,7 @@ from src.Style import GlobalStyle
 
 class GameView(QGraphicsView):
 
-    def __init__(self, parent):
+    def __init__(self, parent, width):
         super().__init__(parent)
 
         # initialize private variables
@@ -26,7 +26,7 @@ class GameView(QGraphicsView):
         # Preset the scene and the view
 
         self.settings_manager = SettingsManager()
-        self.board = GameScene(self)
+        self.board = GameScene(self, width)
 
         # Set the view with QGraphicsView parent's methods
 
@@ -39,3 +39,6 @@ class GameView(QGraphicsView):
         # Prepare a timer
 
         self.timer = QTimer(self)
+
+    def height(self):
+        return self.board.height()

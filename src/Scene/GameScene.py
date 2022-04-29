@@ -3,7 +3,6 @@ from math import sqrt
 from PyQt5.QtCore import QParallelAnimationGroup, QPropertyAnimation, QLineF, QTimer
 from PyQt5.QtWidgets import QGraphicsScene
 
-from src.MainWindow.GameWindow import GameWindow
 from src.Scene.Game.Automaton import Automaton
 from src.Scene.Game.Card import Card
 from src.Scene.Game.CardManager import CardManager
@@ -16,10 +15,8 @@ from src.Scene.Starter.HomeCurtain import HomeCurtain
 
 class GameScene(QGraphicsScene):
 
-    def __init__(self, parent):
+    def __init__(self, parent, width):
         super().__init__(parent)
-
-        self.setSceneRect(0, 0, GameWindow.width - 40, GameWindow.height() - 60)
 
         # Starter attributes
 
@@ -31,7 +28,7 @@ class GameScene(QGraphicsScene):
 
         # TODO : Maybe the initialization occuring before settings change could be a problem
 
-        self.cardManager = CardManager()
+        self.cardManager = CardManager(width)
         self.deck = Deck(self)
         self.player = Player('humain')
         self.automaton = Automaton('Bot')
@@ -39,6 +36,12 @@ class GameScene(QGraphicsScene):
         self.stones = [Stone(i) for i in range(9)]
 
         self.new_order = []
+
+        # geometry
+
+        self.width = width
+
+        self.setSceneRect(0, 0, self.width, self.height())
 
     # Create board game items and set the board scene
 
@@ -178,18 +181,18 @@ class GameScene(QGraphicsScene):
                         self.cardManager.user_want_to_reorganize()
 
                         card_dx = line.dx()
-                        card_hover = item.numero
-
+                        card_hover = item
+        """
         if self.cardManager.is_moved_to_reorganize():
-        # self.new_order = self.user_hand
+            self.new_order = self.user_hand
         else:
             return
-
+        """
         # Set the concerned cards
 
-        if self.cardManager.shift_card.index - Card.cards[card_hover].index < 0:
+        if self.cardManager.shift_card.index - card_hover.index < 0:
             i1 = self.cardManager.shift_card.index + 1
-            i2 = Card.cards[card_hover].index
+            i2 = card_hover.index
             sens = -1
             if card_dx > 0:
                 i2 += 1
@@ -202,22 +205,22 @@ class GameScene(QGraphicsScene):
 
                 # Set the animation moving concerned cards
 
-        self.anims = QParallelAnimationGroup()
+        animations = QParallelAnimationGroup()
 
         for i in range(i1, i2):
-            anim = QPropertyAnimation(Card.cards[self.user_hand[i]], b"pos")
+            animation = QPropertyAnimation(Card.cards[self.user_hand[i]], b"pos")
             pos1 = Card.cards[self.user_hand[i]].anchorPoint
             pos2 = Card.cards[self.user_hand[i + sens]].anchorPoint
             dx = pos1.x() - pos2.x()
             dy = pos1.y() - pos2.y()
             duration = sqrt(dx ** 2 + dy ** 2) / 1
-            anim.setDuration(duration)
-            anim.setStartValue(pos1)
-            anim.setEndValue(pos2)
-            self.anims.addAnimation(anim)
+            animation.setDuration(duration)
+            animation.setStartValue(pos1)
+            animation.setEndValue(pos2)
+            animations.addAnimation(animation)
             self.new_order[i + sens] = self.user_hand[i]
 
-        self.anims.start()
+        animations.start()
 
     def mouseReleaseEvent(self, event):
 
@@ -232,10 +235,10 @@ class GameScene(QGraphicsScene):
         if self.cardManager.shift_card.dragged:
 
             # Card moved on user's deck
-
+            """
             if self.cardManager.is_moved_to_reorganize():
-                #self.user_hand = self.new_order
-
+                self.user_hand = self.new_order
+            """
             # Card moved on side ?
 
             if self.cardManager.shift_side is not None:
@@ -289,6 +292,12 @@ class GameScene(QGraphicsScene):
             self.cardManager.shift_card.set_dragged(False)
             self.update()
             return
+
+    # Calcul height knowing the width needed to show the scene without scrolling
+
+    def height(self):
+        return int(4 * Stone.height() + 4.33 * Card.height()
+                   + cls.marge * 2 + 8 * cls.pen_width + 4 * Stone.marge + 40) - 60
 
     # cheat mode: show automaton's hand in a subwindow
 

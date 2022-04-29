@@ -16,18 +16,17 @@ class GameWindow(QMainWindow):
 
     width = 1200
     marge = 20
-    pen_width = 1.
 
     def __init__(self):
         super().__init__()
 
         # Create a new Schotten Totten game
 
-        self.game_view = GameView(self)
+        self.game_view = GameView(self, GameWindow.width - 40)
 
         # Create the main window
 
-        self.setFixedSize(GameWindow.width, self.get_GameWindow_height())
+        self.setFixedSize(GameWindow.width, self.height())
         self.setWindowTitle('Schotten Totten')
         self.setWindowIcon(QIcon('resources/images/logo.png'))
         self.setCentralWidget(self.game_view)
@@ -45,8 +44,8 @@ class GameWindow(QMainWindow):
 
         self.show()
 
-    @classmethod
-    def height(cls):
+    def height(self):
+        view_height = self.game_view.height()
         return int(4 * Stone.height + 4.33 * Card.height
                    + cls.marge * 2 + 8 * cls.pen_width + 4 * Stone.marge + 40)
 

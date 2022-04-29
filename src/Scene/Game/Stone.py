@@ -14,7 +14,7 @@ from src.Style import GeometryStyle
 class Stone(QGraphicsObject):
 
     marge = 4.
-    width = (GameWindow.width - 2 * GameWindow.marge - 8 * marge - 40) / 9 - 2 * GameWindow.pen_width
+    width = (GameWindow.width - 2 * GameWindow.marge - 8 * marge - 40) / 9 - 2 * GeometryStyle.pen_width
     height = width * 0.58
 
     def __init__(self, numero, parent=None):

@@ -9,7 +9,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
 
 from src.Scene.Game.CardManager import CardManager
-from src.deprecated import UserSide, AutoSide
+from src.Scene.Game.Player import Player
 from src.ImageTreatment import ImageTreatment
 from src.Scene.Game.Shader import Shader
 from src.Scene.Game.Side import Side
@@ -43,6 +43,8 @@ class Card(QGraphicsObject):
         self.setGraphicsEffect(self.shade)
 
         self.dragStartPosition = None
+
+        self.__old_z_value = None
 
     def set_dragged(self, dragged):
         self.dragged = dragged
@@ -109,15 +111,15 @@ class Card(QGraphicsObject):
         self.setZValue(zvalue)
 
     def set_on_side(self, side):
-        if isinstance(side.parentItem(), :
-            if item.nCard < 3:
-                MovingCard.set_side_id(item.numero)
+        if isinstance(side, Side) and isinstance(side.parentItem(), Player):
+            if not side.is_full():
+                self.cardManager.shift_side = side
                 self.set_draggable(False)
 
                 # get sure that the card dropped is in the foreground
 
-                if item.nCard > 0:
-                    self.setZValue(Card.cards[item.index[len(item.index) - 1]].zValue() + 0.1)
+                if len(side.cards) > 0:
+                    self.setZValue(side.cards[-1].zValue() + 0.1)
 
     def mouseReleaseEvent(self, event):
         self.setCursor(Qt.ArrowCursor)
@@ -147,25 +149,25 @@ class Card(QGraphicsObject):
 
         # animation for the move
 
-        self.moveCard = QPropertyAnimation(self, b"pos")
+        animation = QPropertyAnimation(self, b"pos")
         dx = pos1.x() - pos2.x()
         dy = pos1.y() - pos2.y()
         duration = int(sqrt(dx ** 2 + dy ** 2) / 1)
-        self.moveCard.setDuration(duration)
-        self.moveCard.setStartValue(pos1)
-        self.moveCard.setEndValue(pos2)
+        animation.setDuration(duration)
+        animation.setStartValue(pos1)
+        animation.setEndValue(pos2)
 
         self.setOnTop()
-        self.moveCard.finished.connect(self.setOnGround)
+        animation.finished.connect(self.setOnGround)
 
-        self.moveCard.start()
+        animation.start()
 
     def set_on_top(self):
-        self.z_old = self.zValue()
+        self.__old_z_value = self.zValue()
         self.setZValue(1000)
 
     def set_on_ground(self):
-        self.setZValue(self.z_old)
+        self.setZValue(self.__old_z_value)
 
     def boundingRect(self):
         pen_width = 1.0
