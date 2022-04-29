@@ -22,6 +22,8 @@ class ColorStyle:
 
 
 class GeometryStyle:
+    main_width = 1200
+    main_marge = 20
     marge = 5.
     r_bound = 10.
     pen_width = 1.

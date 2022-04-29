@@ -26,7 +26,7 @@ class GameView(QGraphicsView):
         # Preset the scene and the view
 
         self.settings_manager = SettingsManager()
-        self.board = GameScene(self, width)
+        self.board = GameScene(self)
 
         # Set the view with QGraphicsView parent's methods
 

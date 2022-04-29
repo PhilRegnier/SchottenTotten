@@ -18,8 +18,9 @@ from src.Scene.Game.Stone import Stone
 
 class Card(QGraphicsObject):
 
+    HW_RATIO = 1.42
     width = Stone.width - 4
-    height = width * 1.42
+    height = width * HW_RATIO
 
     def __init__(self, numero, valeur, couleur):
         super().__init__()

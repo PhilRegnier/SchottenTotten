@@ -51,6 +51,11 @@ class CardManager(Singleton):
         cls.dragged = False
 
     @classmethod
+    def unselect(cls):
+        cls.shift_card = None
+        cls.shift_side = None
+
+    @classmethod
     def set_zmax(cls, zmax):
         cls.zmax = max(cls.zmax, zmax)
 

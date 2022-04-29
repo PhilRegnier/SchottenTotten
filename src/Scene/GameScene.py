@@ -10,7 +10,10 @@ from src.Scene.Game.Deck import Deck
 from src.Scene.Game.Player import Player
 from src.Scene.Game.Side import Side
 from src.Scene.Game.Stone import Stone
+from src.Scene.Game.Umpire import Umpire
 from src.Scene.Starter.HomeCurtain import HomeCurtain
+from src.SettingsManager import SettingsManager
+from src.Style import GeometryStyle
 
 
 class GameScene(QGraphicsScene):
@@ -28,18 +31,19 @@ class GameScene(QGraphicsScene):
 
         # TODO : Maybe the initialization occuring before settings change could be a problem
 
-        self.cardManager = CardManager(width)
+        self.cardManager = CardManager()
         self.deck = Deck(self)
         self.player = Player('humain')
         self.automaton = Automaton('Bot')
-
+        self.umpire = Umpire()
         self.stones = [Stone(i) for i in range(9)]
 
         self.new_order = []
+        self.itemsSelected = []
 
         # geometry
 
-        self.width = width
+        self.width = GeometryStyle.main_width - 40
 
         self.setSceneRect(0, 0, self.width, self.height())
 
@@ -47,11 +51,13 @@ class GameScene(QGraphicsScene):
 
     def setup(self):
 
+        settings_manager = SettingsManager()
+
         # Frontier items
 
         for i in range(9):
-            x = i * Stone.marge + i * Stone.width + GameWindow.marge
-            y = GameWindow.marge + Stone.height + Stone.marge
+            x = i * Stone.marge + i * Stone.width + GeometryStyle.main_marge
+            y = GeometryStyle.main_marge + Stone.height + Stone.marge
             self.automaton.sides[i].setPos(x, y)
             y += Side.height + Stone.marge
             self.stones[i].setPos(x - 2, y - 2)
@@ -63,7 +69,7 @@ class GameScene(QGraphicsScene):
         index = 0
         for card in self.player.hand.cards:
             card.setParentItem(self.player.playmat)
-            card.setPos((index + 1) * GameWindow.marge + index * Card.width, GameWindow.marge)
+            card.setPos((index + 1) * GeometryStyle.main_marge + index * Card.width, GeometryStyle.main_marge)
             card.setAnchorPoint(card.pos())
             card.setDraggable(True)
             card.setVisible(True)
@@ -74,7 +80,7 @@ class GameScene(QGraphicsScene):
         index = 0
         for card in self.automaton.hand.cards:
             card.setParentItem(self.automaton.playmat)
-            card.setPos((index + 1) * GameWindow.marge + index * Card.width, GameWindow.marge)
+            card.setPos((index + 1) * GeometryStyle.main_marge + index * Card.width, GeometryStyle.main_marge)
             card.setAnchorPoint(card.pos())
             card.setVisible(True)
             index += 1
@@ -83,7 +89,7 @@ class GameScene(QGraphicsScene):
 
         # Set items positions
 
-        bottom_y = GameWindow.get_height() - 5 * GameWindow.marge - Card.height - 2 * GameWindow.marge
+        bottom_y = self.height() - 5 * GeometryStyle.main_marge - Card.height() - 2 * GeometryStyle.main_marge
 
         self.deck.set_pos_init(1000, bottom_y)
         self.player.playmat.setPos(10, bottom_y)
@@ -98,7 +104,7 @@ class GameScene(QGraphicsScene):
             self.addItem(self.player.sides[i])
             self.addItem(self.stones[i])
 
-        self.addItem(self.user_deck)
+        self.addItem(self.player.playmat)
 
         # Set zValue max
 
@@ -108,15 +114,17 @@ class GameScene(QGraphicsScene):
 
         # Create players' hands
 
-        for i in range(self.settings_manager.get_max_cards_in_hand()):
+        for i in range(settings_manager.get_max_cards_in_hand()):
             self.player.hand.add(self.deck.draw())
             self.automaton.hand.add(self.deck.draw())
 
     def __new_round(self):
 
+        settings_manager = SettingsManager()
+
         # ending the game
 
-        if self.current_round == self.settings.get_number_of_rounds():
+        if self.current_round == settings_manager.get_number_of_rounds():
             self.home.setVisible(True)
             self.home.animate_incoming()
             return
@@ -128,13 +136,13 @@ class GameScene(QGraphicsScene):
         # Switch the first player between each round
 
         if self.current_round > 1:
-            self.settings_manager.switch_first_player()
+            settings_manager.switch_first_player()
 
         # Set the board
 
         self._setup_hands()
         self.setup()
-        self.judge.final_countdown = False
+        self.umpire.final_countdown = False
 
     def mouseMoveEvent(self, event):
 
@@ -153,6 +161,7 @@ class GameScene(QGraphicsScene):
             for item in self.itemsSelected:
                 if item not in items:
                     item.light_off()
+                    self.itemsSelected.remove(item)
 
             # TODO : Management for reordering the user's hand
 
@@ -197,18 +206,22 @@ class GameScene(QGraphicsScene):
             if card_dx > 0:
                 i2 += 1
         else:
-            i1 = Card.cards[card_hover].index
+            i1 = card_hover.index
             i2 = self.cardManager.shift_card.index
             sens = 1
             if card_dx > 0:
                 i1 += 1
 
-                # Set the animation moving concerned cards
+        # reconstruct the hand
+
+
+
+        # Set the animation moving concerned cards
 
         animations = QParallelAnimationGroup()
 
         for i in range(i1, i2):
-            animation = QPropertyAnimation(Card.cards[self.user_hand[i]], b"pos")
+            animation = QPropertyAnimation(self.player.hand[i]], b"pos")
             pos1 = Card.cards[self.user_hand[i]].anchorPoint
             pos2 = Card.cards[self.user_hand[i + sens]].anchorPoint
             dx = pos1.x() - pos2.x()
@@ -257,7 +270,7 @@ class GameScene(QGraphicsScene):
                 if self.deck.is_empty():
                     self.player.hand.lose_a_card()
                     if self.player.hand.is_empty():
-                        self.judge.final_countdown = True
+                        self.umpire.final_countdown = True
                 else:
                     new_card = self.deck.draw()
                     self.player.hand.add(new_card)
@@ -267,24 +280,22 @@ class GameScene(QGraphicsScene):
                 # Actions if the targetted side is full
 
                 if self.cardManager.shift_side.is_full():
-                    self.book(self.shif)
+                    self.umpire.book(self.cardManager.shift_side)
 
-                self.judge(self.cardManager.shift_side)
+                self.umpire.judge(self.cardManager.shift_side)
 
-                self.cardManager.set_shift_side(None)
-                self.cardManager.set_shift_card(None)
+                self.cardManager.unselect()
 
                 # Run automate's turn
 
-                self.automate()
+                self.automaton.play_a_card()
 
                 if self.cardManager.shift_side.is_full():
-                    self.book(self.cardManager.shift_side)
+                    self.umpire.book(self.cardManager.shift_side)
 
-                self.judge(self.cardManager.shift_side)
+                self.umpire.judge(self.cardManager.shift_side)
 
-                self.cardManager.set_shift_side(None)
-                self.cardManager.set_shift_card(None)
+                self.cardManager.unselect()
             else:
                 self.cardManager.shift_card.moveTo(self.cardManager.shift_card.pos(),
                                                    self.cardManager.shift_card.anchorPoint)
@@ -293,7 +304,7 @@ class GameScene(QGraphicsScene):
             self.update()
             return
 
-    # Calcul height knowing the width needed to show the scene without scrolling
+    # Calcul the height knowing the width needed to show the scene without scrolling
 
     def height(self):
         return int(4 * Stone.height() + 4.33 * Card.height()

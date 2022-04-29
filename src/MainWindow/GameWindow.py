@@ -10,19 +10,17 @@ from src.GameView import GameView
 from src.MainWindow.MenuBar import MenuBar
 from src.Scene.Game.Card import Card
 from src.Scene.Game.Stone import Stone
+from src.Style import GeometryStyle
 
 
 class GameWindow(QMainWindow):
-
-    width = 1200
-    marge = 20
 
     def __init__(self):
         super().__init__()
 
         # Create a new Schotten Totten game
 
-        self.game_view = GameView(self, GameWindow.width - 40)
+        self.game_view = GameView(self)
 
         # Create the main window
 
