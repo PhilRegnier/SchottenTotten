@@ -4,7 +4,7 @@
 from PyQt5.QtGui import QFont, QColor
 from PyQt5.QtWidgets import QGraphicsSimpleTextItem
 
-from src.variables_globales import mainWindow_width, mainWindow_height
+from src.Style import GeometryStyle
 
 
 class TextInForeground(QGraphicsSimpleTextItem):
@@ -15,6 +15,6 @@ class TextInForeground(QGraphicsSimpleTextItem):
         self.setBrush(QColor(255, 85, 0, 140))
         self.setPen(QColor(21, 11, 127, 90))
         self.setParentItem(parent_item)
-        xm = (mainWindow_width - self.boundingRect().width()) / 2
-        ym = (mainWindow_height - self.boundingRect().height()) / 2
+        xm = (GeometryStyle.main_width - self.boundingRect().width()) / 2
+        ym = (GeometryStyle.main_height - self.boundingRect().height()) / 2
         self.setPos(xm, ym)

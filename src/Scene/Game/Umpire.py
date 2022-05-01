@@ -1,5 +1,6 @@
 from PyQt5.QtCore import QTimer
 
+from src.Scene.Game import ShiftManager
 from src.Scene.Game.Side import Side
 from src.Scene.Game.Stone import Stone
 from src.Scene.Starter.Curtain import Curtain
@@ -12,10 +13,10 @@ class Umpire:
 
     # cotations for cards combinations
 
-    cote_suite = 100
-    cote_couleur = 200
-    cote_both = 200
-    cote_brelan = 400
+    COTE_SUITE = 100
+    COTE_COULEUR = 200
+    COTE_BOTH = 200
+    COTE_BRELAN = 400
 
     """
     Test the combination after a third card has been played on a side.
@@ -33,39 +34,46 @@ class Umpire:
 
         if liste[1] == liste[0] + 1 and liste[2] == liste[1] + 1:
             suite = True
-            side.somme += cls.cote_suite
+            side.somme += cls.COTE_SUITE
 
         # test for flush => somme € [206; 324]
 
         if side.cards[0].couleur == side.cards[1].couleur == side.cards[2].couleur:
             flush = True
-            side.somme += cls.cote_couleur
+            side.somme += cls.COTE_COULEUR
 
         # test for straight flush => somme € [506; 524]
 
         if suite and flush:
-            side.somme += cls.cote_both
+            side.somme += cls.COTE_BOTH
 
         # test for three of a kind => somme € [403; 427]
 
         elif side.cards[0].valeur == side.cards[1].valeur == side.cards[2].valeur:
-            side.somme += cls.cote_brelan
+            side.somme += cls.COTE_BRELAN
+
+    # if 3 cards have been played on each side, test for claim of the stone
+
+    @staticmethod
+    def claim_the_stone(stone, player_side, automaton_side):
+
+        if player_side.is_full() and automaton_side.is_full():
+            if player_side.somme > automaton_side.somme:
+                stone.winner = "user"
+                stone.moveStoneTo(player_side.height + 6 + stone.height)
+            elif player_side.somme < automaton_side.somme:
+                stone.winner = "auto"
+                stone.moveStoneTo(-player_side.height - 6 - stone.height)
+            else:
+                stone.winner = "equal"
+
     """
     Compare each sides of the stones and test for victory
     """
-    def judge(self, player, automaton, stones):
+    def judge(self, player_side, automaton_side, stone):
 
-        # if 3 cards have been played on each side, test for claim of the stone
-
-        if self.user_side[side_id].nCard == 3 and self.auto_side[side_id].nCard == 3:
-            if self.user_side[side_id].somme > self.auto_side[side_id].somme:
-                self.stone[side_id].winner = "user"
-                self.stone[side_id].moveStoneTo(side.height + 6 + Stone.height)
-            elif self.user_side[side_id].somme < self.auto_side[side_id].somme:
-                self.stone[side_id].winner = "auto"
-                self.stone[side_id].moveStoneTo(-side.height - 6 - Stone.height)
-            else:
-                self.stone[side_id].winner = "equal"
+        if player_side.is_full() and automaton_side.is_full():
+            stone.claim(player_side.somme, automaton_side.somme)
 
         # party endding
 

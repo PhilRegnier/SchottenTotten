@@ -8,10 +8,10 @@ from PyQt5.QtCore import QPointF, QLineF, QPropertyAnimation, QRectF, QRect, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
 
-from src.Scene.Game.CardManager import CardManager
 from src.Scene.Game.Player import Player
 from src.ImageTreatment import ImageTreatment
 from src.Scene.Game.Shader import Shader
+from src.Scene.Game.ShiftManager import ShiftManager
 from src.Scene.Game.Side import Side
 from src.Scene.Game.Stone import Stone
 
@@ -19,8 +19,8 @@ from src.Scene.Game.Stone import Stone
 class Card(QGraphicsObject):
 
     HW_RATIO = 1.42
-    width = Stone.width - 4
-    height = width * HW_RATIO
+    width = 0
+    height = 0
 
     def __init__(self, numero, valeur, couleur):
         super().__init__()
@@ -30,9 +30,10 @@ class Card(QGraphicsObject):
         self.anchor_point = QPointF()
         self.index = -1
 
-        self.cardManager = CardManager()
+        if Card.width == 0:
+            Card.set_size()
 
-        image = Image.open('resources/images/' + couleur + str(valeur) + '.jpg')
+        image = Image.open('resources/images/cartes/' + couleur + '/' + str(valeur) + '.jpg')
         image.thumbnail((Card.width - 2, Card.height - 2))
         self.pixmap = QPixmap.fromImage(ImageTreatment.enluminure(image))
 
@@ -46,6 +47,14 @@ class Card(QGraphicsObject):
         self.dragStartPosition = None
 
         self.__old_z_value = None
+
+    @classmethod
+    def set_size(cls):
+        if Stone.width == 0:
+            print("ERREUR : Stones must be instanciated before cards for sizing purpose.")
+        else:
+            cls.width = Stone.width - 4
+            cls.height = cls.width * cls.HW_RATIO
 
     def set_dragged(self, dragged):
         self.dragged = dragged
@@ -61,16 +70,20 @@ class Card(QGraphicsObject):
         self.index = index
 
     def hoverEnterEvent(self, event):
+        print("card: hoverEnter")
+
         self.setCursor(Qt.OpenHandCursor)
         self.setPos(self.x() - 2, self.y() - 2)
         self.shade.setEnabled(True)
 
     def hoverLeaveEvent(self, event):
+        print("card: hoverLeave")
         self.setCursor(Qt.ArrowCursor)
         self.setPos(self.anchor_point)
         self.shade.setEnabled(False)
 
     def mousePressEvent(self, event):
+        print("card: mousePress")
         if not event.button() == Qt.LeftButton:
             return
         if isinstance(self.parentItem(), Side):
@@ -81,6 +94,7 @@ class Card(QGraphicsObject):
         self.shade.setEnabled(True)
 
     def mouseMoveEvent(self, event):
+        print("card: mouseMove")
 
         # Check button pressed, card's origin, and if a minimum move has been done
 
@@ -93,8 +107,9 @@ class Card(QGraphicsObject):
 
         # All staff when a card is dragged from the user's hand
 
-        self.cardManager.set_dragged(True)
-        self.cardManager.shift_card = self
+        self.dragged = True
+
+        ShiftManager.set_card(self)
         QGraphicsObject.mouseMoveEvent(self, event)
         self.shade.setEnabled(True)
         self.setOpacity(0.9)
@@ -112,9 +127,10 @@ class Card(QGraphicsObject):
         self.setZValue(zvalue)
 
     def set_on_side(self, side):
+
         if isinstance(side, Side) and isinstance(side.parentItem(), Player):
             if not side.is_full():
-                self.cardManager.shift_side = side
+                ShiftManager.set_side(side)
                 self.set_draggable(False)
 
                 # get sure that the card dropped is in the foreground
@@ -123,6 +139,7 @@ class Card(QGraphicsObject):
                     self.setZValue(side.cards[-1].zValue() + 0.1)
 
     def mouseReleaseEvent(self, event):
+        print("card: mouseRelease")
         self.setCursor(Qt.ArrowCursor)
         if self.dragged:
             col_items = self.collidingItems()

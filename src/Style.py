@@ -12,13 +12,20 @@ class GlobalStyle:
     background_color = QColor(167, 159, 120)
 
 
-class ColorStyle:
-    def __init__(self):
-        self.side0 = QColor(9, 18, 27, 90)
-        self.side1 = QColor(85, 170, 255, 90)
-        self.side_pen = QColor(85, 81, 44)
-        self.hand = QColor(85, 170, 255, 40)
-        self.hand_pen = QColor(10, 11, 8)
+class PlayerColors:
+    side0 = QColor(9, 18, 27, 90)
+    side1 = QColor(85, 170, 255, 90)
+    side_pen = QColor(85, 81, 44)
+    hand = QColor(85, 170, 255, 40)
+    hand_pen = QColor(10, 11, 8)
+
+
+class AutomatonColors:
+    side0 = QColor(70, 23, 0, 90)
+    side1 = QColor(255, 85, 0, 90)
+    side_pen = QColor(85, 81, 44)
+    hand = QColor(49, 53, 42, 150)
+    hand_pen = QColor(10, 11, 8)
 
 
 class GeometryStyle:
@@ -27,6 +34,9 @@ class GeometryStyle:
     marge = 5.
     r_bound = 10.
     pen_width = 1.
+
+    # main_height must be redefined after initialization of the view by the init method of GameWindow
+    main_height = 0
 
 
 class GradientStyle(QLinearGradient):

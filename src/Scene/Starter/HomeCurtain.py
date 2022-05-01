@@ -6,7 +6,6 @@ from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
-from src.Scene.Game.Card import Card
 from src.Scene.Starter.ChifoumiCurtain import Chifoumi
 from src.Scene.Clickable import Clickable
 from src.Scene.Starter.Curtain import Curtain
@@ -28,8 +27,8 @@ class HomeCurtain(Curtain):
 
         ww = self.boundingRect().width()
         wh = self.boundingRect().height()
-        cw = 2 * Card.height
-        ew = 80
+        cw = 0.15 * ww
+        ew = 0.1 * ww
 
         # local items
 
@@ -43,8 +42,8 @@ class HomeCurtain(Curtain):
 
         # settings and starting buttons
 
-        self.settings_button = Clickable('resources/images/engrenages.jpg', cw, cw, 10, self)
-        self.starting_button = Clickable('resources/images/run.jpg', cw, cw, 11, self)
+        self.settings_button = Clickable('engrenages.jpg', cw, cw, self)
+        self.starting_button = Clickable('run.jpg', cw, cw, self)
 
         # settings panel item
 
@@ -71,6 +70,7 @@ class HomeCurtain(Curtain):
         self.starting_button.setPos(ww / 2 + ew, wh / 2 + ew)
 
     def mouseReleaseEvent(self, event):
+        print("home: mouseRelease")
 
         if self.starting_button.selected:
             if not self.starting_button.handled:
@@ -92,6 +92,8 @@ class HomeCurtain(Curtain):
                     self.chifoumi.freeze()
                     QTimer.singleShot(3000, self.start_the_game)
 
+            return
+
         if self.settings_button.selected:
             if not self.settings_button.handled:
                 self.settings_button.set_handled(True)
@@ -102,6 +104,11 @@ class HomeCurtain(Curtain):
                 self.settings_button.unselect()
                 if self.settings_view.ok_button.selected or self.settings_view.cancel_button.selected:
                     self.settings_view.animate_leaving()
+
+            return
+
+        Curtain.mouseReleaseEvent(self, event)
+
 
     def start_the_game(self):
         self.text.setVisible(False)

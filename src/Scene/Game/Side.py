@@ -2,32 +2,48 @@
 # Common side definitions
 #
 from PyQt5.QtCore import QRectF, QPointF
-from PyQt5.QtGui import QLinearGradient, QBrush, QPen
+from PyQt5.QtGui import QBrush, QPen
 from PyQt5.QtWidgets import QGraphicsItem
 
-from src.Scene.Game.Card import Card
 from src.Scene.Game.Stone import Stone
 from src.Style import GeometryStyle, GradientStyle
+
+# TODO : change to QGraphicsObect to directly handle mouse EnterEvent and DropEvent
 
 
 class Side(QGraphicsItem):
 
-    height = Card.height * 1.667
+    HCARD_RATIO = 1.667
+    width = 0
+    height = 0
 
-    def __init__(self, numero, color1, color2, color3, parent):
-        super().__init__(parent)
+    def __init__(self, numero, colors, parent, parent_item=None):
+        super().__init__(parent_item)
         self.numero = numero
+        self.parent = parent
         self.cards = []
         self.somme = 0
-        self.gradient = GradientStyle(Side.height, color1, color2)
-        self.pen_color = color3
+        if Side.width == 0:
+            Side.set_size()
+
+        self.gradient = GradientStyle(Side.height, colors.side0, colors.side1)
+        self.pen_color = colors.side_pen
         self.setFlag(QGraphicsItem.ItemDoesntPropagateOpacityToChildren)
         self.light_off()
+
+    @classmethod
+    def set_size(cls):
+        from src.Scene.Game.Card import Card
+
+        if Stone.width == 0 or Card.height == 0:
+            print("ERREUR : Stones and cards must be instanciated before sides for sizing purpose.")
+        cls.width = Stone.width
+        cls.height = Card.height * cls.HCARD_RATIO
 
     def boundingRect(self):
         return QRectF(-GeometryStyle.pen_width / 2,
                       -GeometryStyle.pen_width / 2,
-                      Stone.width + GeometryStyle.pen_width,
+                      Side.width + GeometryStyle.pen_width,
                       Side.height + GeometryStyle.pen_width)
 
     def paint(self, painter, option, widget=0):

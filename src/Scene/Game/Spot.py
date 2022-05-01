@@ -15,7 +15,6 @@ from PyQt5.QtCore import QRect, Qt
 from PyQt5.QtGui import QBrush
 from PyQt5.QtWidgets import QGraphicsObject
 
-from src.Scene.Game.Card import Card
 from src.Style import GeometryStyle
 
 
@@ -27,9 +26,11 @@ class Spot(QGraphicsObject):
         self.free = free
 
     def boundingRect(self):
+        from src.Scene.Game.Card import Card
         return Card.boundingRect()
 
     def paint(self, painter, option, widget=0):
+        from src.Scene.Game.Card import Card
         painter.setBrush(QBrush(Qt.cyan))
         painter.setOpacity(0.3)
         rect = QRect(-1, -1, int(Card.width), int(Card.height))

@@ -2,8 +2,7 @@
 
 from PIL import ImageDraw, Image, ImageQt
 
-from src.Style import GeometryStyle
-from src.variables_globales import rBound, cadre_color, relief_color
+from src.Style import GeometryStyle, GlobalStyle
 
 
 class ImageTreatment:
@@ -28,12 +27,12 @@ class ImageTreatment:
     def enluminure(im, r=GeometryStyle.r_bound, t=1, ow=1, oh=1):
         im = ImageTreatment.round_corners(im, int(r))
 
-        cadre = Image.new('RGBA', (im.width + 2 * t, im.height + 2 * t), cadre_color)
+        cadre = Image.new('RGBA', (im.width + 2 * t, im.height + 2 * t), GlobalStyle.cadre_color)
         cadre = ImageTreatment.round_corners(cadre, int(r + t))
         cadre.paste(im, (t, t), im)
 
         trame = Image.new('RGBA', (cadre.width + ow, cadre.height + oh), (0, 0, 0, 0))
-        relief = Image.new('RGBA', (cadre.width, cadre.height), relief_color)
+        relief = Image.new('RGBA', (cadre.width, cadre.height), GlobalStyle.relief_color)
         relief = ImageTreatment.round_corners(relief, int(r + t))
         trame.paste(relief, (ow, oh), relief)
         trame.paste(cadre, (0, 0), cadre)

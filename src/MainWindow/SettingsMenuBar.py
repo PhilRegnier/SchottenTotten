@@ -13,20 +13,20 @@ class SettingsMenuBar:
 
         # TODO: class pour level et OOP du choix
 
-        self.level0_action = QAction('stupid boy', self)
+        self.level0_action = QAction('stupid boy', window)
         self.level0_action.setCheckable(True)
         self.level0_action.triggered.connect(self._set_level0)
 
-        self.level1_action = QAction('lightning', self)
+        self.level1_action = QAction('lightning', window)
         self.level1_action.setCheckable(True)
         self.level1_action.setChecked(True)
         self.level1_action.triggered.connect(self._set_level1)
 
-        self.sound_action = QAction('Play sounds', self)
+        self.sound_action = QAction('Play sounds', window)
         self.sound_action.setCheckable(True)
         self.sound_action.setStatusTip('Play sounds in the game')
 
-        self.round_nb_action = QAction('Rounds...\t (' + str(self.settings.get_number_of_rounds()) + ')', self)
+        self.round_nb_action = QAction('Rounds...\t (' + str(self.settings.get_number_of_rounds()) + ')', window)
         self.round_nb_action.triggered.connect(self._set_rounds)
         self.round_nb_action.setStatusTip('Set the number of rounds for a match')
 

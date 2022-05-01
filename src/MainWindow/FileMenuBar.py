@@ -8,12 +8,12 @@ class FileMenuBar:
 
         # Create actions for file menu
 
-        self.exit_action = QAction(QIcon('resources/images/exit.png'), '&Exit', self)
+        self.exit_action = QAction(QIcon('resources/images/exit.png'), '&Exit', window)
         self.exit_action.setShortcut('Ctrl+Q')
         self.exit_action.setStatusTip('Quit program')
         self.exit_action.triggered.connect(qApp.quit)
 
-        self.newGame_action = QAction(QIcon('resources/images/logo.png'), 'New game', self)
+        self.newGame_action = QAction(QIcon('resources/images/logo.png'), 'New game', window)
         self.newGame_action.setShortcut('Ctrl+N')
         self.newGame_action.setStatusTip('Start a new game')
         self.newGame_action.triggered.connect(lambda: self.new_game(window))

@@ -1,11 +1,10 @@
 from random import choice
 
-from PyQt5.QtGui import QColor
-
 from src.Scene.Game.Card import Card
 from src.Scene.Game.CardManager import CardManager
 from src.Scene.Game.Option import Option
 from src.Scene.Game.Player import Player
+from src.Scene.Game.ShiftManager import ShiftManager
 from src.Scene.Game.Statistics import Statistics
 from src.Scene.Game.Umpire import Umpire
 from src.SettingsManager import SettingsManager
@@ -13,19 +12,13 @@ from src.SettingsManager import SettingsManager
 
 class Automaton(Player):
 
-    def __init__(self, parent, name):
-        super().__init__(name)
+    def __init__(self, name, colors, parent):
+        super().__init__(name, colors)
         self.settingsManager = SettingsManager()
         self.cardManager = CardManager()
         self.statistics = Statistics(self.cardManager.colors)
         self.board = parent
 
-        # override player's colors style
-
-        self.color.side0 = QColor(70, 23, 0, 90)
-        self.color.side1 = QColor(255, 85, 0, 90)
-        self.color.hand = QColor(49, 53, 42, 150)
-        self.color.hand_pen = QColor(10, 11, 8)
     """
     Ask the automaton to play a card on his side
     """
@@ -38,19 +31,19 @@ class Automaton(Player):
         else:
             self.cervo0()
 
-        # move the card selected by cervo and draw a new one
+        # move the selected card and draw a new one
 
-        shift_card = self.cardManager.shift_card
-        shift_side = self.cardManager.shift_side
-        pos = shift_card.anchorPoint
-        shift_side.add_card(shift_card)
-        pos0 = self.playmat.pos() - shift_side.pos() + pos
-        self.cardManager.shift_card.moveTo(pos0, shift_card.anchorPoint)
+        shift_manager = ShiftManager()
+
+        pos = shift_manager.card.anchorPoint
+        shift_manager.side.add_card(shift_manager.card)
+        pos0 = self.playmat.pos() - shift_manager.side.pos() + pos
+        shift_manager.card.moveTo(pos0, shift_manager.card.anchorPoint)
 
         if self.board.deck.is_empty():
-            self.auto_hand[hand_nb] = -1
-            stats.removeAutoHand(hand_nb)
-            if sum(self.auto_hand) == -6:
+            self.hand.lose_a_card()
+            self.statistics.remove_from_hand(shift_manager.hand.numero)
+            if self.hand.is_empty():
                 self.ending = True
         else:
             new_card = self.board.deck.draw()
@@ -64,8 +57,9 @@ class Automaton(Player):
     Automate 0 : random card and random stone
     """
     def cervo0(self):
-        self.cardManager.set_shift_hand(choice(self.statistics.auto_lh()))
-        self.cardManager.set_shift_side(choice(self.statistics.auto_ls()))
+        shift_manager = ShiftManager()
+        shift_manager.set_hand(choice(self.statistics.auto_lh()))
+        shift_manager.set_side(choice(self.statistics.auto_ls()))
 
     """
     Automate 1 : first steps choice
@@ -96,21 +90,21 @@ class Automaton(Player):
                     # For flush pair(s)
 
                     if c[i] == c[j] and 3 > dvij > -3:
-                        for k in self.statistics.autoLs1():
+                        for k in self.statistics.auto_ls1():
                             if c[i] == self.cardManager.cards[self.sides[k].index[0]].couleur:
                                 dvik = v[i] - self.cardManager.cards[self.sides[k].index[0]].valeur
                                 if (dvij == 2 and dvik == 1) \
                                         or (dvij == -2 and dvik == -1) \
                                         or (dvij == 1 and dvik == 2) \
                                         or (dvij == -1 and dvik == -2):
-                                    options.append(Option(i, k, Umpire.cote_both))
+                                    options.append(Option(i, k, Umpire.COTE_BOTH))
 
                     # For pair(s)
 
                     if dvij == 0:
-                        for k in self.statistics.autoLs1():
+                        for k in self.statistics.auto_ls1():
                             if v[i] == Card.cards[self.sides[k].index[0]].valeur:
-                                options.append(Option(i, k, Umpire.cote_brelan))
+                                options.append(Option(i, k, Umpire.COTE_BRELAN))
 
         # 2 Search into sides with 2 cards
 
@@ -133,22 +127,22 @@ class Automaton(Player):
                 # Test if a card in the hand goes to flush third
 
                 if lcolor and lsuite:
-                    options.append(Option(i, k, Umpire.cote_both * 1.5))
+                    options.append(Option(i, k, Umpire.COTE_BOTH * 1.5))
 
                 # Test if a card in the hand goes to 3 of a kind
 
                 if dvij == 0 and dvik == 0:
-                    options.append(Option(i, k, Umpire.cote_brelan * 1.5))
+                    options.append(Option(i, k, Umpire.COTE_BRELAN * 1.5))
 
                 # Test if a card in the hand goes to color
 
                 if lcolor:
-                    options.append(Option(i, k, Umpire.cote_couleur))
+                    options.append(Option(i, k, Umpire.COTE_COULEUR))
 
                 # Test if a card in the hand goes to suite
 
                 if lsuite:
-                    options.append(Option(i, k, Umpire.cote_suite))
+                    options.append(Option(i, k, Umpire.COTE_SUITE))
 
         # 3 Search in the sides with 1 card
 
@@ -163,42 +157,42 @@ class Automaton(Player):
                 # Test if a card of the hand matchs for flush third
 
                 if lcolor and lsuite:
-                    options.append(Option(i, k, Umpire.cote_both))
+                    options.append(Option(i, k, Umpire.COTE_BOTH))
 
                 # Test if a card of the hand matchs for 3 of a kind
 
                 if dvij == 0:
-                    options.append(Option(i, k, Umpire.cote_brelan / 1.5))
+                    options.append(Option(i, k, Umpire.COTE_BRELAN / 1.5))
 
                 # Test if a card of the hand matchs for color
 
                 if lcolor:
-                    options.append(Option(i, k, Umpire.cote_couleur / 1.5))
+                    options.append(Option(i, k, Umpire.COTE_COULEUR / 1.5))
 
                 # Test if a card of the hand match for suite
 
                 if lsuite:
-                    options.append(Option(i, k, Umpire.cote_suite))
+                    options.append(Option(i, k, Umpire.COTE_SUITE))
 
         # Choosing the best combination
 
-        if options:
-            c = 0.0
-            k = 0
-            for i in range(len(options)):
-                c = max(c, options[i].cote)
-                if c == options[i].cote:
-                    k = i
+        shift_manager = ShiftManager()
 
-            self.cardManager.set_shift_hand(options[k].hand)
-            self.cardManager.set_shift_side(options[k].side)
+        if options:
+            best_option = options[0]
+            for option in options:
+                if option.cote > best_option.cote:
+                    best_option = option
+
+            shift_manager.set_hand(best_option.hand)
+            shift_manager.set_side(best_option.side)
             return
 
         # 4 Play a random card on a random free side
 
         if self.statistics.auto_ls0():
-            self.cardManager.set_shift_side(choice(self.statistics.auto_ls0()))
-            self.cardManager.set_shift_card(choice(self.hand.cards))
+            shift_manager.set_side(choice(self.statistics.auto_ls0()))
+            shift_manager.set_card(choice(self.hand.cards))
             return
 
         # 5 Last call...

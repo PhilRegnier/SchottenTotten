@@ -15,21 +15,14 @@ from src.Singleton import Singleton
 
 class CardManager(Singleton):
 
-    card_hover = -1
     card_dx = 0.
     zmax = 0.
 
     max_value = 9
     cards = []
-    total_cards = len(Card.colors) * max_value
-
     colors = ['jaune', 'vert', 'rouge', 'brun', 'bleu', 'violet']
 
-    shift_card = None
-    shift_side = None
-    shift_hand = None
-    dragged = False
-    moved_to_reorganize = False
+    total_cards = len(colors) * max_value
 
     def __init__(self):
         pass
@@ -41,19 +34,6 @@ class CardManager(Singleton):
             valeur = numero % cls.max_value + 1
             couleur = cls.colors[numero // cls.max_value]
             cls.cards.append(Card(numero, valeur, couleur))
-
-    @classmethod
-    def select(cls, card, side, hand):
-        cls.shift_card = card
-        cls.shift_side = side
-        cls.shift_hand = hand
-        cls.shift_sort = False
-        cls.dragged = False
-
-    @classmethod
-    def unselect(cls):
-        cls.shift_card = None
-        cls.shift_side = None
 
     @classmethod
     def set_zmax(cls, zmax):
@@ -70,39 +50,6 @@ class CardManager(Singleton):
     @classmethod
     def get_total_cards(cls):
         return cls.total_cards
-
-    @classmethod
-    def user_dont_want_to_reorganize(cls):
-        cls.moved_to_reorganize = False
-        cls.card_hover = -1
-
-    @classmethod
-    def user_want_to_reorganize(cls):
-        cls.moved_to_reorganize = True
-
-    @classmethod
-    def is_moved_to_reorganize(cls):
-        return cls.moved_to_reorganize
-
-    @classmethod
-    def is_dragged(cls):
-        return cls.dragged
-
-    @classmethod
-    def set_dragged(cls, flag):
-        cls.dragged = flag
-
-    @classmethod
-    def set_shift_card(cls, card):
-        cls.shift_card = card
-
-    @classmethod
-    def set_shift_hand(cls, hand):
-        cls.shift_hand = hand
-
-    @classmethod
-    def set_shift_side(cls, side):
-        cls.shift_side = side
 
     @classmethod
     def set_deck(cls, deck):

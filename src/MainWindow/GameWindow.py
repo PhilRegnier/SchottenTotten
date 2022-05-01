@@ -8,8 +8,7 @@ from PyQt5.QtWidgets import QMainWindow, QStatusBar
 
 from src.GameView import GameView
 from src.MainWindow.MenuBar import MenuBar
-from src.Scene.Game.Card import Card
-from src.Scene.Game.Stone import Stone
+from src.Scene.GameScene import GameScene
 from src.Style import GeometryStyle
 
 
@@ -18,13 +17,15 @@ class GameWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        # Create a new Schotten Totten game
+        # Create a new Schotten Totten game (scene & view)
 
-        self.game_view = GameView(self)
+        self.board = GameScene()
+        self.game_view = GameView(self.board)
 
         # Create the main window
 
-        self.setFixedSize(GameWindow.width, self.height())
+        self.set_height()
+        self.setFixedSize(GeometryStyle.main_width, GeometryStyle.main_height)
         self.setWindowTitle('Schotten Totten')
         self.setWindowIcon(QIcon('resources/images/logo.png'))
         self.setCentralWidget(self.game_view)
@@ -42,10 +43,8 @@ class GameWindow(QMainWindow):
 
         self.show()
 
-    def height(self):
-        view_height = self.game_view.height()
-        return int(4 * Stone.height + 4.33 * Card.height
-                   + cls.marge * 2 + 8 * cls.pen_width + 4 * Stone.marge + 40)
+    def set_height(self):
+        GeometryStyle.main_height = self.game_view.height() + 60
 
     def new_game(self):
         self.game_view.close()

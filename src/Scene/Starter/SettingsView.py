@@ -46,8 +46,8 @@ class SettingsView(Curtain):
 
         # Set "OK" and "CANCEL" buttons
 
-        self.ok_button = Clickable('reources/images/ok.png', 50, 50, 20, self, True)
-        self.cancel_button = Clickable('resources/images/cancel.png', 50, 50, 21, self, True)
+        self.ok_button = Clickable('ok.png', 50, 50, self, True)
+        self.cancel_button = Clickable('cancel.png', 50, 50, self, True)
 
         # Set the scene
 
@@ -74,3 +74,6 @@ class SettingsView(Curtain):
             self.settings.set_sounds_enabled(self.sound_slider.value() == 1)
             self.settings.set_difficulty(self.difficulty_slider.value())
             self.settings_view.animate_leaving()
+
+        else:
+            Curtain.mouseReleaseEvent(self, event)

@@ -1,16 +1,15 @@
 from src.Scene.Game.Hand import Hand
 from src.Scene.Game.Playmat import Playmat
 from src.Scene.Game.Side import Side
-from src.Style import ColorStyle
 
 
 class Player:
 
-    def __init__(self, name):
+    def __init__(self, name, colors):
         self.score = 0
-        self.color = ColorStyle()
+        self.colors = colors
         self.hand = Hand()
-        self.sides = [Side(i, self, self.color) for i in range(9)]
-        self.playmat = Playmat(self.color)
+        self.sides = [Side(i, self.colors, self) for i in range(9)]
+        self.playmat = Playmat(self.colors)
         self.name = name
 

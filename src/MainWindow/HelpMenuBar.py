@@ -9,7 +9,7 @@ class HelpMenuBar:
 
         # Create actions for help menu
 
-        self.rules_action = QAction(QIcon('resources/images/help.png'), 'Rules', self)
+        self.rules_action = QAction(QIcon('resources/images/help.png'), 'Rules', window)
         self.rules_action.setShortcut('F1')
         self.rules_action.setStatusTip('See the rules of Schotten Totten')
         self.rules_action.triggered.connect(self._show_rules)
@@ -17,7 +17,7 @@ class HelpMenuBar:
         self.about_action = QAction(
             QIcon('resources/images/info.png'),
             'About Schotten Totten...',
-            self
+            window
         )
         self.about_action.triggered.connect(lambda: self._show_info(window))
 

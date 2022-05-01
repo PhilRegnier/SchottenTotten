@@ -4,7 +4,6 @@
 from random import randint
 
 from PIL import Image
-from PyQt5 import QtCore
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QPixmap, QPen, QColor
 from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsLineItem
@@ -15,7 +14,6 @@ from src.Scene.Starter.Curtain import Curtain
 from src.SettingsManager import SettingsManager
 from src.TextInForeground import TextInForeground
 from src.ImageTreatment import ImageTreatment
-from src.variables_globales import selected
 
 
 class Chifoumi(Curtain):
@@ -37,15 +35,15 @@ class Chifoumi(Curtain):
         # set the items
 
         self.interro = QGraphicsPixmapItem()
-        image = Image.open('resources/images/interrogation.jpg')
+        image = Image.open('resources/images/chifoumi/interrogation.jpg')
         image.thumbnail((cw, cw))
         self.guess = QPixmap.fromImage(ImageTreatment.enluminure(image))
         self.interro.setPixmap(self.guess)
         self.interro.setParentItem(self)
 
-        self.pierre = Clickable('pierre.jpg', cw, cw, 2, self)
-        self.ciseaux = Clickable('ciseaux.jpg', cw, cw, 1, self)
-        self.feuille = Clickable('feuille.jpg', cw, cw, 0, self)
+        self.pierre = Clickable('chifoumi/pierre.jpg', cw, cw, self)
+        self.ciseaux = Clickable('chifoumi/ciseaux.jpg', cw, cw, self)
+        self.feuille = Clickable('chifoumi/feuille.jpg', cw, cw, self)
 
         self.sep = QGraphicsLineItem()
         self.sep.setPen(QPen(QColor(68, 68, 68, 255), 2))
@@ -130,6 +128,9 @@ class Chifoumi(Curtain):
             self.feuille.set_handled(True)
             self.ciseaux.set_handled(True)
             self.pierre.set_handled(True)
+
+        else:
+            Curtain.mouseReleaseEvent(self, event)
 
     def freeze(self):
         self.pierre.setAcceptHoverEvents(False)

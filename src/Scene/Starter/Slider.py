@@ -6,7 +6,7 @@ from PyQt5.QtGui import QBrush, QFont, QColor, QPen
 from PyQt5.QtWidgets import QGraphicsSimpleTextItem, QGraphicsItem
 
 from src.Scene.Starter.Handler import Handler
-from src.variables_globales import pen_width
+from src.Style import GeometryStyle
 
 
 class Slider(QGraphicsItem):
@@ -24,15 +24,16 @@ class Slider(QGraphicsItem):
     brush = QColor(255, 85, 0, 255)
     pen = QColor(21, 11, 127, 255)
 
-    def __init__(self, parentItem, title, npos=2, legend=['off', 'on']):
+    def __init__(self, parent_item, title, npos=2, legend=['off', 'on']):
         super().__init__()
 
         self.nStep = npos
         self.sliderHeight = 15.
         self.stepWidth = 40.
         self.sliderWidth = self.stepWidth * (npos - 1) + 2 * self.r
-        self.setParentItem(parentItem)
+        self.setParentItem(parent_item)
         self.setAcceptHoverEvents(True)
+        self.clicked = False
 
         self.xpos = [self.stepWidth * i for i in range(npos)]
 
@@ -88,7 +89,6 @@ class Slider(QGraphicsItem):
         wl = self.legend[npos - 1].x() + self.legend[npos - 1].boundingRect().width() - self.legend[0].x()
 
         self.width = max(wl, self.title.boundingRect().width())
-
         self.height = self.boundingRect().height() - ym
 
     def setSliderPosition(self, i):
@@ -109,9 +109,13 @@ class Slider(QGraphicsItem):
         return self.mini + self.sliderPosition * self.singleStep
 
     def boundingRect(self):
-        return QRectF(-pen_width / 2, -pen_width / 2, self.sliderWidth + pen_width, self.sliderHeight + pen_width)
+        return QRectF(
+            -GeometryStyle.pen_width / 2,
+            -GeometryStyle.pen_width / 2,
+            self.sliderWidth + GeometryStyle.pen_width,
+            self.sliderHeight + GeometryStyle.pen_width)
 
-    def paint(self, painter, option, widget):
+    def paint(self, painter, option, widget=0):
         # assembly of 3 roundedRects
 
         painter.setBrush(QBrush(self.colorBack))
@@ -143,33 +147,31 @@ class Slider(QGraphicsItem):
 
     def mousePressEvent(self, event):
         # valide le click
-        global clicked
         if not event.button() == Qt.LeftButton:
             return
         self.setCursor(Qt.ClosedHandCursor)
-        clicked = True
+        self.clicked = True
 
     def mouseReleaseEvent(self, event):
         # et renvoie cette position dans sliderPosition
         # if on/off case, change state on click
-        global clicked
 
-        if clicked:
+        if self.clicked:
 
             # set the position to the nearest slot
 
-            xh = self.pos().x()
+            released_position = self.pos().x()
+            anchor_position = self.xpos[0]
 
-            dx1 = abs(xh - self.xpos[0])
-            for i in range(self.nStep - 1):
-                dx2 = abs(xh - self.xpos[i + 1])
-                if dx1 > dx2:
-                    self.handler.setPosition(self.xpos[i], self.handler.pos().y())
-                    break
+            delta = abs(released_position - anchor_position)
+
+            for x in self.xpos:
+                new_delta = abs(released_position - x)
+                if new_delta < delta:
+                    delta = new_delta
+                    anchor_position = x
                 else:
-                    self.handler.setPosition(self.xpos[i + 1], self.handler.pos().y())
                     break
 
-                dx1 = dx2
-
-            clicked = False
+            self.handler.setPosition(anchor_position, self.handler.pos().y())
+            self.clicked = False

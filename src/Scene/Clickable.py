@@ -3,18 +3,21 @@
 #
 from PIL import Image
 from PyQt5 import QtCore, QtGui
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QGraphicsPixmapItem
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap, QCursor
+from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsItem
 
 from src.ImageTreatment import ImageTreatment
 from src.Scene.Game.Shader import Shader
 from src.Style import GlobalStyle
-from src.variables_globales import clicked
 
 
 class Clickable(QGraphicsPixmapItem):
 
-    def __init__(self, file, width, height, num, parent, back=False):
+    instance_hover = None
+    instance_clicked = None
+
+    def __init__(self, file, width, height, parent, back=False):
         super().__init__()
 
         image = Image.open('resources/images/' + file)
@@ -25,7 +28,10 @@ class Clickable(QGraphicsPixmapItem):
         image.thumbnail((width, height))
         self.setPixmap(QPixmap.fromImage(ImageTreatment.enluminure(image)))
         self.setParentItem(parent)
+        self.setCursor(QCursor(Qt.PointingHandCursor))
         self.setAcceptHoverEvents(True)
+        self.setAcceptedMouseButtons(Qt.LeftButton)
+        self.setFlag(QGraphicsItem.ItemIsSelectable)
 
         self.ombrage = Shader()
         self.setGraphicsEffect(self.ombrage)
@@ -41,21 +47,25 @@ class Clickable(QGraphicsPixmapItem):
         self.handled = False
 
     def hoverEnterEvent(self, event):
-        self.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        print("clickable: hoverEnter")
+        Clickable.instance_hover = self
         self.anchor_point = self.pos()
         self.setPos(self.x() - 2, self.y() - 2)
         self.ombrage.setEnabled(True)
 
     def hoverLeaveEvent(self, event):
-        self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        print("clickable: hoverLeave")
+        Clickable.instance_hover = None
         self.setPos(self.anchor_point)
         self.ombrage.setEnabled(False)
 
     def mousePressEvent(self, event):
-        if event.button() == QtCore.Qt.LeftButton:
+        print("clickable: mousePress")
+        if event.button() == Qt.LeftButton:
             self.clicked = True
 
     def mouseReleaseEvent(self, event):
+        print("clickable: mouseRelease")
         if self.clicked:
             self.ombrage.setColor(GlobalStyle.ombrage_color_bt)
             self.clicked = False

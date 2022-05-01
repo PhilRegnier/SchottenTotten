@@ -14,10 +14,11 @@ from src.Style import GlobalStyle, GeometryStyle
 
 class Deck(QGraphicsPixmapItem):
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
 
         self.cardManager = CardManager()
+        self.nombre_cartes = self.cardManager.get_total_cards()
 
         # geometry
 
@@ -27,8 +28,6 @@ class Deck(QGraphicsPixmapItem):
         self.height = 0
 
         self._stack()
-
-        self.nombre_cartes = self.cardManager.get_total_cards()
 
         # ask to make a random deck
 
@@ -58,6 +57,7 @@ class Deck(QGraphicsPixmapItem):
         t = 1
         ow = 1
         oh = 1
+
         image = Image.open("resources/images/cartes/back.jpg")
         image.thumbnail((Card.width - 2 * t, Card.height - 2 * t))
         image = ImageTreatment.round_corners(image, int(r))
