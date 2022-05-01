@@ -73,13 +73,16 @@ class HomeCurtain(Curtain):
         print("home: mouseRelease")
 
         if self.starting_button.selected:
+            print("home: mouseRelease: starting selected")
             if not self.starting_button.handled:
+                print("home: mouseRelease: starting selected not handled")
                 self.starting_button.set_handled(True)
-                self.chifoumi.setVisible(True)
+                #self.chifoumi.setVisible(True)
                 self.chifoumi.animate_incoming()
                 self.chifoumi.start()
 
             else:
+                print("home: mouseRelease: starting selected handled")
                 if self.settings.get_first_player() is None:
                     self.chifoumi.restart()
                 else:
@@ -95,12 +98,15 @@ class HomeCurtain(Curtain):
             return
 
         if self.settings_button.selected:
+            print("home: mouseRelease: settings selected")
             if not self.settings_button.handled:
+                print("home: mouseRelease: settings selected not handled")
                 self.settings_button.set_handled(True)
-                self.settings_view.setVisible(True)
+                #self.settings_view.setVisible(True)
                 self.settings_view.animate_incoming()
 
             else:
+                print("home: mouseRelease: settings selected handled")
                 self.settings_button.unselect()
                 if self.settings_view.ok_button.selected or self.settings_view.cancel_button.selected:
                     self.settings_view.animate_leaving()
@@ -108,7 +114,6 @@ class HomeCurtain(Curtain):
             return
 
         Curtain.mouseReleaseEvent(self, event)
-
 
     def start_the_game(self):
         self.text.setVisible(False)

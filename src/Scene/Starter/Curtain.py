@@ -1,7 +1,7 @@
 #
 # curtain for transition
 #
-from PyQt5.QtCore import QRectF, QPointF, QPropertyAnimation
+from PyQt5.QtCore import QRectF, QPointF, QPropertyAnimation, QEasingCurve
 from PyQt5.QtGui import QColor, QBrush, QPen
 from PyQt5.QtWidgets import QGraphicsObject
 
@@ -17,6 +17,7 @@ class Curtain(QGraphicsObject):
         self.gradient = GradientStyle(GameScene.height, QColor(0, 85, 127, 255), QColor(0, 37, 54, 255))
         self.setVisible(False)
         self.setPos(0, 0)
+        self.anim = None
 
     def boundingRect(self):
         from src.Scene.GameScene import GameScene
@@ -36,20 +37,22 @@ class Curtain(QGraphicsObject):
         painter.drawRoundedRect(rect, GeometryStyle.r_bound, GeometryStyle.r_bound)
 
     def animate_incoming(self):
-        anim = QPropertyAnimation(self, b"pos")
-        anim.setDuration(800)
-        anim.setStartValue(QPointF(0, -self.boundingRect().height()))
-        anim.setEndValue(QPointF(0, 0))
+        self.anim = QPropertyAnimation(self, b"pos")
+        self.anim.setEasingCurve(QEasingCurve.OutBounce)
+        self.anim.setDuration(800)
+        self.anim.setStartValue(QPointF(0, -self.boundingRect().height()))
+        self.anim.setEndValue(QPointF(0, 0))
         self.setVisible(True)
-        anim.start()
+        self.anim.start()
 
     def animate_leaving(self):
-        anim = QPropertyAnimation(self, b"pos")
-        anim.setDuration(800)
-        anim.setStartValue(QPointF(0, 0))
-        anim.setEndValue(QPointF(0, -self.boundingRect().height()))
-        anim.finished.connect(self.remove)
-        anim.start()
+        self.anim = QPropertyAnimation(self, b"pos")
+        self.anim.setEasingCurve(QEasingCurve.InCubic)
+        self.anim.setDuration(800)
+        self.anim.setStartValue(QPointF(0, 0))
+        self.anim.setEndValue(QPointF(0, -self.boundingRect().height()))
+        self.anim.finished.connect(self.remove)
+        self.anim.start()
 
     def remove(self):
         self.setVisible(False)

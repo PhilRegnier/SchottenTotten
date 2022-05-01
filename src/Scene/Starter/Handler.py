@@ -55,7 +55,7 @@ class Handler(QGraphicsItem):
         pen_width = 1.0
         return QRectF(-pen_width / 2, -pen_width / 2, 2 * self.r + pen_width, 2 * self.r + pen_width)
 
-    def paint(self, painter, option, widget):
+    def paint(self, painter, option, widget=0):
         painter.setPen(Qt.NoPen)
         painter.setBrush(self.parentItem().colorBack)
         r = 2 * int(self.r)
