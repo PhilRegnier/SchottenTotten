@@ -16,7 +16,7 @@ class FileMenuBar:
         self.newGame_action = QAction(QIcon('resources/images/logo.png'), 'New game', window)
         self.newGame_action.setShortcut('Ctrl+N')
         self.newGame_action.setStatusTip('Start a new game')
-        self.newGame_action.triggered.connect(lambda: self.new_game(window))
+        self.newGame_action.triggered.connect(lambda: FileMenuBar.new_game(window))
 
     def get_new_game_action(self):
         return self.newGame_action
@@ -25,7 +25,7 @@ class FileMenuBar:
         return self.exit_action
 
     @staticmethod
-    def new_game(self, window):
+    def new_game(window):
 
         # Ask before creating a new game
 

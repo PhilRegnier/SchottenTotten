@@ -34,6 +34,7 @@ class GameWindow(QMainWindow):
 
         menu_bar = MenuBar(self)
         menu_bar.add_menus()
+        self.setMenuBar(menu_bar)
 
         # Display info about actions in the status bar
 

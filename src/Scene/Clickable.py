@@ -17,8 +17,8 @@ class Clickable(QGraphicsPixmapItem):
     instance_hover = None
     instance_clicked = None
 
-    def __init__(self, file, width, height, parent, back=False):
-        super().__init__()
+    def __init__(self, file, width, height, parent_item, back=False):
+        super().__init__(parent_item)
 
         image = Image.open('resources/images/' + file)
         if back:
@@ -27,7 +27,7 @@ class Clickable(QGraphicsPixmapItem):
 
         image.thumbnail((width, height))
         self.setPixmap(QPixmap.fromImage(ImageTreatment.enluminure(image)))
-        self.setParentItem(parent)
+        self.setParentItem(parent_item)
         self.setCursor(QCursor(Qt.PointingHandCursor))
         self.setAcceptHoverEvents(True)
         self.setAcceptedMouseButtons(Qt.LeftButton)
@@ -63,6 +63,8 @@ class Clickable(QGraphicsPixmapItem):
         print("clickable: mousePress")
         if event.button() == Qt.LeftButton:
             self.clicked = True
+        else:
+            QGraphicsPixmapItem.mousePressEvent(self, event)
 
     def mouseReleaseEvent(self, event):
         print("clickable: mouseRelease")
@@ -70,6 +72,9 @@ class Clickable(QGraphicsPixmapItem):
             self.ombrage.setColor(GlobalStyle.ombrage_color_bt)
             self.clicked = False
             self.selected = True
+            self.parentItem().mouseReleaseEvent(event)
+
+        #QGraphicsPixmapItem.mouseReleaseEvent(self, event)
 
     def width(self):
         return self.boundingRect().width()

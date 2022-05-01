@@ -5,7 +5,6 @@ from PyQt5.QtCore import QRectF, QPointF, QPropertyAnimation
 from PyQt5.QtGui import QColor, QBrush, QPen
 from PyQt5.QtWidgets import QGraphicsObject
 
-from src.Scene.Game.Side import Side
 from src.Style import GradientStyle, GeometryStyle
 
 
@@ -55,5 +54,3 @@ class Curtain(QGraphicsObject):
     def remove(self):
         self.setVisible(False)
 
-    def mouseReleaseEvent(self, event):
-        QGraphicsObject.mouseReleaseEvent(self, event)

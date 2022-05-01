@@ -10,7 +10,7 @@ class MenuBar(QMenuBar):
     # Prepare the menus
 
     def __init__(self, window):
-        super().__init__()
+        super().__init__(window)
 
         self.fileMenuBar = FileMenuBar(window)
         self.settingsMenuBar = SettingsMenuBar(window)
@@ -26,7 +26,7 @@ class MenuBar(QMenuBar):
         file_menu.addAction(self.fileMenuBar.get_exit_action())
 
         settings_menu = self.addMenu('&Config')
-        level = settings_menu.addMenu("Level")
+        level = settings_menu.addMenu("Difficulty level")
         level.addAction(self.settingsMenuBar.get_level0_action())
         level.addAction(self.settingsMenuBar.get_level1_action())
         settings_menu.addAction(self.settingsMenuBar.get_sound_action())

@@ -36,6 +36,7 @@ class GameScene(QGraphicsScene):
         self.player = Player('humain', PlayerColors)
         self.automaton = Automaton('Bot', AutomatonColors, self)
         self.umpire = Umpire()
+        self.current_round = 1
 
         self.new_order = []
         self.itemsSelected = []
