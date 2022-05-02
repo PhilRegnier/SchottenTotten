@@ -2,7 +2,6 @@
 # Home panel
 #
 from PIL import Image, ImageQt
-from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
@@ -11,7 +10,6 @@ from src.Scene.Clickable import Clickable
 from src.Scene.Starter.Curtain import Curtain
 from src.Scene.Starter.SettingsView import SettingsView
 from src.SettingsManager import SettingsManager
-from src.TextInForeground import TextInForeground
 
 
 class HomeCurtain(Curtain):
@@ -37,8 +35,6 @@ class HomeCurtain(Curtain):
         image.thumbnail((2 * cw, 2 * cw))
         self.titre.setPixmap(QPixmap.fromImage(ImageQt.ImageQt(image)))
         self.titre.setParentItem(self)
-
-        self.text = None
 
         # settings and starting buttons
 
@@ -70,52 +66,19 @@ class HomeCurtain(Curtain):
         self.starting_button.setPos(ww / 2 + ew, wh / 2 + ew)
 
     def mouseReleaseEvent(self, event):
-        print("home: mouseRelease")
 
         if self.starting_button.selected:
-            print("home: mouseRelease: starting selected")
-            if not self.starting_button.handled:
-                print("home: mouseRelease: starting selected not handled")
-                self.starting_button.set_handled(True)
-                #self.chifoumi.setVisible(True)
-                self.chifoumi.animate_incoming()
-                self.chifoumi.start()
-
-            else:
-                print("home: mouseRelease: starting selected handled")
-                if self.settings.get_first_player() is None:
-                    self.chifoumi.restart()
-                else:
-                    if self.settings.get_first_player() == self.settings.CONST_PLAYER:
-                        self.text = TextInForeground("YOU ARE FIRST PLAYER !!", self.chifoumi)
-                    else:
-                        self.text = TextInForeground("AUTOMATE IS FIRST PLAYER !!", self.chifoumi)
-
-                    self.text.setVisible(True)
-                    self.chifoumi.freeze()
-                    QTimer.singleShot(3000, self.start_the_game)
-
+            self.starting_button.reset()
+            self.chifoumi.animate_incoming()
+            self.chifoumi.start()
             return
 
         if self.settings_button.selected:
-            print("home: mouseRelease: settings selected")
-            if not self.settings_button.handled:
-                print("home: mouseRelease: settings selected not handled")
-                self.settings_button.set_handled(True)
-                #self.settings_view.setVisible(True)
-                self.settings_view.animate_incoming()
-
-            else:
-                print("home: mouseRelease: settings selected handled")
-                self.settings_button.unselect()
-                if self.settings_view.ok_button.selected or self.settings_view.cancel_button.selected:
-                    self.settings_view.animate_leaving()
-
+            self.settings_button.reset()
+            self.settings_view.animate_incoming()
             return
 
         Curtain.mouseReleaseEvent(self, event)
 
     def start_the_game(self):
-        self.text.setVisible(False)
-        self.chifoumi.animate_leaving()
         self.animate_leaving()

@@ -33,16 +33,16 @@ class SettingsView(Curtain):
         self.difficulty_slider = Slider(self, 'Difficulty', 2, ['dumb', 'spicy'])
         self.rounds_slider = Slider(self, 'Number of rounds', 5, ['1', '2', '3', '4', '5'])
 
-        self.rounds_slider.setRange(1, 5)
+        self.rounds_slider.set_range(1, 5)
 
         if self.settings.is_sounds_enabled():
-            self.sound_slider.setSliderPosition(1)
+            self.sound_slider.set_position(1)
 
         if self.settings.get_variant():
-            self.variant_slider.setSliderPosition(1)
+            self.variant_slider.set_position(1)
 
-        self.difficulty_slider.setSliderPosition(self.settings.get_difficulty())
-        self.rounds_slider.setSliderPosition(self.settings.get_number_of_rounds() - 1)
+        self.difficulty_slider.set_position(self.settings.get_difficulty())
+        self.rounds_slider.set_position(self.settings.get_number_of_rounds() - 1)
 
         # Set "OK" and "CANCEL" buttons
 
@@ -73,7 +73,12 @@ class SettingsView(Curtain):
             self.settings.set_number_of_rounds(self.rounds_slider.value())
             self.settings.set_sounds_enabled(self.sound_slider.value() == 1)
             self.settings.set_difficulty(self.difficulty_slider.value())
-            self.settings_view.animate_leaving()
+            self.ok_button.unselect()
+            self.animate_leaving()
+
+        elif self.cancel_button.selected:
+            self.cancel_button.unselect()
+            self.animate_leaving()
 
         else:
             Curtain.mouseReleaseEvent(self, event)

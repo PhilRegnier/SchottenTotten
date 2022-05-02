@@ -71,18 +71,10 @@ class Chifoumi(Curtain):
 
     def start(self):
         self.text1.setVisible(True)
-
-    def restart(self):
-        self.text2.setVisible(True)
         self.interro.setPixmap(self.guess)
         self.pierre.reset()
         self.ciseaux.reset()
         self.feuille.reset()
-        QTimer.singleShot(3000, self.restart_countdown)
-
-    def restart_countdown(self):
-        self.text2.setVisible(False)
-        self.start()
 
     """
         When the player has chosen his hand, this method
@@ -90,9 +82,7 @@ class Chifoumi(Curtain):
     """
     def mouseReleaseEvent(self, event):
 
-        if (self.feuille.selected and not self.feuille.handled) \
-                or (self.ciseaux.selected and not self.ciseaux.handled) \
-                or (self.pierre.selected and not self.pierre.handled):
+        if self.feuille.selected or self.ciseaux.selected or self.pierre.selected:
 
             self.text1.setVisible(False)
             self.text2.setVisible(False)
@@ -100,19 +90,26 @@ class Chifoumi(Curtain):
             # automaton's choice (0=feuille, 1=ciseaux, 2=pierre)
 
             autoc = randint(0, 2)
+            tie = False
 
             if autoc == 0:
                 self.interro.setPixmap(self.feuille.pixmap())
                 if self.feuille.selected:
-                    self.settings.set_first_player(None)
+                    tie = True
             elif autoc == 1:
                 self.interro.setPixmap(self.ciseaux.pixmap())
                 if self.ciseaux.selected:
-                    self.settings.set_first_player(None)
+                    tie = True
             else:
                 self.interro.setPixmap(self.pierre.pixmap())
                 if self.pierre.selected:
-                    self.settings.set_first_player(None)
+                    tie = True
+
+            if tie:
+                text = TextInForeground("TIE !!\n\n", self)
+                text.setVisible(True)
+                QTimer.singleShot(3000, self.start)
+                return
 
             # verdict if not equality
 
@@ -120,21 +117,22 @@ class Chifoumi(Curtain):
                     or (self.ciseaux.selected and autoc == 0) \
                     or (self.pierre.selected == 2 and autoc == 1):
                 self.settings.set_first_player(self.settings.CONST_PLAYER)
+                text = TextInForeground("YOU ARE FIRST PLAYER !!", self)
             else:
                 self.settings.set_first_player(self.settings.CONST_AUTOMATON)
+                text = TextInForeground("AUTOMATON IS FIRST PLAYER !!", self)
 
-            # terminate by setting the choice handled
-
-            self.feuille.set_handled(True)
-            self.ciseaux.set_handled(True)
-            self.pierre.set_handled(True)
+            text.setVisible(True)
+            self.pierre.setAcceptHoverEvents(False)
+            self.ciseaux.setAcceptHoverEvents(False)
+            self.feuille.setAcceptHoverEvents(False)
+            QTimer.singleShot(3000, lambda: self.leave(text))
+            return
 
         else:
             Curtain.mouseReleaseEvent(self, event)
 
-    def freeze(self):
-        self.pierre.setAcceptHoverEvents(False)
-        self.ciseaux.setAcceptHoverEvents(False)
-        self.feuille.setAcceptHoverEvents(False)
-
-
+    def leave(self, text):
+        text.setVisible(False)
+        self.animate_leaving()
+        self.parentItem().start_the_game()

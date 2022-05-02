@@ -38,52 +38,40 @@ class Clickable(QGraphicsPixmapItem):
         self.anchor_point = None
         self.clicked = False
         self.selected = False
-        self.handled = False
 
     def reset(self):
-        self.anchor_point = None
         self.clicked = False
         self.selected = False
-        self.handled = False
 
     def hoverEnterEvent(self, event):
-        print("clickable: hoverEnter")
         Clickable.instance_hover = self
         self.anchor_point = self.pos()
         self.setPos(self.x() - 2, self.y() - 2)
         self.ombrage.setEnabled(True)
 
     def hoverLeaveEvent(self, event):
-        print("clickable: hoverLeave")
         Clickable.instance_hover = None
         self.setPos(self.anchor_point)
         self.ombrage.setEnabled(False)
 
     def mousePressEvent(self, event):
-        print("clickable: mousePress")
         if event.button() == Qt.LeftButton:
             self.clicked = True
         else:
             QGraphicsPixmapItem.mousePressEvent(self, event)
 
     def mouseReleaseEvent(self, event):
-        print("clickable: mouseRelease")
         if self.clicked:
             self.ombrage.setColor(GlobalStyle.ombrage_color_bt)
             self.clicked = False
             self.selected = True
             self.parentItem().mouseReleaseEvent(event)
 
-        #QGraphicsPixmapItem.mouseReleaseEvent(self, event)
-
     def width(self):
         return self.boundingRect().width()
 
     def height(self):
         return self.boundingRect().height()
-
-    def set_handled(self, flag):
-        self.handled = flag
 
     def unselect(self):
         self.selected = False

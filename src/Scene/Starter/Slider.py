@@ -16,7 +16,7 @@ class Slider(QGraphicsItem):
     singleStep = 1
     sliderPosition = 0
     relief_offset = 3.
-    r = 5.
+    radius = 5.
 
     colorBack = QColor(53, 53, 43, 255)
     colorLeft = QColor(170, 28, 0, 255)
@@ -24,13 +24,15 @@ class Slider(QGraphicsItem):
     brush = QColor(255, 85, 0, 255)
     pen = QColor(21, 11, 127, 255)
 
-    def __init__(self, parent_item, title, npos=2, legend=['off', 'on']):
+    def __init__(self, parent_item, title, npos=2, legend=None):
         super().__init__()
 
+        if legend is None:
+            legend = ['off', 'on']
         self.nStep = npos
         self.sliderHeight = 15.
         self.stepWidth = 40.
-        self.sliderWidth = self.stepWidth * (npos - 1) + 2 * self.r
+        self.sliderWidth = self.stepWidth * (npos - 1) + 2 * Slider.radius
         self.setParentItem(parent_item)
         self.setAcceptHoverEvents(True)
         self.clicked = False
@@ -51,15 +53,15 @@ class Slider(QGraphicsItem):
             self.legend[i].setParentItem(self)
 
         if npos > 2:
-            ym = self.y() - self.legend[0].boundingRect().height() - self.r
+            ym = self.y() - self.legend[0].boundingRect().height() - Slider.radius
             for i in range(npos):
                 xm = self.x() + i * self.stepWidth - self.legend[i].boundingRect().width()
                 self.legend[i].setPos(xm, ym)
         else:
             ym = self.y()
-            xm = self.x() - self.legend[0].boundingRect().width() - self.r
+            xm = self.x() - self.legend[0].boundingRect().width() - Slider.radius
             self.legend[0].setPos(xm, ym)
-            xm = self.x() + self.boundingRect().width() + self.r
+            xm = self.x() + self.boundingRect().width() + Slider.radius
             self.legend[1].setPos(xm, ym)
 
         # title
@@ -91,18 +93,18 @@ class Slider(QGraphicsItem):
         self.width = max(wl, self.title.boundingRect().width())
         self.height = self.boundingRect().height() - ym
 
-    def setSliderPosition(self, i):
+    def set_position(self, i):
         self.sliderPosition = i
         x = self.x() + i * self.stepWidth
         y = self.y() + 3
-        self.handler.setPosition(x, y)
+        self.handler.set_position(x, y)
 
-    def setRange(self, i, j):
+    def set_range(self, i, j):
         self.mini = i
         self.maxi = j
-        self.setSingleStep()
+        self.set_single_step()
 
-    def setSingleStep(self):
+    def set_single_step(self):
         self.singleStep = (self.maxi - self.mini) / self.nStep
 
     def value(self):
@@ -121,18 +123,18 @@ class Slider(QGraphicsItem):
         painter.setBrush(QBrush(self.colorBack))
         painter.setPen(QPen(self.pen, 1))
         rect = QRectF(0., 0., float(self.sliderWidth), float(self.sliderHeight))
-        painter.drawRoundedRect(rect, self.r, self.r)
+        painter.drawRoundedRect(rect, Slider.radius, Slider.radius)
 
         painter.setBrush(QBrush(self.colorLeft))
         painter.setPen(Qt.NoPen)
         rect = QRectF(self.relief_offset, self.relief_offset, self.handler.x() + self.handler.boundingRect().width(),
                       float(self.sliderHeight))
-        painter.drawRoundedRect(rect, self.r, self.r)
+        painter.drawRoundedRect(rect, Slider.radius, Slider.radius)
 
         painter.setBrush(QBrush(self.colorRight))
         painter.setPen(Qt.NoPen)
         rect = QRectF(self.handler.x(), 0., float(self.sliderWidth), float(self.sliderHeight))
-        painter.drawRoundedRect(rect, self.r, self.r)
+        painter.drawRoundedRect(rect, Slider.radius, Slider.radius)
 
     #    def setOn(self):
     # Brighter and colorful button if "on" chosen in "on/off" case
@@ -173,5 +175,5 @@ class Slider(QGraphicsItem):
                 else:
                     break
 
-            self.handler.setPosition(anchor_position, self.handler.pos().y())
+            self.handler.set_position(anchor_position, self.handler.pos().y())
             self.clicked = False

@@ -2,7 +2,7 @@
 # Slider's button
 # ------------------------------------------------------------------------------------------------------
 
-from PyQt5.QtCore import QRectF, QPointF
+from PyQt5.QtCore import Qt, QRectF, QPointF
 from PyQt5.QtWidgets import QGraphicsItem
 
 
@@ -18,13 +18,13 @@ class Handler(QGraphicsItem):
         self.setParentItem(parent_item)
         self.anchor_point = QPointF()
 
-        self.r = self.parentItem().r
         self.xmin = self.parentItem().x()
         self.xmax = self.xmin + self.parentItem().boundingRect().width()
+        self.clicked = False
 
-    def setPosition(self, x, y):
+    def set_position(self, x, y):
         self.setPos(x, y)
-        self.anchorPoint = self.pos()
+        self.anchor_point = self.pos()
 
     def hoverEnterEvent(self, event):
         self.setCursor(Qt.OpenHandCursor)
@@ -33,16 +33,14 @@ class Handler(QGraphicsItem):
         self.setCursor(Qt.ArrowCursor)
 
     def mousePressEvent(self, event):
-        global clicked
         if not event.button() == Qt.LeftButton:
             return
-        clicked = True
+        self.clicked = True
 
     def mouseMoveEvent(self, event):
-        # ensure it's a legal move
-        if clicked:
+        if self.clicked:
             xh = event.pos().x()
-            yh = self.anchorPoint.y()
+            yh = self.anchor_point.y()
 
             if xh < self.xmin:
                 xh = self.xmin
@@ -52,11 +50,18 @@ class Handler(QGraphicsItem):
             self.setPos(xh, yh)
 
     def boundingRect(self):
+        from src.Scene.Starter.Slider import Slider
+
         pen_width = 1.0
-        return QRectF(-pen_width / 2, -pen_width / 2, 2 * self.r + pen_width, 2 * self.r + pen_width)
+        return QRectF(-pen_width / 2,
+                      -pen_width / 2,
+                      2 * Slider.radius + pen_width,
+                      2 * Slider.radius + pen_width)
 
     def paint(self, painter, option, widget=0):
+        from src.Scene.Starter.Slider import Slider
+
         painter.setPen(Qt.NoPen)
-        painter.setBrush(self.parentItem().colorBack)
-        r = 2 * int(self.r)
+        painter.setBrush(Slider.colorBack)
+        r = 2 * int(Slider.radius)
         painter.drawEllipse(0, 0, r, r)
