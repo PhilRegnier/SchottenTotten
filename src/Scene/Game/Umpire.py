@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QTimer
 
-from src.Scene.Game import ShiftManager
+from src.Scene.Game.ShiftManager import ShiftManager
 from src.Scene.Game.Side import Side
 from src.Scene.Game.Stone import Stone
 from src.Scene.Starter.Curtain import Curtain
@@ -70,68 +70,72 @@ class Umpire:
     """
     Compare each sides of the stones and test for victory
     """
-    def judge(self, player_side, automaton_side, stone):
+    def judge(self, player, automaton, stones):
 
-        if player_side.is_full() and automaton_side.is_full():
-            stone.claim(player_side.somme, automaton_side.somme)
+        shift_manager = ShiftManager()
+
+        index = shift_manager.side.numero
+
+        if player.sides[index].is_full() and automaton.sides[index].is_full():
+            stones[index].claim(player.sides[index].somme, automaton.sides[index].somme)
 
         # party endding
-
-        uss = 0
-        aus = 0
 
         if Umpire.final_countdown:
 
             # Finish to claim stones
 
             for i in range(9):
-                if not self.stone[i].winner:
-                    if self.user_side[i].somme > self.auto_side[i].somme:
-                        self.stone[i].winner = "user"
-                        self.stone[i].moveStoneTo(Side.height + 6 + Stone.height)
-                    elif self.user_side[i].somme < self.auto_side[i].somme:
-                        self.stone[i].winner = "auto"
-                        self.stone[i].moveStoneTo(-Side.height - 6 - Stone.height)
+                if not stones[i].winner:
+                    if player.sides[i].somme > automaton.sides[i].somme:
+                        stones[i].winner = "user"
+                        stones[i].moveStoneTo(Side.height + 6 + Stone.height)
+                    elif player.sides[i].somme < automaton.sides[i].somme:
+                        stones[i].winner = "auto"
+                        stones[i].moveStoneTo(-Side.height - 6 - Stone.height)
                     else:
-                        self.stone[i].winner = "equal"
+                        stones[i].winner = "equal"
 
             # count stones won
 
+            player_sides_won = 0
+            automaton_sides_won = 0
+
             for i in range(9):
-                if self.stone[i].winner == "user":
-                    uss += 1
-                elif self.stone[i].winner == "auto":
-                    aus += 1
+                if stones[i].winner == "user":
+                    player_sides_won += 1
+                elif stones[i].winner == "auto":
+                    automaton_sides_won += 1
 
         # check if 3 stones are aligned
 
         ucount = 0
         acount = 0
-        ul = False
-        al = False
+        player_3_stones_in_a_row = False
+        automaton_3_stones_in_a_row = False
         uw = False
         aw = False
 
         for i in range(9):
-            if self.stone[i].winner == "user":
-                al = False
+            if stones[i].winner == "user":
+                automaton_3_stones_in_a_row = False
                 acount = 0
-                if ul:
+                if player_3_stones_in_a_row:
                     ucount += 1
                 else:
-                    ul = True
+                    automaton_3_stones_in_a_row = True
                     ucount += 1
 
                 if ucount == 3:
                     uw = True
 
-            elif self.stone[i].winner == "auto":
-                ul = False
+            elif stones[i].winner == "auto":
+                player_3_stones_in_a_row = False
                 ucount = 0
-                if al:
+                if automaton_3_stones_in_a_row:
                     acount += 1
                 else:
-                    al = True
+                    automaton_3_stones_in_a_row = True
                     acount += 1
 
                 if acount == 3:
@@ -140,8 +144,8 @@ class Umpire:
             else:
                 ucount = 0
                 acount = 0
-                ul = False
-                al = False
+                player_3_stones_in_a_row = False
+                automaton_3_stones_in_a_row = False
 
         if uw and not aw:
             self.victory("user")

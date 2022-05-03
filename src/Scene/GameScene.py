@@ -153,7 +153,6 @@ class GameScene(QGraphicsScene):
         self.umpire.final_countdown = False
 
     def mouseMoveEvent(self, event):
-        #print("gamescene: mouseMove")
         shift_manager = ShiftManager()
 
         if shift_manager.dragged:
@@ -297,11 +296,11 @@ class GameScene(QGraphicsScene):
                 if shift_manager.side.is_full():
                     self.umpire.book(shift_manager.side)
 
-                self.umpire.judge(shift_manager.side)
+                self.umpire.judge()
 
                 shift_manager.reset()
 
-                # Run automate's turn
+                # Run automaton's turn
 
                 self.automaton.play_a_card()
 
@@ -336,7 +335,7 @@ class GameScene(QGraphicsScene):
      cheat mode: show automaton's hand in a subwindow
     """
     def show_automaton_hand_view(self):
-        self.board.addItem(self.auto_deck)
+        self.addItem(self.automaton.hand)
 
     def hide_automaton_hand_view(self):
-        self.board.removeItem(self.auto_deck)
+        self.removeItem(self.automaton.hand)
