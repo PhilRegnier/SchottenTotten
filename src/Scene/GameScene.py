@@ -246,12 +246,12 @@ class GameScene(QGraphicsScene):
         animations.start()
     """
     def mouseReleaseEvent(self, event):
-        print("gamescene: mouseRelease")
+        print("gamescene: mouseRelease", self.home.starting_button.selected)
 
         # start the game
 
-        if self.home.starting_button.selected and self.home.starting_button.handled:
-            self.home.starting_button.unselect()
+        if self.home.starting_button.selected:
+            self.home.starting_button.reset()
             self.__new_round()
             return
 

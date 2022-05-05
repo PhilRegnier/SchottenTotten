@@ -66,11 +66,11 @@ class HomeCurtain(Curtain):
         self.starting_button.setPos(ww / 2 + ew, wh / 2 + ew)
 
     def mouseReleaseEvent(self, event):
-
+        print("homeCurtain: mouseRelease", self.starting_button.selected)
         if self.starting_button.selected:
-            self.starting_button.reset()
             self.chifoumi.animate_incoming()
             self.chifoumi.start()
+            print("homeCurtain: mouseRelease 2", self.starting_button.selected)
             return
 
         if self.settings_button.selected:

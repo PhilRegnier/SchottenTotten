@@ -81,7 +81,7 @@ class Chifoumi(Curtain):
         compare it with a randomly chosen hand. 
     """
     def mouseReleaseEvent(self, event):
-
+        print("chifoumi: mouseRelease")
         if self.feuille.selected or self.ciseaux.selected or self.pierre.selected:
 
             self.text1.setVisible(False)
