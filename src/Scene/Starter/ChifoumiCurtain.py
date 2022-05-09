@@ -4,6 +4,7 @@
 from random import randint
 
 from PIL import Image
+from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QPixmap, QPen, QColor
 from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsLineItem
@@ -81,7 +82,7 @@ class Chifoumi(Curtain):
         compare it with a randomly chosen hand. 
     """
     def mouseReleaseEvent(self, event):
-        print("chifoumi: mouseRelease")
+
         if self.feuille.selected or self.ciseaux.selected or self.pierre.selected:
 
             self.text1.setVisible(False)
@@ -126,13 +127,14 @@ class Chifoumi(Curtain):
             self.pierre.setAcceptHoverEvents(False)
             self.ciseaux.setAcceptHoverEvents(False)
             self.feuille.setAcceptHoverEvents(False)
-            QTimer.singleShot(3000, lambda: self.leave(text))
-            return
+            QTimer.singleShot(3000, lambda: self.leave(text, event))
+            return False
 
         else:
             Curtain.mouseReleaseEvent(self, event)
 
-    def leave(self, text):
+    def leave(self, text, event):
         text.setVisible(False)
         self.animate_leaving()
-        self.parentItem().start_the_game()
+        self.clicked.emit(event)
+        #self.parentItem().start_the_game()

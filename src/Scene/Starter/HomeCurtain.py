@@ -2,6 +2,7 @@
 # Home panel
 #
 from PIL import Image, ImageQt
+from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
@@ -16,6 +17,7 @@ class HomeCurtain(Curtain):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.game_starting = False
 
         # get the instance of SettingsManager
 
@@ -66,11 +68,10 @@ class HomeCurtain(Curtain):
         self.starting_button.setPos(ww / 2 + ew, wh / 2 + ew)
 
     def mouseReleaseEvent(self, event):
-        print("homeCurtain: mouseRelease", self.starting_button.selected)
+        print("home: mouseRelease")
         if self.starting_button.selected:
             self.chifoumi.animate_incoming()
             self.chifoumi.start()
-            print("homeCurtain: mouseRelease 2", self.starting_button.selected)
             return
 
         if self.settings_button.selected:
@@ -80,5 +81,8 @@ class HomeCurtain(Curtain):
 
         Curtain.mouseReleaseEvent(self, event)
 
+    @QtCore.pyqtSlot(start)
     def start_the_game(self):
+        print("home: start_the_game")
         self.animate_leaving()
+        #self.parentItem().new_round()

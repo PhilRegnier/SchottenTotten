@@ -29,7 +29,7 @@ class AutomatonColors:
 
 
 class GeometryStyle:
-    main_width = 1200
+    main_width = 1000
     main_marge = 20
     marge = 5.
     r_bound = 10.

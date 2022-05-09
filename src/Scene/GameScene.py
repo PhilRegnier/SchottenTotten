@@ -57,7 +57,7 @@ class GameScene(QGraphicsScene):
 
     # Create board game items and set the board scene
 
-    def setup(self):
+    def _setup(self):
 
         settings_manager = SettingsManager()
 
@@ -126,7 +126,7 @@ class GameScene(QGraphicsScene):
             self.player.hand.add(self.deck.draw())
             self.automaton.hand.add(self.deck.draw())
 
-    def __new_round(self):
+    def new_round(self):
 
         settings_manager = SettingsManager()
 
@@ -148,8 +148,8 @@ class GameScene(QGraphicsScene):
 
         # Set the board
 
-        self._setup_hands()
-        self.setup()
+        #self._setup_hands()
+        self._setup()
         self.umpire.final_countdown = False
 
     def mouseMoveEvent(self, event):
@@ -250,9 +250,9 @@ class GameScene(QGraphicsScene):
 
         # start the game
 
-        if self.home.starting_button.selected:
+        if self.home.game_starting:
             self.home.starting_button.reset()
-            self.__new_round()
+            self.new_round()
             return
 
         # Events from Cards: If cards has been moved to a droppable zone
