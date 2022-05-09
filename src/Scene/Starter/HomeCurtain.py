@@ -17,7 +17,6 @@ class HomeCurtain(Curtain):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.game_starting = False
 
         # get the instance of SettingsManager
 
@@ -81,8 +80,5 @@ class HomeCurtain(Curtain):
 
         Curtain.mouseReleaseEvent(self, event)
 
-    @QtCore.pyqtSlot(start)
-    def start_the_game(self):
-        print("home: start_the_game")
+    def leave(self):
         self.animate_leaving()
-        #self.parentItem().new_round()

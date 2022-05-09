@@ -20,7 +20,7 @@ class Hand(QGraphicsItem):
             self.cards.append(card)
             card.setParentItem(self)
             card.setVisible(True)
-            card.setDraggable(True)
+            card.set_draggable(True)
             return True
 
     def remove(self, card):

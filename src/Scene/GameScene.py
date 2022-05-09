@@ -79,7 +79,7 @@ class GameScene(QGraphicsScene):
             card.setParentItem(self.player.playmat)
             card.setPos((index + 1) * GeometryStyle.main_marge + index * Card.width, GeometryStyle.main_marge)
             card.setAnchorPoint(card.pos())
-            card.setDraggable(True)
+            card.set_draggable(True)
             card.setVisible(True)
             index += 1
 
@@ -97,11 +97,13 @@ class GameScene(QGraphicsScene):
 
         # Set items positions
 
-        bottom_y = GameScene.height - 5 * GeometryStyle.main_marge - Card.height() - 2 * GeometryStyle.main_marge
+        bottom_y = GameScene.height - 2 * GeometryStyle.main_marge - Card.height
 
-        self.deck.set_pos_init(1000, bottom_y)
-        self.player.playmat.setPos(10, bottom_y)
-        self.automaton.playmat.setPos(400, 10)
+        deck_xpos = self.player.playmat.width + 2 * Card.width
+
+        self.deck.set_pos_init(deck_xpos, bottom_y)
+        self.player.playmat.setPos(GeometryStyle.main_marge, bottom_y)
+        self.automaton.playmat.setPos(GeometryStyle.main_marge, GeometryStyle.main_marge)
 
         # Game board assembly
 
@@ -126,29 +128,25 @@ class GameScene(QGraphicsScene):
             self.player.hand.add(self.deck.draw())
             self.automaton.hand.add(self.deck.draw())
 
-    def new_round(self):
+    def start_new_round(self):
 
         settings_manager = SettingsManager()
 
-        # ending the game
+        # ending or starting the game
 
-        if self.current_round == settings_manager.get_number_of_rounds():
+        if self.current_round > settings_manager.get_number_of_rounds():
             self.home.setVisible(True)
             self.home.animate_incoming()
             return
-
-        # starting the game
+        elif self.current_round == 1:
+            self.home.leave()
+        else:
+            settings_manager.switch_first_player()
 
         self.current_round += 1
 
-        # Switch the first player between each round
-
-        if self.current_round > 1:
-            settings_manager.switch_first_player()
-
         # Set the board
 
-        #self._setup_hands()
         self._setup()
         self.umpire.final_countdown = False
 
@@ -247,13 +245,6 @@ class GameScene(QGraphicsScene):
     """
     def mouseReleaseEvent(self, event):
         print("gamescene: mouseRelease", self.home.starting_button.selected)
-
-        # start the game
-
-        if self.home.game_starting:
-            self.home.starting_button.reset()
-            self.new_round()
-            return
 
         # Events from Cards: If cards has been moved to a droppable zone
 
