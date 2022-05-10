@@ -17,8 +17,8 @@ class Side(QGraphicsItem):
     width = 0
     height = 0
 
-    def __init__(self, numero, colors, parent, parent_item=None):
-        super().__init__(parent_item)
+    def __init__(self, numero, colors, parent):
+        super().__init__()
         self.numero = numero
         self.parent = parent
         self.cards = []

@@ -6,11 +6,12 @@ from src.Scene.Game.Spot import Spot
 from src.SettingsManager import SettingsManager
 
 
-class Hand(QGraphicsItem):
+class Hand:
 
-    def __init__(self):
+    def __init__(self, parent_item):
         super().__init__()
         self.cards = []
+        self.parent_item = parent_item
         self.spots = [Spot(True, True) for i in range(SettingsManager.max_cards_in_hand())]
 
     def add(self, card):
@@ -18,7 +19,7 @@ class Hand(QGraphicsItem):
             return False
         else:
             self.cards.append(card)
-            card.setParentItem(self)
+            card.setParentItem(self.parent_item)
             card.setVisible(True)
             card.set_draggable(True)
             return True

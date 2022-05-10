@@ -8,7 +8,6 @@ from PyQt5.QtCore import QPointF, QLineF, QPropertyAnimation, QRectF, QRect, Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
 
-from src.Scene.Game.Player import Player
 from src.ImageTreatment import ImageTreatment
 from src.Scene.Game.Shader import Shader
 from src.Scene.Game.ShiftManager import ShiftManager
@@ -127,6 +126,7 @@ class Card(QGraphicsObject):
         self.setZValue(zvalue)
 
     def set_on_side(self, side):
+        from src.Scene.Game.Player import Player
 
         if isinstance(side, Side) and isinstance(side.parentItem(), Player):
             if not side.is_full():

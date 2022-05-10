@@ -7,9 +7,8 @@ class Player:
 
     def __init__(self, name, colors):
         self.score = 0
+        self.name = name
         self.colors = colors
-        self.hand = Hand()
         self.sides = [Side(i, self.colors, self) for i in range(9)]
         self.playmat = Playmat(self.colors)
-        self.name = name
 

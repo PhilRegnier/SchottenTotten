@@ -72,10 +72,10 @@ class GameScene(QGraphicsScene):
             y += Stone.height + Stone.marge
             self.player.sides[i].setPos(x, y)
 
-        # User's hand cards items
+        # User's playmat cards items
 
         index = 0
-        for card in self.player.hand.cards:
+        for card in self.player.playmat.cards:
             card.setParentItem(self.player.playmat)
             card.setPos((index + 1) * GeometryStyle.main_marge + index * Card.width, GeometryStyle.main_marge)
             card.setAnchorPoint(card.pos())
@@ -83,10 +83,10 @@ class GameScene(QGraphicsScene):
             card.setVisible(True)
             index += 1
 
-        # Computer's hand cards items [CHEAT MODE]
+        # Computer's playmat cards items [CHEAT MODE]
 
         index = 0
-        for card in self.automaton.hand.cards:
+        for card in self.automaton.playmat.cards:
             card.setParentItem(self.automaton.playmat)
             card.setPos((index + 1) * GeometryStyle.main_marge + index * Card.width, GeometryStyle.main_marge)
             card.setAnchorPoint(card.pos())
@@ -122,11 +122,11 @@ class GameScene(QGraphicsScene):
         for item in self.items():
             self.cardManager.set_zmax(item.zValue())
 
-        # Create players' hands
+        # Draw cards
 
         for i in range(settings_manager.get_max_cards_in_hand()):
-            self.player.hand.add(self.deck.draw())
-            self.automaton.hand.add(self.deck.draw())
+            self.player.playmat.add(self.deck.draw())
+            self.automaton.playmat.add(self.deck.draw())
 
     def start_new_round(self):
 
@@ -173,7 +173,7 @@ class GameScene(QGraphicsScene):
         else:
             QGraphicsScene.mouseMoveEvent(self, event)
 
-            # TODO : Management for reordering the user's hand
+            # TODO : Management for reordering the user's playmat
 
             # self.mouseMoveHand()
 
@@ -273,12 +273,11 @@ class GameScene(QGraphicsScene):
                 # Draw a new card
 
                 if self.deck.is_empty():
-                    self.player.hand.lose_a_card()
-                    if self.player.hand.is_empty():
+                    if self.player.playmat.is_empty():
                         self.umpire.final_countdown = True
                 else:
                     new_card = self.deck.draw()
-                    self.player.hand.add(new_card)
+                    self.player.playmat.add(new_card)
                     new_card.setAnchorPoint(pos)
                     new_card.moveTo(self.deck.pos() - self.player.playmat.pos(), pos)
 
@@ -323,10 +322,10 @@ class GameScene(QGraphicsScene):
         ) - 60
 
     """
-     cheat mode: show automaton's hand in a subwindow
+     cheat mode: show automaton's playmat in a subwindow
     """
-    def show_automaton_hand_view(self):
-        self.addItem(self.automaton.hand)
+    def show_automaton_playmat(self):
+        self.addItem(self.automaton.playmat)
 
-    def hide_automaton_hand_view(self):
-        self.removeItem(self.automaton.hand)
+    def hide_automaton_playmat(self):
+        self.removeItem(self.automaton.playmat)

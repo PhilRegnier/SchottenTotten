@@ -5,6 +5,9 @@ from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QBrush, QPen
 from PyQt5.QtWidgets import QGraphicsItem
 
+from src.Scene.Game.Card import Card
+from src.Scene.Game.Spot import Spot
+from src.SettingsManager import SettingsManager
 from src.Style import GeometryStyle, GradientStyle
 
 
@@ -22,6 +25,15 @@ class Playmat(QGraphicsItem):
         self.gradient = GradientStyle(Playmat.height, colors.side0, colors.side1)
         self.pen_color = colors.side_pen
 
+        self.spots = []
+        for i in range(SettingsManager.max_cards_in_hand()):
+            spot = Spot(i, True, self)
+            spot.setPos((i + 1) * GeometryStyle.marge + i * Card.width, GeometryStyle.marge)
+            spot.setVisible(True)
+            self.spots.append(spot)
+
+        self.cards = []
+
     def boundingRect(self):
         return QRectF(-GeometryStyle.pen_width / 2,
                       -GeometryStyle.pen_width / 2,
@@ -33,6 +45,26 @@ class Playmat(QGraphicsItem):
         painter.setPen(QPen(self.pen_color, 1))
         rect = QRectF(0., 0., float(Playmat.width), float(Playmat.height))
         painter.drawRoundedRect(rect, GeometryStyle.r_bound, GeometryStyle.r_bound)
+
+    def add(self, card):
+        if len(self.cards) > SettingsManager.max_cards_in_hand():
+            return False
+        else:
+            card.setParentItem(self)
+            card.setVisible(True)
+            card.set_draggable(True)
+            self.cards.append(card)
+            return True
+
+    def remove(self, card):
+        self.cards.remove(card)
+        # TODO: gestion erreur si nombre_cartes = 0
+
+    def show(self):
+        return self.cards
+
+    def is_empty(self):
+        return len(self.cards) == 0
 
     @classmethod
     def set_size(cls):
