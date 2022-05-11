@@ -72,26 +72,6 @@ class GameScene(QGraphicsScene):
             y += Stone.height + Stone.marge
             self.player.sides[i].setPos(x, y)
 
-        # User's playmat cards items
-
-        index = 0
-        for card in self.player.playmat.cards:
-            card.setParentItem(self.player.playmat)
-            card.setPos((index + 1) * GeometryStyle.main_marge + index * Card.width, GeometryStyle.main_marge)
-            card.setAnchorPoint(card.pos())
-            card.set_draggable(True)
-            card.setVisible(True)
-            index += 1
-
-        # Computer's playmat cards items [CHEAT MODE]
-
-        index = 0
-        for card in self.automaton.playmat.cards:
-            card.setParentItem(self.automaton.playmat)
-            card.setPos((index + 1) * GeometryStyle.main_marge + index * Card.width, GeometryStyle.main_marge)
-            card.setAnchorPoint(card.pos())
-            card.setVisible(True)
-            index += 1
 
         self.automaton.playmat.setScale(0.6)
 
@@ -127,6 +107,29 @@ class GameScene(QGraphicsScene):
         for i in range(settings_manager.get_max_cards_in_hand()):
             self.player.playmat.add(self.deck.draw())
             self.automaton.playmat.add(self.deck.draw())
+
+
+        # User's playmat cards items
+
+        index = 0
+        for card in self.player.playmat.cards:
+            card.setPos((index + 1) * GeometryStyle.main_marge + index * Card.width, GeometryStyle.main_marge)
+            card.setAnchorPoint(card.pos())
+            card.set_draggable(True)
+            card.setVisible(True)
+            index += 1
+
+        # Computer's playmat cards items [CHEAT MODE]
+
+        index = 0
+        for card in self.automaton.playmat.cards:
+            card.setParentItem(self.automaton.playmat)
+            card.setPos((index + 1) * GeometryStyle.main_marge + index * Card.width, GeometryStyle.main_marge)
+            card.setAnchorPoint(card.pos())
+            card.setVisible(True)
+            index += 1
+
+
 
     def start_new_round(self):
 
