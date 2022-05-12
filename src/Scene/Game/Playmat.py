@@ -46,7 +46,7 @@ class Playmat(QGraphicsItem):
         rect = QRectF(0., 0., float(Playmat.width), float(Playmat.height))
         painter.drawRoundedRect(rect, GeometryStyle.r_bound, GeometryStyle.r_bound)
 
-    def add(self, card, index=None):
+    def add(self, card, draggable=False, index=None):
         # TODO : Animation du déplacement de la carte
         if len(self.cards) > SettingsManager.max_cards_in_hand():
             print("Playmat.add: impossible d'ajouter une carte (main complète)")
@@ -56,21 +56,25 @@ class Playmat(QGraphicsItem):
                 for spot in self.spots:
                     if spot.free:
                         card.setPos(spot.pos())
+                        spot.set_free(False)
                         break
 
             elif 0 <= index <= SettingsManager.max_cards_in_hand():
                 if self.spots.get(index).free:
                     card.setPos(self.spots.get(index).pos())
                 else:
-                    print("problemo")
+                    print("Playmat.add: spot occupé !")
+                    return False
             else:
                 print("Playmat.add: impossible d'ajouter une carte")
                 return False
 
             card.setParentItem(self)
             card.setVisible(True)
-            card.set_draggable(True)
+            card.set_draggable(draggable)
+            card.set_anchor_point(card.pos())
             self.cards.append(card)
+
             return True
 
     def remove(self, card):

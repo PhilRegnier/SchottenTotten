@@ -18,7 +18,6 @@ class Deck(QGraphicsPixmapItem):
         super().__init__()
 
         self.cardManager = CardManager()
-        self.nombre_cartes = self.cardManager.get_total_cards()
 
         # geometry
 
@@ -27,25 +26,28 @@ class Deck(QGraphicsPixmapItem):
         self.width = 0
         self.height = 0
 
+        # ask a random deck to the manager and stack it
+
+        self.cards = self.cardManager.get_deck(self)
         self._stack()
 
-        # ask to make a random deck
-
-        self.cardManager.set_deck(self)
-
     def is_empty(self):
-        return self.nombre_cartes == 0
+        return len(self.cards) == 0
 
     def draw(self):
-        card = self.cardManager.get_a_card()
-        self.nombre_cartes -= 1
-        if self.nombre_cartes == 0:
-            self.setVisible(False)
-        else:
-            self._stack()
-            self.setPos(self.x1 - self.width, self.y1 - self.height)
+        if self.is_empty != 0:
+            drawn_card = self.cards[0]
+            self.cards.remove(drawn_card)
 
-        return card
+            if self.is_empty == 0:
+                self.setVisible(False)
+            else:
+                self._stack()
+                self.setPos(self.x1 - self.width, self.y1 - self.height)
+
+            return drawn_card
+        else:
+            return False
 
     def set_pos_init(self, x0, y0):
         self.x1 = x0 + self.width
@@ -64,7 +66,7 @@ class Deck(QGraphicsPixmapItem):
         cadre = Image.new('RGBA', (image.width + 2 * t, image.height + 2 * t), GlobalStyle.cadre_color)
         cadre = ImageTreatment.round_corners(cadre, int(r + t))
         cadre.paste(image, (t, t), image)
-        nc2 = int(self.nombre_cartes / 2)
+        nc2 = int(len(self.cards) / 2)
         trame = Image.new('RGBA', (cadre.width + nc2 * ow, cadre.height + nc2 * oh), (0, 0, 0, 0))
         relief1 = Image.new('RGBA', (cadre.width, cadre.height), GlobalStyle.relief_color2)
         relief1 = ImageTreatment.round_corners(relief1, int(r + t))

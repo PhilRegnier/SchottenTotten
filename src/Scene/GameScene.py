@@ -72,7 +72,6 @@ class GameScene(QGraphicsScene):
             y += Stone.height + Stone.marge
             self.player.sides[i].setPos(x, y)
 
-
         self.automaton.playmat.setScale(0.6)
 
         # Set items positions
@@ -105,31 +104,8 @@ class GameScene(QGraphicsScene):
         # Draw cards
 
         for i in range(settings_manager.get_max_cards_in_hand()):
-            self.player.playmat.add(self.deck.draw())
+            self.player.playmat.add(self.deck.draw(), True)
             self.automaton.playmat.add(self.deck.draw())
-
-
-        # User's playmat cards items
-
-        index = 0
-        for card in self.player.playmat.cards:
-            card.setPos((index + 1) * GeometryStyle.main_marge + index * Card.width, GeometryStyle.main_marge)
-            card.setAnchorPoint(card.pos())
-            card.set_draggable(True)
-            card.setVisible(True)
-            index += 1
-
-        # Computer's playmat cards items [CHEAT MODE]
-
-        index = 0
-        for card in self.automaton.playmat.cards:
-            card.setParentItem(self.automaton.playmat)
-            card.setPos((index + 1) * GeometryStyle.main_marge + index * Card.width, GeometryStyle.main_marge)
-            card.setAnchorPoint(card.pos())
-            card.setVisible(True)
-            index += 1
-
-
 
     def start_new_round(self):
 
@@ -154,6 +130,7 @@ class GameScene(QGraphicsScene):
         self.umpire.final_countdown = False
 
     def mouseMoveEvent(self, event):
+        #print("gamescene: mouseMove")
         shift_manager = ShiftManager()
 
         if shift_manager.dragged:
@@ -233,8 +210,8 @@ class GameScene(QGraphicsScene):
 
         for i in range(i1, i2):
             animation = QPropertyAnimation(self.player.hand[i]], b"pos")
-            pos1 = Card.cards[self.user_hand[i]].anchorPoint
-            pos2 = Card.cards[self.user_hand[i + sens]].anchorPoint
+            pos1 = Card.cards[self.user_hand[i]].anchor_point
+            pos2 = Card.cards[self.user_hand[i + sens]].anchor_point
             dx = pos1.x() - pos2.x()
             dy = pos1.y() - pos2.y()
             duration = sqrt(dx ** 2 + dy ** 2) / 1
@@ -247,13 +224,15 @@ class GameScene(QGraphicsScene):
         animations.start()
     """
     def mouseReleaseEvent(self, event):
-        print("gamescene: mouseRelease", self.home.starting_button.selected)
+        print("gamescene: mouseRelease")
 
         # Events from Cards: If cards has been moved to a droppable zone
 
         shift_manager = ShiftManager()
 
         if shift_manager.dragged:
+
+            print("gamescene: mouseRelease: card dragged")
 
             # Card moved on user's deck
             """
@@ -262,8 +241,11 @@ class GameScene(QGraphicsScene):
             """
             # Card moved on side ? TODO : => a part of this treatment in Side class ?
 
-            if shift_manager.side is not None:
+            if shift_manager.side is None:
 
+                shift_manager.card.move_to(shift_manager.card.pos(), shift_manager.card.anchor_point)
+
+            else:
                 # Memorize initial position for new card from the deck
 
                 pos = shift_manager.card.anchor_point
@@ -281,8 +263,8 @@ class GameScene(QGraphicsScene):
                 else:
                     new_card = self.deck.draw()
                     self.player.playmat.add(new_card)
-                    new_card.setAnchorPoint(pos)
-                    new_card.moveTo(self.deck.pos() - self.player.playmat.pos(), pos)
+                    new_card.set_anchor_point(pos)
+                    new_card.move_to(self.deck.pos() - self.player.playmat.pos(), pos)
 
                 # Actions if the targetted side is full
 
@@ -301,9 +283,6 @@ class GameScene(QGraphicsScene):
                     self.umpire.book(shift_manager.side)
 
                 self.umpire.judge(shift_manager.side)
-
-            else:
-                shift_manager.card.moveTo(shift_manager.card.pos(), shift_manager.card.anchorPoint)
 
             shift_manager.reset()
             self.update()

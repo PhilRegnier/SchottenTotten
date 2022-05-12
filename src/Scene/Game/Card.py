@@ -175,8 +175,8 @@ class Card(QGraphicsObject):
         animation.setStartValue(pos1)
         animation.setEndValue(pos2)
 
-        self.setOnTop()
-        animation.finished.connect(self.setOnGround)
+        self.set_on_top()
+        animation.finished.connect(self.set_on_ground)
 
         animation.start()
 

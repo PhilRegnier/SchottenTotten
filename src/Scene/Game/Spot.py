@@ -27,6 +27,9 @@ class Spot(QGraphicsObject):
         self.setParentItem(parent_item)
         self.free = True
 
+    def set_free(self, flag):
+        self.free = flag
+
     def boundingRect(self):
         from src.Scene.Game.Card import Card
         from src.Scene.Game.Side import Side

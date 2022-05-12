@@ -52,13 +52,12 @@ class CardManager(Singleton):
         return cls.total_cards
 
     @classmethod
-    def set_deck(cls, deck):
+    def get_deck(cls, deck):
         shuffle(cls.cards)
         for card in cls.cards:
             card.setParentItem(deck)
             card.setPos(0, 0)
             card.setVisible(False)
 
-    @classmethod
-    def get_a_card(cls):
-        return cls.cards[0]
+        return cls.cards
+
