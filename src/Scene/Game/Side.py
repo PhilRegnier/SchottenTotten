@@ -54,9 +54,9 @@ class Side(QGraphicsItem):
 
     def add_card(self, card):
         pos = QPointF(3, 3 + len(self.cards) * card.height * 0.32)
-        card.setAnchorPoint(pos)
+        card.set_anchor_point(pos)
         card.setParentItem(self)
-        card.setIndex(-1)
+        card.set_index(-1)
         self.cards.append(card)
         self.somme += card.valeur
         card.setPos(pos)

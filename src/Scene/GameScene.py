@@ -130,7 +130,7 @@ class GameScene(QGraphicsScene):
         self.umpire.final_countdown = False
 
     def mouseMoveEvent(self, event):
-        #print("gamescene: mouseMove")
+
         shift_manager = ShiftManager()
 
         if shift_manager.dragged:
@@ -141,6 +141,7 @@ class GameScene(QGraphicsScene):
 
             for item in items:
                 if isinstance(item, Side) and item.parentItem == self.player:
+                    print("gamescene: mouseMove: card dragged")
                     if len(item.cards) < 3:
                         item.light_on()
                         self.itemsSelected.append(item)
@@ -150,12 +151,11 @@ class GameScene(QGraphicsScene):
                     item.light_off()
                     self.itemsSelected.remove(item)
 
-        else:
-            QGraphicsScene.mouseMoveEvent(self, event)
+        QGraphicsScene.mouseMoveEvent(self, event)
 
-            # TODO : Management for reordering the user's playmat
+        # TODO : Management for reordering the user's playmat
 
-            # self.mouseMoveHand()
+        # self.mouseMoveHand()
 
     # Reorganization of the user's hand
     """
@@ -223,73 +223,66 @@ class GameScene(QGraphicsScene):
 
         animations.start()
     """
-    def mouseReleaseEvent(self, event):
-        print("gamescene: mouseRelease")
-
-        # Events from Cards: If cards has been moved to a droppable zone
+    """
+        Do following stuf after a card has been dropped
+    """
+    def drop_card(self, event):
 
         shift_manager = ShiftManager()
 
-        if shift_manager.dragged:
+        # Events from Cards: If cards has been moved to a droppable zone:
+        # 1/ user's deck
+        """
+        if self.cardManager.is_moved_to_reorganize():
+            self.user_hand = self.new_order
+        """
+        # 2/ side
 
-            print("gamescene: mouseRelease: card dragged")
+        if shift_manager.side:
 
-            # Card moved on user's deck
-            """
-            if self.cardManager.is_moved_to_reorganize():
-                self.user_hand = self.new_order
-            """
-            # Card moved on side ? TODO : => a part of this treatment in Side class ?
+            # Memorize initial position for new card from the deck
 
-            if shift_manager.side is None:
+            pos = shift_manager.card.anchor_point
 
-                shift_manager.card.move_to(shift_manager.card.pos(), shift_manager.card.anchor_point)
+            # Add the card dropped to the side
 
+            shift_manager.side.add_card(shift_manager.card)
+            shift_manager.side.light_off()
+
+            # Draw a new card
+
+            if self.deck.is_empty():
+                if self.player.playmat.is_empty():
+                    self.umpire.final_countdown = True
             else:
-                # Memorize initial position for new card from the deck
+                new_card = self.deck.draw()
+                self.player.playmat.add(new_card)
+                new_card.set_anchor_point(pos)
+                new_card.move_to(self.deck.pos() - self.player.playmat.pos(), pos)
 
-                pos = shift_manager.card.anchor_point
+            # Actions if the targetted side is full
 
-                # Add the card dropped to the side
-
-                shift_manager.side.add_card(shift_manager.card)
-                shift_manager.side.light_off()
-
-                # Draw a new card
-
-                if self.deck.is_empty():
-                    if self.player.playmat.is_empty():
-                        self.umpire.final_countdown = True
-                else:
-                    new_card = self.deck.draw()
-                    self.player.playmat.add(new_card)
-                    new_card.set_anchor_point(pos)
-                    new_card.move_to(self.deck.pos() - self.player.playmat.pos(), pos)
-
-                # Actions if the targetted side is full
-
-                if shift_manager.side.is_full():
-                    self.umpire.book(shift_manager.side)
-
-                self.umpire.judge()
-
-                shift_manager.reset()
-
-                # Run automaton's turn
-
-                self.automaton.play_a_card()
-
-                if shift_manager.side.is_full():
-                    self.umpire.book(shift_manager.side)
-
-                self.umpire.judge(shift_manager.side)
-
+            if shift_manager.side.is_full():
+                self.umpire.book(shift_manager.side)
+            print("scene: drop 6")
+            self.umpire.judge()
+            print("scene: drop 7")
             shift_manager.reset()
-            self.update()
-            return
+
+            # Run automaton's turn
+            print("scene: drop 8")
+            self.automaton.play_a_card()
+            print("scene: drop 9")
+            if shift_manager.side.is_full():
+                self.umpire.book(shift_manager.side)
+            print("scene: drop 10")
+            self.umpire.judge(shift_manager.side)
 
         else:
-            QGraphicsScene.mouseReleaseEvent(self, event)
+            shift_manager.card.move_to(shift_manager.card.pos(), shift_manager.card.anchor_point)
+        print("scene: drop 11")
+        shift_manager.reset()
+        self.update()
 
     """
      Calcul the height knowing the width needed to show the scene

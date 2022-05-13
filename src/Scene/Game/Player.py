@@ -1,4 +1,3 @@
-from src.Scene.Game.Hand import Hand
 from src.Scene.Game.Playmat import Playmat
 from src.Scene.Game.Side import Side
 

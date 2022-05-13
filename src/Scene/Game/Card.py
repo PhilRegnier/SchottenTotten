@@ -69,14 +69,11 @@ class Card(QGraphicsObject):
         self.index = index
 
     def hoverEnterEvent(self, event):
-        print("card: hoverEnter")
-
         self.setCursor(Qt.OpenHandCursor)
         self.setPos(self.x() - 2, self.y() - 2)
         self.shade.setEnabled(True)
 
     def hoverLeaveEvent(self, event):
-        print("card: hoverLeave")
         self.setCursor(Qt.ArrowCursor)
         self.setPos(self.anchor_point)
         self.shade.setEnabled(False)
@@ -93,7 +90,6 @@ class Card(QGraphicsObject):
         self.shade.setEnabled(True)
 
     def mouseMoveEvent(self, event):
-        print("card: mouseMove")
 
         # Check button pressed, card's origin, and if a minimum move has been done
 
@@ -106,13 +102,14 @@ class Card(QGraphicsObject):
 
         # All staff when a card is dragged from the user's hand
 
-        self.dragged = True
+        print("card: mouseMove")
 
-        ShiftManager.set_card(self)
-        QGraphicsObject.mouseMoveEvent(self, event)
-        self.shade.setEnabled(True)
-        self.setOpacity(0.9)
-        self.setCursor(Qt.ClosedHandCursor)
+        if not self.dragged:
+            self.dragged = True
+            ShiftManager.set_card(self)
+            self.shade.setEnabled(True)
+            self.setOpacity(0.9)
+            self.setCursor(Qt.ClosedHandCursor)
 
         # get sure the card dragged is in the foreground
 
@@ -125,23 +122,13 @@ class Card(QGraphicsObject):
 
         self.setZValue(zvalue)
 
-    def set_on_side(self, side):
-        from src.Scene.Game.Player import Player
-
-        if isinstance(side, Side) and isinstance(side.parentItem(), Player):
-            if not side.is_full():
-                ShiftManager.set_side(side)
-                self.set_draggable(False)
-
-                # get sure that the card dropped is in the foreground
-
-                if len(side.cards) > 0:
-                    self.setZValue(side.cards[-1].zValue() + 0.1)
+        QGraphicsObject.mouseMoveEvent(self, event)
 
     def mouseReleaseEvent(self, event):
-        print("card: mouseRelease")
+
         self.setCursor(Qt.ArrowCursor)
         if self.dragged:
+
             col_items = self.collidingItems()
             if col_items:
                 closest_item = col_items[0]
@@ -154,14 +141,23 @@ class Card(QGraphicsObject):
                         shortest_dist = line.length()
                         closest_item = item
 
-                if closest_item.parentItem():
-                    self.set_on_side(closest_item.parentItem())
-                else:
-                    self.set_on_side(closest_item)
+                print("card: mouseRelease: dragged: closest_item", closest_item)
+
+                if isinstance(closest_item, Side) and closest_item.parent is self.scene().player:
+                    print("card: mouseRelease: dragged: closest_item: YES ")
+                    side = closest_item
+                    if not side.is_full():
+                        ShiftManager.set_side(side)
+                        self.set_draggable(False)
+
+                        if len(side.cards) > 0:
+                            self.setZValue(side.cards[-1].zValue() + 0.1)
 
             QGraphicsObject.mouseReleaseEvent(self, event)
             self.shade.setEnabled(False)
             self.setOpacity(1)
+
+            self.scene().drop_card(event)
 
     def move_to(self, pos1, pos2):
 
