@@ -40,6 +40,7 @@ class GameScene(QGraphicsScene):
 
         self.new_order = []
         self.itemsSelected = []
+        self.shift_manager = ShiftManager()
 
         # set the required width and height to the scene
 
@@ -131,17 +132,17 @@ class GameScene(QGraphicsScene):
 
     def mouseMoveEvent(self, event):
 
-        shift_manager = ShiftManager()
+        super(GameScene, self).mouseMoveEvent(event)
 
-        if shift_manager.dragged:
-
+        if self.shift_manager.dragged:
+            print("gamescene: mouseMove: card dragged 1")
             # Enlightment for user's side hovered. TODO : => treatement in Side class ?
 
             items = self.items(event.pos())
 
             for item in items:
-                if isinstance(item, Side) and item.parentItem == self.player:
-                    print("gamescene: mouseMove: card dragged")
+                if isinstance(item, Side) and item.parentItem is self.player:
+                    print("gamescene: mouseMove: card dragged 2")
                     if len(item.cards) < 3:
                         item.light_on()
                         self.itemsSelected.append(item)
@@ -226,9 +227,12 @@ class GameScene(QGraphicsScene):
     """
         Do following stuf after a card has been dropped
     """
-    def drop_card(self, event):
+    def mouseReleaseEvent(self, event):
 
-        shift_manager = ShiftManager()
+        super(GameScene, self).mouseReleaseEvent(event)
+
+        if not self.shift_manager.is_dragged():
+            return
 
         # Events from Cards: If cards has been moved to a droppable zone:
         # 1/ user's deck
@@ -238,16 +242,16 @@ class GameScene(QGraphicsScene):
         """
         # 2/ side
 
-        if shift_manager.side:
+        if self.shift_manager.side:
 
             # Memorize initial position for new card from the deck
 
-            pos = shift_manager.card.anchor_point
+            pos = self.shift_manager.card.anchor_point
 
             # Add the card dropped to the side
 
-            shift_manager.side.add_card(shift_manager.card)
-            shift_manager.side.light_off()
+            self.shift_manager.side.add_card(self.shift_manager.card)
+            self.shift_manager.side.light_off()
 
             # Draw a new card
 
@@ -262,26 +266,26 @@ class GameScene(QGraphicsScene):
 
             # Actions if the targetted side is full
 
-            if shift_manager.side.is_full():
-                self.umpire.book(shift_manager.side)
+            if self.shift_manager.side.is_full():
+                self.umpire.book(self.shift_manager.side)
             print("scene: drop 6")
             self.umpire.judge()
             print("scene: drop 7")
-            shift_manager.reset()
+            self.shift_manager.reset()
 
             # Run automaton's turn
             print("scene: drop 8")
             self.automaton.play_a_card()
             print("scene: drop 9")
-            if shift_manager.side.is_full():
-                self.umpire.book(shift_manager.side)
+            if self.shift_manager.side.is_full():
+                self.umpire.book(self.shift_manager.side)
             print("scene: drop 10")
-            self.umpire.judge(shift_manager.side)
+            self.umpire.judge(self.shift_manager.side)
 
         else:
-            shift_manager.card.move_to(shift_manager.card.pos(), shift_manager.card.anchor_point)
+            self.shift_manager.card.move_to(self.shift_manager.card.pos(), self.shift_manager.card.anchor_point)
         print("scene: drop 11")
-        shift_manager.reset()
+        self.shift_manager.reset()
         self.update()
 
     """

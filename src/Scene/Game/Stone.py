@@ -12,6 +12,10 @@ from src.Style import GeometryStyle
 
 class Stone(QGraphicsObject):
 
+    WINNER_PLAYER = 1
+    WINNER_AUTOMA = 2
+    WINNER_EVEN = 0
+
     HW_RATIO = 0.58
     marge = 4.
     width = 0
@@ -29,17 +33,29 @@ class Stone(QGraphicsObject):
         self.winner = None
         self.animation = QPropertyAnimation(self, b"pos")
 
-    def claim(self, player_somme, automaton_somme):
+    # Claim the stone
+
+    def claim(self, player_somme, automa_somme):
         from src.Scene.Game.Side import Side
 
-        if player_somme > automaton_somme:
-            self.winner = "user"
+        if player_somme > automa_somme:
+            self.winner = Stone.WINNER_PLAYER
             self.moveStoneTo(Side.height + 6 + Stone.height)
-        elif player_somme < automaton_somme:
-            self.winner = "auto"
+        elif player_somme < automa_somme:
+            self.winner = Stone.WINNER_AUTOMA
             self.moveStoneTo(- Side.height - 6 - Stone.height)
         else:
-            self.winner = "equal"
+            self.winner = Stone.WINNER_EVEN
+
+    # Animate the claimed stone
+
+    def move_to(self, dy):
+        self.animation.setDuration(800)
+        self.animation.setStartValue(self.pos())
+        self.animation.setEndValue(QPointF(self.x(), self.y() + dy))
+        self.animation.start()
+
+    # define the geometry of the stone
 
     def boundingRect(self):
         return QRectF(-GeometryStyle.pen_width / 2,
@@ -50,14 +66,6 @@ class Stone(QGraphicsObject):
     def paint(self, painter, option, widget=0):
         rect = QRect(-1, -1, int(Stone.width), int(Stone.height))
         painter.drawPixmap(rect, self.pixmap)
-
-    # Animation for claimed stones
-
-    def move_to(self, dy):
-        self.animation.setDuration(800)
-        self.animation.setStartValue(self.pos())
-        self.animation.setEndValue(QPointF(self.x(), self.y() + dy))
-        self.animation.start()
 
     @classmethod
     def set_size(cls):

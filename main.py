@@ -3,7 +3,11 @@
 
     TODO :
         - Mettre un timer sur le round
-        - Implémenter les variantes de jeu avec les cartes "spéciales"
+        - Afficher le score
+        - compter les points par round en suivant les règles du jeu
+        - Implémenter la variante de jeu avec les cartes "spéciales"
+        - ScrollingBar pour la fenêtre des règles du jeu
+
 
 """
 import sys

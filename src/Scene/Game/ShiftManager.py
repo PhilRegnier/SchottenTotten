@@ -12,8 +12,14 @@ class ShiftManager(Singleton):
     moved_to_reorganize = False
     sort = False
 
+    starting_pos = None
+
     def __init__(self):
         pass
+
+    @classmethod
+    def set_starting_pos(cls, pos):
+        cls.starting_pos = pos
 
     @classmethod
     def set_card(cls, card):
@@ -38,7 +44,7 @@ class ShiftManager(Singleton):
 
     @classmethod
     def reset(cls):
-        cls.card.set_dragged(False)
+        cls.dragged = False
         cls.card = None
         cls.side = None
         cls.hand = None

@@ -38,12 +38,11 @@ class Card(QGraphicsObject):
 
         self.setAcceptHoverEvents(False)
         self.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
-        self.dragged = False
 
         self.shade = Shader()
         self.setGraphicsEffect(self.shade)
 
-        self.dragStartPosition = None
+        self.shift_manager = ShiftManager()
 
         self.__old_z_value = None
 
@@ -54,9 +53,6 @@ class Card(QGraphicsObject):
         else:
             cls.width = Stone.width - 4
             cls.height = cls.width * cls.HW_RATIO
-
-    def set_dragged(self, dragged):
-        self.dragged = dragged
 
     def set_draggable(self, draggable=True):
         self.setFlag(QGraphicsItem.ItemIsMovable, draggable)
@@ -79,13 +75,12 @@ class Card(QGraphicsObject):
         self.shade.setEnabled(False)
 
     def mousePressEvent(self, event):
-        print("card: mousePress")
         if not event.button() == Qt.LeftButton:
             return
         if isinstance(self.parentItem(), Side):
             return
 
-        self.dragStartPosition = event.pos()
+        self.shift_manager.set_starting_pos(event.pos())
         self.setCursor(Qt.ClosedHandCursor)
         self.shade.setEnabled(True)
 
@@ -97,16 +92,14 @@ class Card(QGraphicsObject):
             return
         if isinstance(self.parentItem(), Side):
             return
-        if (event.pos() - self.dragStartPosition).manhattanLength() < QApplication.startDragDistance():
+        if (event.pos() - self.shift_manager.starting_pos).manhattanLength() < QApplication.startDragDistance():
             return
 
         # All staff when a card is dragged from the user's hand
 
-        print("card: mouseMove")
-
-        if not self.dragged:
-            self.dragged = True
-            ShiftManager.set_card(self)
+        if self.shift_manager.card is not self:
+            self.shift_manager.set_dragged(True)
+            self.shift_manager.set_card(self)
             self.shade.setEnabled(True)
             self.setOpacity(0.9)
             self.setCursor(Qt.ClosedHandCursor)
@@ -127,7 +120,7 @@ class Card(QGraphicsObject):
     def mouseReleaseEvent(self, event):
 
         self.setCursor(Qt.ArrowCursor)
-        if self.dragged:
+        if self.shift_manager.card is self:
 
             col_items = self.collidingItems()
             if col_items:
@@ -141,13 +134,10 @@ class Card(QGraphicsObject):
                         shortest_dist = line.length()
                         closest_item = item
 
-                print("card: mouseRelease: dragged: closest_item", closest_item)
-
                 if isinstance(closest_item, Side) and closest_item.parent is self.scene().player:
-                    print("card: mouseRelease: dragged: closest_item: YES ")
                     side = closest_item
                     if not side.is_full():
-                        ShiftManager.set_side(side)
+                        self.shift_manager.set_side(side)
                         self.set_draggable(False)
 
                         if len(side.cards) > 0:
@@ -156,8 +146,6 @@ class Card(QGraphicsObject):
             QGraphicsObject.mouseReleaseEvent(self, event)
             self.shade.setEnabled(False)
             self.setOpacity(1)
-
-            self.scene().drop_card(event)
 
     def move_to(self, pos1, pos2):
 
