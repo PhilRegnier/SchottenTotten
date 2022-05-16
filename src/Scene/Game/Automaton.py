@@ -24,34 +24,20 @@ class Automaton(Player):
     """
     def play_a_card(self):
 
-        # select an option
+        # select an option (card + side)
 
         if self.settingsManager.get_difficulty() == 1:
             self.cervo1()
         else:
             self.cervo0()
 
-        # move the selected card and draw a new one
+        # move the selected card on the selected side
 
         shift_manager = ShiftManager()
 
-        pos = shift_manager.card.anchorPoint
-        shift_manager.side.add_card(shift_manager.card)
+        pos = shift_manager.card.anchor_point
         pos0 = self.playmat.pos() - shift_manager.side.pos() + pos
-        shift_manager.card.moveTo(pos0, shift_manager.card.anchorPoint)
-
-        if self.board.deck.is_empty():
-            self.hand.lose_a_card()
-            self.statistics.remove_from_hand(shift_manager.hand.numero)
-            if self.hand.is_empty():
-                self.ending = True
-        else:
-            new_card = self.board.deck.draw()
-            new_card.setVisible(True)
-            new_card.setParentItem(self.playmat)
-            new_card.setAnchorPoint(pos)
-            new_card.setPos(pos)
-            self.hand.add(new_card)
+        shift_manager.card.moveTo(pos0, pos)
 
     """
     Automate 0 : random card and random stone
@@ -76,8 +62,8 @@ class Automaton(Player):
         c = ["0" for i in range(6)]
 
         for i in self.statistics.auto_lh():
-            v[i] = self.hand.cards[i].valeur
-            c[i] = self.hand.cards[i].couleur
+            v[i] = self.playmat.cards[i].valeur
+            c[i] = self.playmat.cards[i].couleur
 
         # 1 Look at the hand
 

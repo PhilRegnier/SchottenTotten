@@ -12,10 +12,6 @@ from src.Style import GeometryStyle
 
 class Stone(QGraphicsObject):
 
-    WINNER_PLAYER = 1
-    WINNER_AUTOMA = 2
-    WINNER_EVEN = 0
-
     HW_RATIO = 0.58
     marge = 4.
     width = 0
@@ -31,21 +27,32 @@ class Stone(QGraphicsObject):
         image.thumbnail((Stone.width - 1, Stone.height - 1))
         self.pixmap = QPixmap.fromImage(ImageTreatment.enluminure(image, ow=2, oh=2))
         self.winner = None
+        self.first_to_play_the_third_card = None
         self.animation = QPropertyAnimation(self, b"pos")
 
-    # Claim the stone
+    # Memorize the player who put a third card first for this stone
 
-    def claim(self, player_somme, automa_somme):
+    def put_a_third_card(self, player):
+        if self.first_to_play_the_third_card is None:
+            self.first_to_play_the_third_card = player
+
+    # Claim the stone and move it on the winner's side
+
+    def claim(self, player, automa):
         from src.Scene.Game.Side import Side
 
-        if player_somme > automa_somme:
-            self.winner = Stone.WINNER_PLAYER
-            self.moveStoneTo(Side.height + 6 + Stone.height)
-        elif player_somme < automa_somme:
-            self.winner = Stone.WINNER_AUTOMA
-            self.moveStoneTo(- Side.height - 6 - Stone.height)
+        if player.sides[self.numero].somme > automa.sides[self.numero].somme:
+            self.winner = player
+        elif player.sides[self.numero].somme < automa.sides[self.numero].somme:
+            self.winner = automa
         else:
-            self.winner = Stone.WINNER_EVEN
+            self.winner = self.first_to_play_the_third_card
+
+        delta_height = Side.height + 6 + Stone.height
+        if self.winner == automa:
+            delta_height = - delta_height
+
+        self.moveStoneTo(delta_height)
 
     # Animate the claimed stone
 

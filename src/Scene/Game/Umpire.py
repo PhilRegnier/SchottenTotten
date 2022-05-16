@@ -57,7 +57,7 @@ class Umpire:
     """
     def judge(self, player, automa, stones):
 
-        # Look where the last card has been moved
+        # Look where the last card has been moved to eventually claim the stone and count it
 
         shift_manager = ShiftManager()
 
@@ -65,89 +65,59 @@ class Umpire:
 
         if player.sides[i].is_full() and automa.sides[i].is_full():
             stones[i].claim(player.sides[i].somme, automa.sides[i].somme)
+            stones[i].winner.round_score += 1
 
-        # When the party ends, all stones have to be claimed
+        # When the party ends (no more cards to play), all stones have to be claimed
 
         if Umpire.final_countdown:
-
             for stone in stones:
                 if stone.winner is not None:
                     i = stone.numero
                     stone.claim(player.sides[i].somme, automa.sides[i].somme)
+                    stone.winner.round_score += 1
 
-            # count stones won
+        # check if there are 3 stones aligned on one side
 
-            player_stones_won = 0
-            automa_stones_won = 0
-
-            for stone in stones:
-                if stone.winner == Stone.WINNER_PLAYER:
-                    player_stones_won += 1
-                elif stone.winner == Stone.WINNER_AUTOMA:
-                    automa_stones_won += 1
-
-        # check if 3 stones are aligned
-
-        player_count = 0
-        automa_count = 0
-        player_3_stones_in_a_row = False
-        automa_3_stones_in_a_row = False
-        uw = False
-        aw = False
+        player_3_in_a_row = 0
+        automa_3_in_a_row = 0
 
         for i in range(9):
-            if stones[i].winner == Stone.WINNER_PLAYER:
-                automa_3_stones_in_a_row = False
-                acount = 0
-                if player_3_stones_in_a_row:
-                    ucount += 1
-                else:
-                    automa_3_stones_in_a_row = True
-                    ucount += 1
+            if stones[i].winner == player:
+                automa_3_in_a_row = 0
+                player_3_in_a_row += 1
+                if player_3_in_a_row == 3:
+                    break
 
-                if ucount == 3:
-                    uw = True
-
-            elif stones[i].winner == Stone.WINNER_AUTOMA:
-                player_3_stones_in_a_row = False
-                ucount = 0
-                if automa_3_stones_in_a_row:
-                    acount += 1
-                else:
-                    automaton_3_stones_in_a_row = True
-                    acount += 1
-
-                if acount == 3:
-                    aw = True
+            elif stones[i].winner == automa:
+                player_3_in_a_row = 0
+                automa_3_in_a_row += 1
+                if automa_3_in_a_row == 3:
+                    break
 
             else:
-                ucount = 0
-                acount = 0
-                player_3_stones_in_a_row = False
-                automa_3_stones_in_a_row = False
+                player_3_in_a_row = 0
+                automa_3_in_a_row = 0
 
-        if uw and not aw:
-            self.victory("user")
-        elif aw and not uw:
-            self.victory("auto")
-        elif self.ending:
-            if uss > aus:
-                self.victory("you")
-            elif uss < aus:
-                self.victory("auto")
-            else:
-                self.victory("draw")
+        # check if anyone wins and score
 
-    # show the endround/endgame's message
+        if player_3_in_a_row == 3:
+            player.round_score = 5
+            self.victory(player, automa)
+        elif automa_3_in_a_row == 3:
+            automa.round_score = 5
+            self.victory(automa, player)
+        elif player.round_score >= 5:
+            self.victory(player, automa)
+        elif automa.round_score >= 5:
+            self.victory(automa, player)
 
-    def victory(self, winner):
+    # show the victory's message
+
+    def victory(self, winner, loser):
 
         # test who won
 
-        if winner == "draw":
-            text = "DRAW !!\n\nRESTARTING THE ROUND"
-            self.current_round -= 1
-        elif winner == "user":
+        if winner:
             text = "YOU WON ROUND " + str(self.current_round) + " !!!"
             self.user_score += 1
         else:

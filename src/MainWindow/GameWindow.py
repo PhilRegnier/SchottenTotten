@@ -52,12 +52,15 @@ class GameWindow(QMainWindow):
         self.game_view = GameView(self)
         self.setCentralWidget(self.game_view)
 
-    # Hidden short-cut pressed handler
+    # Hidden short-cuts pressed handler
 
     def keyPressEvent(self, event):
         if int(event.modifiers()) == Qt.ControlModifier:
             if event.key() == Qt.Key_A:
                 self.board.show_automaton_playmat()
+
+            if event.key() == Qt.Key_G:
+                self.board.start_new_round()
 
     # Hidden short-cut release handler
 

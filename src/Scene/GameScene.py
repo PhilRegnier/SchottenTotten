@@ -130,6 +130,45 @@ class GameScene(QGraphicsScene):
         self._setup()
         self.umpire.final_countdown = False
 
+    """
+        Method processing the current player's turn
+    """
+    def play_a_turn(self, current_player):
+
+        side = self.shift_manager.side
+
+        # Memorize initial position for new card from the deck
+
+        pos = self.shift_manager.card.anchor_point
+
+        # Add the card dropped to the side
+
+        side.add_card(self.shift_manager.card)
+        side.light_off()
+
+        # Draw a new card unless deck is empty
+
+        if self.deck.is_empty():
+            if self.player.playmat.is_empty() and self.automaton.playmat.is_empty():
+                self.umpire.final_countdown = True
+        else:
+            new_card = self.deck.draw()
+            current_player.playmat.add(new_card)
+            new_card.set_anchor_point(pos)
+            new_card.move_to(self.deck.pos() - current_player.playmat.pos(), pos)
+
+        # Actions if the targetted side is full now
+
+        if side.is_full():
+            self.stones[side.numero].put_a_third_card(current_player)
+            self.umpire.book(side)
+
+        # Ask the umpire to score and to tell if someone won
+
+        self.umpire.judge(self.player, self.automaton, self.stones)
+
+        self.shift_manager.reset()
+
     def mouseMoveEvent(self, event):
 
         super(GameScene, self).mouseMoveEvent(event)
@@ -151,8 +190,6 @@ class GameScene(QGraphicsScene):
                 if item not in items:
                     item.light_off()
                     self.itemsSelected.remove(item)
-
-        QGraphicsScene.mouseMoveEvent(self, event)
 
         # TODO : Management for reordering the user's playmat
 
@@ -235,57 +272,28 @@ class GameScene(QGraphicsScene):
             return
 
         # Events from Cards: If cards has been moved to a droppable zone:
+
         # 1/ user's deck
         """
         if self.cardManager.is_moved_to_reorganize():
             self.user_hand = self.new_order
         """
-        # 2/ side
+        # 2/ when the player puts a card on an avaiable side that's starting process for the turn's of each player
 
-        if self.shift_manager.side:
+        if self.shift_manager.side is not None:
 
-            # Memorize initial position for new card from the deck
-
-            pos = self.shift_manager.card.anchor_point
-
-            # Add the card dropped to the side
-
-            self.shift_manager.side.add_card(self.shift_manager.card)
-            self.shift_manager.side.light_off()
-
-            # Draw a new card
-
-            if self.deck.is_empty():
-                if self.player.playmat.is_empty():
-                    self.umpire.final_countdown = True
-            else:
-                new_card = self.deck.draw()
-                self.player.playmat.add(new_card)
-                new_card.set_anchor_point(pos)
-                new_card.move_to(self.deck.pos() - self.player.playmat.pos(), pos)
-
-            # Actions if the targetted side is full
-
-            if self.shift_manager.side.is_full():
-                self.umpire.book(self.shift_manager.side)
-            print("scene: drop 6")
-            self.umpire.judge()
-            print("scene: drop 7")
-            self.shift_manager.reset()
+            self.play_a_turn(self.player)
 
             # Run automaton's turn
             print("scene: drop 8")
             self.automaton.play_a_card()
             print("scene: drop 9")
-            if self.shift_manager.side.is_full():
-                self.umpire.book(self.shift_manager.side)
+            self.play_a_turn(self.automaton)
             print("scene: drop 10")
-            self.umpire.judge(self.shift_manager.side)
 
         else:
             self.shift_manager.card.move_to(self.shift_manager.card.pos(), self.shift_manager.card.anchor_point)
         print("scene: drop 11")
-        self.shift_manager.reset()
         self.update()
 
     """

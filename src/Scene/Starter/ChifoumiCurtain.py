@@ -82,6 +82,8 @@ class Chifoumi(Curtain):
     """
     def mouseReleaseEvent(self, event):
 
+        super(Chifoumi, self).mouseReleaseEvent(event)
+
         if self.feuille.selected or self.ciseaux.selected or self.pierre.selected:
 
             self.text1.setVisible(False)
@@ -128,9 +130,6 @@ class Chifoumi(Curtain):
             self.feuille.setAcceptHoverEvents(False)
             QTimer.singleShot(3000, lambda: self.leave(text))
             return
-
-        else:
-            Curtain.mouseReleaseEvent(self, event)
 
     def leave(self, text):
         text.setVisible(False)
