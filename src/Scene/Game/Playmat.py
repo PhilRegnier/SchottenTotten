@@ -31,7 +31,7 @@ class Playmat(QGraphicsItem):
             spot.setPos((i + 1) * GeometryStyle.marge + i * Card.width, GeometryStyle.marge)
             spot.setVisible(True)
             self.spots.append(spot)
-
+        print("first:", self.spots[5].pos())
         self.cards = []
 
     def boundingRect(self):
@@ -49,9 +49,12 @@ class Playmat(QGraphicsItem):
     def add(self, card, draggable=False, index=None):
         # TODO : Animation du déplacement de la carte
         if len(self.cards) > SettingsManager.max_cards_in_hand():
-            print("Playmat.add: impossible d'ajouter une carte (main complète)")
+            print("Playmat.add: impossible d'ajouter une carte (main complète)",
+                  len(self.cards),
+                  SettingsManager.max_cards_in_hand())
             return False
         else:
+            card.setParentItem(self)
             if index is None:
                 for spot in self.spots:
                     if spot.free:
@@ -60,8 +63,8 @@ class Playmat(QGraphicsItem):
                         break
 
             elif 0 <= index <= SettingsManager.max_cards_in_hand():
-                if self.spots.get(index).free:
-                    card.setPos(self.spots.get(index).pos())
+                if self.spots[index].free:
+                    card.setPos(self.spots[index].pos())
                 else:
                     print("Playmat.add: spot occupé !")
                     return False
@@ -69,7 +72,6 @@ class Playmat(QGraphicsItem):
                 print("Playmat.add: impossible d'ajouter une carte")
                 return False
 
-            card.setParentItem(self)
             card.setVisible(True)
             card.set_draggable(draggable)
             card.set_anchor_point(card.pos())
@@ -79,6 +81,7 @@ class Playmat(QGraphicsItem):
 
     def remove(self, card):
         self.cards.remove(card)
+        self.spots[card.index].set_free(True)
         # TODO: gestion erreur si nombre_cartes = 0
 
     def show(self):

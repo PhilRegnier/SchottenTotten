@@ -133,7 +133,7 @@ class GameScene(QGraphicsScene):
     """
         Method processing the current player's turn
     """
-    def play_a_turn(self, current_player):
+    def _play_a_turn(self, current_player):
 
         side = self.shift_manager.side
 
@@ -141,8 +141,9 @@ class GameScene(QGraphicsScene):
 
         pos = self.shift_manager.card.anchor_point
 
-        # Add the card dropped to the side
+        # Add the card dropped to the side and remove it from the playmat
 
+        current_player.playmat.remove(self.shift_manager.card)
         side.add_card(self.shift_manager.card)
         side.light_off()
 
@@ -174,14 +175,13 @@ class GameScene(QGraphicsScene):
         super(GameScene, self).mouseMoveEvent(event)
 
         if self.shift_manager.dragged:
-            print("gamescene: mouseMove: card dragged 1")
+
             # Enlightment for user's side hovered. TODO : => treatement in Side class ?
 
             items = self.items(event.pos())
 
             for item in items:
                 if isinstance(item, Side) and item.parentItem is self.player:
-                    print("gamescene: mouseMove: card dragged 2")
                     if len(item.cards) < 3:
                         item.light_on()
                         self.itemsSelected.append(item)
@@ -282,18 +282,17 @@ class GameScene(QGraphicsScene):
 
         if self.shift_manager.side is not None:
 
-            self.play_a_turn(self.player)
+            self._play_a_turn(self.player)
 
             # Run automaton's turn
-            print("scene: drop 8")
+
             self.automaton.play_a_card()
-            print("scene: drop 9")
-            self.play_a_turn(self.automaton)
-            print("scene: drop 10")
+
+            self._play_a_turn(self.automaton)
 
         else:
             self.shift_manager.card.move_to(self.shift_manager.card.pos(), self.shift_manager.card.anchor_point)
-        print("scene: drop 11")
+
         self.update()
 
     """

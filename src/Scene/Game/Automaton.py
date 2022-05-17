@@ -37,7 +37,7 @@ class Automaton(Player):
 
         pos = shift_manager.card.anchor_point
         pos0 = self.playmat.pos() - shift_manager.side.pos() + pos
-        shift_manager.card.moveTo(pos0, pos)
+        shift_manager.card.move_to(pos0, pos)
 
     """
     Automate 0 : random card and random stone
@@ -177,8 +177,8 @@ class Automaton(Player):
         # 4 Play a random card on a random free side
 
         if self.statistics.auto_ls0():
-            shift_manager.set_side(choice(self.statistics.auto_ls0()))
-            shift_manager.set_card(choice(self.hand.cards))
+            shift_manager.set_side(self.sides[choice(self.statistics.auto_ls0())])
+            shift_manager.set_card(choice(self.playmat.cards))
             return
 
         # 5 Last call...

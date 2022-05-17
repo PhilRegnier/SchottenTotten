@@ -44,6 +44,7 @@ class Card(QGraphicsObject):
 
         self.shift_manager = ShiftManager()
 
+        self.animation = None
         self.__old_z_value = None
 
     @classmethod
@@ -151,18 +152,19 @@ class Card(QGraphicsObject):
 
         # animation for the move
 
-        animation = QPropertyAnimation(self, b"pos")
+        self.animation = QPropertyAnimation(self, b"pos")
         dx = pos1.x() - pos2.x()
         dy = pos1.y() - pos2.y()
+        print("card move from to ", pos1, pos2)
         duration = int(sqrt(dx ** 2 + dy ** 2) / 1)
-        animation.setDuration(duration)
-        animation.setStartValue(pos1)
-        animation.setEndValue(pos2)
+        self.animation.setDuration(duration)
+        self.animation.setStartValue(pos1)
+        self.animation.setEndValue(pos2)
 
         self.set_on_top()
-        animation.finished.connect(self.set_on_ground)
+        self.animation.finished.connect(self.set_on_ground)
 
-        animation.start()
+        self.animation.start()
 
     def set_on_top(self):
         self.__old_z_value = self.zValue()
