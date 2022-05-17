@@ -151,7 +151,7 @@ class Card(QGraphicsObject):
     def move_to(self, pos1, pos2):
 
         # animation for the move
-
+        # TODO : déclarer l'animation dans le constructeur ou bien faire appel à une méthode/class extérieure ??
         self.animation = QPropertyAnimation(self, b"pos")
         dx = pos1.x() - pos2.x()
         dy = pos1.y() - pos2.y()
