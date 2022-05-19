@@ -31,7 +31,7 @@ class Playmat(QGraphicsItem):
             spot.setPos((i + 1) * GeometryStyle.marge + i * Card.width, GeometryStyle.marge)
             spot.setVisible(True)
             self.spots.append(spot)
-        print("first:", self.spots[5].pos())
+
         self.cards = []
 
     def boundingRect(self):

@@ -135,18 +135,24 @@ class Card(QGraphicsObject):
                         shortest_dist = line.length()
                         closest_item = item
 
-                if isinstance(closest_item, Side) and closest_item.parent is self.scene().player:
-                    side = closest_item
-                    if not side.is_full():
-                        self.shift_manager.set_side(side)
-                        self.set_draggable(False)
-
-                        if len(side.cards) > 0:
-                            self.setZValue(side.cards[-1].zValue() + 0.1)
+                if isinstance(closest_item, Side)\
+                        and closest_item.parent is self.scene().player:
+                    self.set_card_on_side(closest_item)
+                elif isinstance(closest_item.parentItem(), Side)\
+                        and closest_item.parentItem().parent is self.scene().player:
+                    self.set_card_on_side(closest_item.parentItem())
 
             QGraphicsObject.mouseReleaseEvent(self, event)
             self.shade.setEnabled(False)
             self.setOpacity(1)
+
+    def set_card_on_side(self, side):
+        if not side.is_full():
+            self.shift_manager.set_side(side)
+            self.set_draggable(False)
+
+            if len(side.cards) > 0:
+                self.setZValue(side.cards[-1].zValue() + 0.1)
 
     def move_to(self, pos1, pos2):
 

@@ -154,7 +154,8 @@ class GameScene(QGraphicsScene):
                 self.umpire.final_countdown = True
         else:
             new_card = self.deck.draw()
-            current_player.playmat.add(new_card)
+            draggable = current_player is self.player
+            current_player.playmat.add(new_card, draggable)
             new_card.set_anchor_point(pos)
             new_card.move_to(self.deck.pos() - current_player.playmat.pos(), pos)
 
