@@ -154,18 +154,17 @@ class Card(QGraphicsObject):
             if len(side.cards) > 0:
                 self.setZValue(side.cards[-1].zValue() + 0.1)
 
-    def move_to(self, pos1, pos2):
+    def move_to(self, starting_pos, ending_pos):
 
         # animation for the move
         # TODO : déclarer l'animation dans le constructeur ou bien faire appel à une méthode/class extérieure ??
         self.animation = QPropertyAnimation(self, b"pos")
-        dx = pos1.x() - pos2.x()
-        dy = pos1.y() - pos2.y()
-        print("card move from to ", pos1, pos2)
+        dx = starting_pos.x() - ending_pos.x()
+        dy = starting_pos.y() - ending_pos.y()
         duration = int(sqrt(dx ** 2 + dy ** 2) / 1)
         self.animation.setDuration(duration)
-        self.animation.setStartValue(pos1)
-        self.animation.setEndValue(pos2)
+        self.animation.setStartValue(starting_pos)
+        self.animation.setEndValue(ending_pos)
 
         self.set_on_top()
         self.animation.finished.connect(self.set_on_ground)

@@ -34,10 +34,7 @@ class Automaton(Player):
         # move the selected card on the selected side
 
         shift_manager = ShiftManager()
-
-        pos = shift_manager.card.anchor_point
-        pos0 = self.playmat.pos() - shift_manager.side.pos() + pos
-        shift_manager.card.move_to(pos0, pos)
+        shift_manager.card.setVisible(True)
 
     """
     Automate 0 : random card and random stone

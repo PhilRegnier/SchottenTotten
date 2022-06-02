@@ -64,7 +64,7 @@ class Umpire:
         i = shift_manager.side.numero
 
         if player.sides[i].is_full() and automa.sides[i].is_full():
-            stones[i].claim(player.sides[i].somme, automa.sides[i].somme)
+            stones[i].claim(player, automa)
             stones[i].winner.round_score += 1
 
         # When the party ends (no more cards to play), all stones have to be claimed
@@ -73,7 +73,7 @@ class Umpire:
             for stone in stones:
                 if stone.winner is not None:
                     i = stone.numero
-                    stone.claim(player.sides[i].somme, automa.sides[i].somme)
+                    stone.claim(player, automa)
                     stone.winner.round_score += 1
 
         # check if there are 3 stones aligned on one side
@@ -102,27 +102,22 @@ class Umpire:
 
         if player_3_in_a_row == 3:
             player.round_score = 5
-            self.victory(player, automa)
+            return player
         elif automa_3_in_a_row == 3:
             automa.round_score = 5
-            self.victory(automa, player)
+            return automa
         elif player.round_score >= 5:
-            self.victory(player, automa)
+            return player
         elif automa.round_score >= 5:
-            self.victory(automa, player)
+            return automa
+
+        return None
 
     # show the victory's message
 
     def victory(self, winner, loser):
 
-        # test who won
-
-        if winner:
-            text = "YOU WON ROUND " + str(self.current_round) + " !!!"
-            self.user_score += 1
-        else:
-            text = "AUTOMA WON ROUND " + str(self.current_round) + " !!!"
-            self.auto_score += 1
+        text = winner.name + " WON ROUND " + str(self.current_round)
 
         if self.current_round < self.settings_manager.get_rounds_nb():
             text += "ROUND " + str(self.current_round) + " !!!"
@@ -132,21 +127,3 @@ class Umpire:
             else:
                 text = "SO CLOSE !\n COME ON, LOSER, TRY AGAIN !"
 
-        # Prepare the curtain
-
-        self.frame = Curtain()
-
-        # Set the congrats text
-
-        self.msg = TextInForeground(text, self.frame)
-
-        self.board.addItem(self.frame)
-
-        self.frame.setVisible(True)
-        self.frame.animate_incoming()
-
-        for i in range(Card.total_cards):
-            Card.cards[i].setDraggable(False)
-            Card.cards[i].setZValue(0)
-
-        QTimer.singleShot(3000, self.__new_round)

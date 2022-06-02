@@ -53,13 +53,14 @@ class Side(QGraphicsItem):
         painter.drawRoundedRect(rect, GeometryStyle.r_bound, GeometryStyle.r_bound)
 
     def add_card(self, card):
-        pos = QPointF(3, 3 + len(self.cards) * card.height * 0.32)
-        card.set_anchor_point(pos)
+        old_pos = card.pos() + card.parentItem().pos() - self.pos()
+        new_pos = QPointF(3, 3 + len(self.cards) * card.height * 0.32)
+        card.set_anchor_point(new_pos)
         card.setParentItem(self)
         card.set_index(-1)
         self.cards.append(card)
         self.somme += card.valeur
-        card.setPos(pos)
+        card.move_to(old_pos, new_pos)
 
     def light_on(self):
         self.setOpacity(1.0)

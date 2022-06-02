@@ -52,7 +52,7 @@ class Stone(QGraphicsObject):
         if self.winner == automa:
             delta_height = - delta_height
 
-        self.moveStoneTo(delta_height)
+        self.move_to(delta_height)
 
     # Animate the claimed stone
 

@@ -1,5 +1,6 @@
 from math import sqrt
 
+from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QGraphicsScene
 
 from src.Scene.Game.Automaton import Automaton
@@ -11,9 +12,11 @@ from src.Scene.Game.ShiftManager import ShiftManager
 from src.Scene.Game.Side import Side
 from src.Scene.Game.Stone import Stone
 from src.Scene.Game.Umpire import Umpire
+from src.Scene.Starter.Curtain import Curtain
 from src.Scene.Starter.HomeCurtain import HomeCurtain
 from src.SettingsManager import SettingsManager
 from src.Style import GeometryStyle, PlayerColors, AutomatonColors
+from src.TextInForeground import TextInForeground
 
 
 class GameScene(QGraphicsScene):
@@ -165,11 +168,29 @@ class GameScene(QGraphicsScene):
             self.stones[side.numero].put_a_third_card(current_player)
             self.umpire.book(side)
 
-        # Ask the umpire to score and to tell if someone won
+        # Ask the umpire to score and to tell who won the round
 
-        self.umpire.judge(self.player, self.automaton, self.stones)
+        winner = self.umpire.judge(self.player, self.automaton, self.stones)
+
+        # Show the ending message
+
+        if winner is not None:
+            self.round_close(winner.name + " WON ROUND " + str(self.current_round))
 
         self.shift_manager.reset()
+
+    def round_close(self, text):
+
+        frame = Curtain()
+        self.scene().addItem(TextInForeground(text, frame))
+        frame.setVisible(True)
+        frame.animate_incoming()
+
+        for i in range(Card.total_cards):
+            Card.cards[i].setDraggable(False)
+            Card.cards[i].setZValue(0)
+
+        QTimer.singleShot(3000, self.__new_round)
 
     def mouseMoveEvent(self, event):
 
@@ -279,7 +300,7 @@ class GameScene(QGraphicsScene):
         if self.cardManager.is_moved_to_reorganize():
             self.user_hand = self.new_order
         """
-        # 2/ when the player puts a card on an avaiable side that's starting process for the turn's of each player
+        # 2/ when the player puts a card on an avaiable side, starts process for the turn's of each player
 
         if self.shift_manager.side is not None:
 
