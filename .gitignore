@@ -1,0 +1,7 @@
+# Editors
+.vscode/
+.idea/
+
+# Distribution / packaging
+old/
+venv
