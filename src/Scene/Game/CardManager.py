@@ -61,3 +61,13 @@ class CardManager(Singleton):
 
         return cls.cards
 
+    @classmethod
+    def pick_up_cards(cls, cards):
+        cls.cards.extend(cards)
+
+    @classmethod
+    def reset_cards(cls):
+        for card in cls.cards:
+            card.set_draggable(False)
+            card.setZValue(0.0)
+

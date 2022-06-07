@@ -1,10 +1,4 @@
-from PyQt5.QtCore import QTimer
-
 from src.Scene.Game.ShiftManager import ShiftManager
-from src.Scene.Game.Side import Side
-from src.Scene.Game.Stone import Stone
-from src.Scene.Starter.Curtain import Curtain
-from src.TextInForeground import TextInForeground
 
 
 class Umpire:
@@ -126,4 +120,5 @@ class Umpire:
                 text = "CONGRATS !\n YOU WON THIS GAME !!!"
             else:
                 text = "SO CLOSE !\n COME ON, LOSER, TRY AGAIN !"
+
 

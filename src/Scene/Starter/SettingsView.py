@@ -1,6 +1,6 @@
 
 from src.Scene.Clickable import Clickable
-from src.Scene.Starter.Curtain import Curtain
+from src.Scene.Curtain import Curtain
 from src.SettingsManager import SettingsManager
 from src.Scene.Starter.Slider import Slider
 from src.TextInForeground import TextInForeground
@@ -82,3 +82,4 @@ class SettingsView(Curtain):
 
         else:
             Curtain.mouseReleaseEvent(self, event)
+

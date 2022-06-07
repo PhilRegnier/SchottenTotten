@@ -59,12 +59,14 @@ class Playmat(QGraphicsItem):
                 for spot in self.spots:
                     if spot.free:
                         card.setPos(spot.pos())
+                        card.set_index(spot.index)
                         spot.set_free(False)
                         break
 
             elif 0 <= index <= SettingsManager.max_cards_in_hand():
                 if self.spots[index].free:
                     card.setPos(self.spots[index].pos())
+                    card.set_index(index)
                 else:
                     print("Playmat.add: spot occupé !")
                     return False
@@ -103,3 +105,4 @@ class Playmat(QGraphicsItem):
                 + GeometryStyle.marge
         )
         cls.height = Card.height + GeometryStyle.marge * 2.0
+

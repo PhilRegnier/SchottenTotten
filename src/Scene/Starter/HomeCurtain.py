@@ -2,13 +2,12 @@
 # Home panel
 #
 from PIL import Image, ImageQt
-from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
 from src.Scene.Starter.ChifoumiCurtain import Chifoumi
 from src.Scene.Clickable import Clickable
-from src.Scene.Starter.Curtain import Curtain
+from src.Scene.Curtain import Curtain
 from src.Scene.Starter.SettingsView import SettingsView
 from src.SettingsManager import SettingsManager
 
@@ -83,3 +82,4 @@ class HomeCurtain(Curtain):
 
     def leave(self):
         self.animate_leaving()
+

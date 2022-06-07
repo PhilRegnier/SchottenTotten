@@ -39,7 +39,7 @@ class HelpMenuBar:
         dialog = QDialog(window)
 
         dialog.setWindowTitle("Les règles du jeu")
-        dialog.setMinimumSize(0.6*GeometryStyle.main_width, 0.6*GeometryStyle.main_height)
+        dialog.setMinimumSize(int(0.6*GeometryStyle.main_width), int(0.6*GeometryStyle.main_height))
 
         scroll = QScrollArea(dialog)
 
@@ -79,3 +79,4 @@ class HelpMenuBar:
             "About Schotten Totten",
             msg % __version__
         )
+

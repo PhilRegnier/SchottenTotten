@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsLineItem
 
 from src.Scene.Game.Card import Card
 from src.Scene.Clickable import Clickable
-from src.Scene.Starter.Curtain import Curtain
+from src.Scene.Curtain import Curtain
 from src.SettingsManager import SettingsManager
 from src.TextInForeground import TextInForeground
 from src.ImageTreatment import ImageTreatment
@@ -135,3 +135,4 @@ class Chifoumi(Curtain):
         text.setVisible(False)
         self.animate_leaving()
         self.scene().start_new_round()
+

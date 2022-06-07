@@ -1,5 +1,3 @@
-from math import sqrt
-
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QGraphicsScene
 
@@ -12,7 +10,7 @@ from src.Scene.Game.ShiftManager import ShiftManager
 from src.Scene.Game.Side import Side
 from src.Scene.Game.Stone import Stone
 from src.Scene.Game.Umpire import Umpire
-from src.Scene.Starter.Curtain import Curtain
+from src.Scene.Curtain import Curtain
 from src.Scene.Starter.HomeCurtain import HomeCurtain
 from src.SettingsManager import SettingsManager
 from src.Style import GeometryStyle, PlayerColors, AutomatonColors
@@ -33,8 +31,8 @@ class GameScene(QGraphicsScene):
         # TODO : Maybe the initialization occuring before settings change could be a problem
 
         self.stones = [Stone(i) for i in range(9)]
-        self.cardManager = CardManager()
-        self.cardManager.initialize()
+        self.card_manager = CardManager()
+        self.card_manager.initialize()
         self.deck = Deck()
         self.player = Player('humain', PlayerColors)
         self.automaton = Automaton('Bot', AutomatonColors, self)
@@ -101,9 +99,9 @@ class GameScene(QGraphicsScene):
 
         # Set zValue max
 
-        self.cardManager.reset_zmax()
+        self.card_manager.reset_zmax()
         for item in self.items():
-            self.cardManager.set_zmax(item.zValue())
+            self.card_manager.set_zmax(item.zValue())
 
         # Draw cards
 
@@ -153,6 +151,8 @@ class GameScene(QGraphicsScene):
         # Draw a new card unless deck is empty
 
         if self.deck.is_empty():
+            if current_player is self.automaton:
+                self.automaton.update_statistics()
             if self.player.playmat.is_empty() and self.automaton.playmat.is_empty():
                 self.umpire.final_countdown = True
         else:
@@ -172,25 +172,34 @@ class GameScene(QGraphicsScene):
 
         winner = self.umpire.judge(self.player, self.automaton, self.stones)
 
-        # Show the ending message
+        # reset shift_manager & show the ending message
+
+        self.shift_manager.reset()
 
         if winner is not None:
             self.round_close(winner.name + " WON ROUND " + str(self.current_round))
 
-        self.shift_manager.reset()
-
     def round_close(self, text):
 
-        frame = Curtain()
-        self.scene().addItem(TextInForeground(text, frame))
+        frame = Curtain(None)
+        self.addItem(TextInForeground(text, frame))
         frame.setVisible(True)
         frame.animate_incoming()
 
-        for i in range(Card.total_cards):
-            Card.cards[i].setDraggable(False)
-            Card.cards[i].setZValue(0)
+        # pick up the cards
 
-        QTimer.singleShot(3000, self.__new_round)
+        self.card_manager.pick_up_cards(self.player.playmat.cards)
+        self.card_manager.pick_up_cards(self.automaton.playmat.cards)
+
+        for side in self.player.sides:
+            self.card_manager.pick_up_cards(side.cards)
+
+        for side in self.automaton.sides:
+            self.card_manager.pick_up_cards(side.cards)
+
+        self.card_manager.reset_cards()
+
+        QTimer.singleShot(3000, self.start_new_round)
 
     def mouseMoveEvent(self, event):
 
@@ -309,7 +318,6 @@ class GameScene(QGraphicsScene):
             # Run automaton's turn
 
             self.automaton.play_a_card()
-
             self._play_a_turn(self.automaton)
 
         else:
@@ -337,3 +345,4 @@ class GameScene(QGraphicsScene):
 
     def hide_automaton_playmat(self):
         self.removeItem(self.automaton.playmat)
+
