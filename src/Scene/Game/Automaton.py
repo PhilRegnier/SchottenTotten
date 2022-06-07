@@ -1,5 +1,6 @@
 from random import choice
 
+from src.Scene.Game.CardManager import CardManager
 from src.Scene.Game.Option import Option
 from src.Scene.Game.Player import Player
 from src.Scene.Game.ShiftManager import ShiftManager
@@ -189,3 +190,4 @@ class Automaton(Player):
 
         self.cervo0()
         print("Automaton cervo0")
+
