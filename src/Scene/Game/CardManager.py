@@ -27,6 +27,15 @@ class CardManager(Singleton):
     def __init__(self):
         pass
 
+    def set_zmax(self, zmax):
+        self.zmax = max(self.zmax, zmax)
+
+    def get_zmax(self):
+        return self.zmax
+
+    def reset_zmax(self):
+        self.zmax = 0.
+
     # Setting all the instances of playing cards
     @classmethod
     def initialize(cls):
@@ -34,18 +43,6 @@ class CardManager(Singleton):
             valeur = numero % cls.max_value + 1
             couleur = cls.colors[numero // cls.max_value]
             cls.cards.append(Card(numero, valeur, couleur))
-
-    @classmethod
-    def set_zmax(cls, zmax):
-        cls.zmax = max(cls.zmax, zmax)
-
-    @classmethod
-    def get_zmax(cls):
-        return cls.zmax
-
-    @classmethod
-    def reset_zmax(cls):
-        cls.zmax = 0.
 
     @classmethod
     def get_total_cards(cls):

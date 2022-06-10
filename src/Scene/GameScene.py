@@ -37,7 +37,7 @@ class GameScene(QGraphicsScene):
         self.player = Player('humain', PlayerColors)
         self.automaton = Automaton('Bot', AutomatonColors, self)
         self.umpire = Umpire()
-        self.current_round = 1
+        self.current_round = 0
 
         self.new_order = []
         self.itemsSelected = []
@@ -60,7 +60,7 @@ class GameScene(QGraphicsScene):
     # Create board game items and set the board scene
 
     def _setup(self):
-
+        print("_setup")
         settings_manager = SettingsManager()
 
         # Frontier items
@@ -110,7 +110,7 @@ class GameScene(QGraphicsScene):
             self.automaton.playmat.add(self.deck.draw())
 
     def start_new_round(self):
-
+        print("start new round")
         settings_manager = SettingsManager()
 
         # ending or starting the game
@@ -119,9 +119,23 @@ class GameScene(QGraphicsScene):
             self.home.setVisible(True)
             self.home.animate_incoming()
             return
-        elif self.current_round == 1:
+        elif self.current_round == 0:
             self.home.leave()
         else:
+
+            # pick up the cards everywhere
+
+            self.card_manager.pick_up_cards(self.player.playmat.cards)
+            self.card_manager.pick_up_cards(self.automaton.playmat.cards)
+
+            for side in self.player.sides:
+                self.card_manager.pick_up_cards(side.cards)
+
+            for side in self.automaton.sides:
+                self.card_manager.pick_up_cards(side.cards)
+
+            self.card_manager.reset_cards()
+
             settings_manager.switch_first_player()
 
         self.current_round += 1
@@ -135,7 +149,7 @@ class GameScene(QGraphicsScene):
         Method processing the current player's turn
     """
     def _play_a_turn(self, current_player):
-
+        print("play a turn:", current_player.name)
         side = self.shift_manager.side
 
         # Memorize initial position for new card from the deck
@@ -177,29 +191,17 @@ class GameScene(QGraphicsScene):
         self.shift_manager.reset()
 
         if winner is not None:
-            self.round_close(winner.name + " WON ROUND " + str(self.current_round))
+            self.close_the_round(winner.name + " WON ROUND " + str(self.current_round))
+            self.start_new_round()
 
-    def round_close(self, text):
-
+    def close_the_round(self, text):
+        print("close_the_round")
         frame = Curtain(None)
         self.addItem(TextInForeground(text, frame))
         frame.setVisible(True)
-        frame.animate_incoming()
+        frame.animate_incoming(self.get_zmax())
 
-        # pick up the cards
-
-        self.card_manager.pick_up_cards(self.player.playmat.cards)
-        self.card_manager.pick_up_cards(self.automaton.playmat.cards)
-
-        for side in self.player.sides:
-            self.card_manager.pick_up_cards(side.cards)
-
-        for side in self.automaton.sides:
-            self.card_manager.pick_up_cards(side.cards)
-
-        self.card_manager.reset_cards()
-
-        QTimer.singleShot(3000, self.start_new_round)
+        QTimer.singleShot(3000, frame.animate_leaving)
 
     def mouseMoveEvent(self, event):
 
@@ -336,6 +338,12 @@ class GameScene(QGraphicsScene):
             4 * Stone.height + 4.33 * Card.height
             + cls.marge * 2 + 8 * GeometryStyle.pen_width + 4 * Stone.marge + 40
         ) - 60
+
+    """
+       Return the maximum zValue in th scene
+    """
+    def get_zmax(self):
+        return self.card_manager.get_zmax()
 
     """
      cheat mode: show automaton's playmat in a subwindow

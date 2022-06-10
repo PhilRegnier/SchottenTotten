@@ -36,7 +36,10 @@ class Curtain(QGraphicsObject):
         rect = QRectF(0., 0., float(GameScene.width), float(GameScene.height))
         painter.drawRoundedRect(rect, GeometryStyle.r_bound, GeometryStyle.r_bound)
 
-    def animate_incoming(self):
+    def animate_incoming(self, z_value=None):
+        print("animate_incoming:", self)
+        if z_value is not None:
+            self.setZValue(z_value)
         self.anim = QPropertyAnimation(self, b"pos")
         self.anim.setEasingCurve(QEasingCurve.OutBounce)
         self.anim.setDuration(800)
@@ -45,7 +48,10 @@ class Curtain(QGraphicsObject):
         self.setVisible(True)
         self.anim.start()
 
-    def animate_leaving(self):
+    def animate_leaving(self, z_value=None):
+        print("animate_leaving:", self)
+        if z_value is not None:
+            self.setZValue(z_value)
         self.anim = QPropertyAnimation(self, b"pos")
         self.anim.setEasingCurve(QEasingCurve.InCubic)
         self.anim.setDuration(800)

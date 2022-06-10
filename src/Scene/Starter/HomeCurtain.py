@@ -69,7 +69,6 @@ class HomeCurtain(Curtain):
 
         super(HomeCurtain, self).mouseReleaseEvent(event)
 
-        print("home: mouseRelease")
         if self.starting_button.selected:
             self.chifoumi.animate_incoming()
             self.chifoumi.start()

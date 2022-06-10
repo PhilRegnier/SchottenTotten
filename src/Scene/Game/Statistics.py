@@ -7,7 +7,6 @@ from src.Singleton import Singleton
 
 class Statistics(Singleton):
 
-
     # records for indexes avaiable
 
     _auto_lh = [0, 1, 2, 3, 4, 5]               # index where there is a card in the hand

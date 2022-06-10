@@ -2,7 +2,6 @@
 # Generic clickable button
 #
 from PIL import Image
-from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QCursor
 from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsItem

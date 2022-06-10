@@ -107,18 +107,3 @@ class Umpire:
 
         return None
 
-    # show the victory's message
-
-    def victory(self, winner, loser):
-
-        text = winner.name + " WON ROUND " + str(self.current_round)
-
-        if self.current_round < self.settings_manager.get_rounds_nb():
-            text += "ROUND " + str(self.current_round) + " !!!"
-        else:
-            if self.user_score > self.auto_score:
-                text = "CONGRATS !\n YOU WON THIS GAME !!!"
-            else:
-                text = "SO CLOSE !\n COME ON, LOSER, TRY AGAIN !"
-
-

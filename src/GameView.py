@@ -1,7 +1,6 @@
 #
 # Game definition
 #
-from math import sqrt
 
 from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QPainter, QBrush
