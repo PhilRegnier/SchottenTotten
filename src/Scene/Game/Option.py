@@ -1,7 +1,7 @@
 class Option:
 
-    def __init__(self, playmat_index, side, cote):
-        self.playmat_index = playmat_index
+    def __init__(self, card, side, cote):
+        self.card = card
         self.side = side
         self.cote = cote
 

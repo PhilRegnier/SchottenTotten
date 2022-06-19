@@ -96,7 +96,7 @@ class Card(QGraphicsObject):
         if (event.pos() - self.shift_manager.starting_pos).manhattanLength() < QApplication.startDragDistance():
             return
 
-        # All staff when a card is dragged from the user's hand
+        # All staff when a card is dragged from the user's playmat
 
         if self.shift_manager.card is not self:
             self.shift_manager.set_dragged(True)
@@ -123,24 +123,22 @@ class Card(QGraphicsObject):
         self.setCursor(Qt.ArrowCursor)
         if self.shift_manager.card is self:
 
-            col_items = self.collidingItems()
-            if col_items:
-                closest_item = col_items[0]
+            items = self.collidingItems()
+
+            if items:
+                closest_item = None
                 shortest_dist = 100000.
 
-                for item in col_items:
-                    line = QLineF(item.sceneBoundingRect().center(),
-                                  self.sceneBoundingRect().center())
-                    if line.length() < shortest_dist:
-                        shortest_dist = line.length()
-                        closest_item = item
+                for item in items:
+                    if item in self.scene().player.sides:
+                        line = QLineF(item.sceneBoundingRect().center(),
+                                      self.sceneBoundingRect().center())
+                        if line.length() < shortest_dist:
+                            shortest_dist = line.length()
+                            closest_item = item
 
-                if isinstance(closest_item, Side)\
-                        and closest_item.parent is self.scene().player:
+                if closest_item is not None:
                     self.set_card_on_side(closest_item)
-                elif isinstance(closest_item.parentItem(), Side)\
-                        and closest_item.parentItem().parent is self.scene().player:
-                    self.set_card_on_side(closest_item.parentItem())
 
             QGraphicsObject.mouseReleaseEvent(self, event)
             self.shade.setEnabled(False)

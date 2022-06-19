@@ -5,6 +5,7 @@ from PyQt5.QtCore import QRectF, QPointF
 from PyQt5.QtGui import QBrush, QPen
 from PyQt5.QtWidgets import QGraphicsItem
 
+from src.Scene.Game.ShiftManager import ShiftManager
 from src.Scene.Game.Stone import Stone
 from src.Style import GeometryStyle, GradientStyle
 
@@ -17,10 +18,11 @@ class Side(QGraphicsItem):
     width = 0
     height = 0
 
-    def __init__(self, numero, colors, parent):
+    def __init__(self, numero, colors, parent, accept_hover_event):
         super().__init__()
         self.numero = numero
         self.parent = parent
+        self.setAcceptHoverEvents(accept_hover_event)
         self.cards = []
         self.somme = 0
         if Side.width == 0:
@@ -30,6 +32,8 @@ class Side(QGraphicsItem):
         self.pen_color = colors.side_pen
         self.setFlag(QGraphicsItem.ItemDoesntPropagateOpacityToChildren)
         self.light_off()
+
+        self.shift_manager = ShiftManager()
 
     @classmethod
     def set_size(cls):
@@ -70,3 +74,4 @@ class Side(QGraphicsItem):
 
     def is_full(self):
         return len(self.cards) == 3
+

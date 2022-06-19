@@ -20,6 +20,8 @@ class SettingsManager(Singleton):
     __variant = False
     __first_player = None
 
+    __debug = True
+
     def __init__(self):
         pass
 
@@ -83,5 +85,12 @@ class SettingsManager(Singleton):
     def set_variant(cls, variant):
         cls.__variant = variant
 
+    @classmethod
+    def set_debug(cls):
+        cls.__debug = True
+
+    @classmethod
+    def is_debugging(cls):
+        return cls.__debug
 
 

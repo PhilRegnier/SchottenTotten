@@ -5,38 +5,35 @@ from src.Scene.Game.CardManager import CardManager
 from src.Singleton import Singleton
 
 
-class Statistics(Singleton):
+class Statistics:
 
-    # records for indexes avaiable
+    def __init__(self, sides):
 
-    _auto_lh = [0, 1, 2, 3, 4, 5]               # index where there is a card in the hand
-    _auto_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]      # index where there is a place or more in the side
-    _auto_ls0 = [0, 1, 2, 3, 4, 5, 6, 7, 8]     # index where there is no card in the side
-    _user_lh = [0, 1, 2, 3, 4, 5]
-    _user_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        # records for indexes available
 
-    _auto_ls1 = []                              # index where there is one only card in the side
-    _auto_ls2 = []                              # index where there are two cards in the side
+        self._auto_ls = []  # sides where there is a place or more
+        self._auto_ls0 = []  # sides where there is no card
+        self._auto_ls1 = []  # sides where there is exactly one only card
+        self._auto_ls2 = []  # sides where there are exactly two cards
 
-    # data for cards played
+        self.reset_stat_sides(sides)
 
-    _cjc = [[CardManager().colors[0], 0], [CardManager().colors[1], 0], [CardManager().colors[2], 0],
-            [CardManager().colors[3], 0], [CardManager().colors[4], 0], [CardManager().colors[5], 0]]
-    _cjv = [range(9), 0]
-    _cjn = 0
+        # self._user_lh = [0, 1, 2, 3, 4, 5]
+        # self._user_ls = [0, 1, 2, 3, 4, 5, 6, 7, 8]
 
-    # data for cards in the deck or in the other hand
+        # data for cards played
 
-    _csc = [[CardManager().colors[0], 9], [CardManager().colors[1], 9], [CardManager().colors[2], 9],
-            [CardManager().colors[3], 9], [CardManager().colors[4], 9], [CardManager().colors[5], 9]]
-    _csv = [range(9), 6]
-    _csn = 54
+        # self._cjc = [[CardManager().colors[0], 0], [CardManager().colors[1], 0], [CardManager().colors[2], 0],
+        #        [CardManager().colors[3], 0], [CardManager().colors[4], 0], [CardManager().colors[5], 0]]
+        # self._cjv = [range(9), 0]
+        # self._cjn = 0
 
-    def __init__(self):
-        pass
+        # data for cards in the deck or in the other hand
 
-    def auto_lh(self):
-        return self._auto_lh
+        # self._csc = [[CardManager().colors[0], 9], [CardManager().colors[1], 9], [CardManager().colors[2], 9],
+        #              [CardManager().colors[3], 9], [CardManager().colors[4], 9], [CardManager().colors[5], 9]]
+        # self._csv = [range(9), 6]
+        # self._csn = 54
 
     def auto_ls(self):
         return self._auto_ls
@@ -50,38 +47,35 @@ class Statistics(Singleton):
     def auto_ls2(self):
         return self._auto_ls2
 
-    def remove_from_playmat(self, index):
-        for i in range(len(self._auto_lh)):
-            if self._auto_lh[i] == index:
-                del self._auto_lh[i]
-                break
-
     def add_card_to_autoside(self, side):
-        if len(side.cards) == 0:
-            self._auto_ls1.append(side.numero)
-            self._auto_ls1.sort()
-            for i in range(len(self._auto_ls0)):
-                if self._auto_ls0[i] == side.numero:
-                    del self._auto_ls0[i]
-                    break
+        match len(side.cards):
+            case 0:
+                self._auto_ls1.append(side)
+                self._auto_ls0.remove(side)
 
-        elif len(side.cards) == 1:
-            for i in range(len(self._auto_ls1)):
-                if self._auto_ls1[i] == side.numero:
-                    del self._auto_ls1[i]
-                    break
+            case 1:
+                self._auto_ls2.append(side)
+                self._auto_ls1.remove(side)
 
-            self._auto_ls2.append(side.numero)
-            self._auto_ls2.sort()
+            case 2:
+                self._auto_ls.remove(side)
+                self._auto_ls2.remove(side)
 
-        else:
-            for i in range(len(self._auto_ls)):
-                if self._auto_ls[i] == side.numero:
-                    del self._auto_ls[i]
-                    break
+    def reset_stat_sides(self, sides):
+        self._auto_ls.clear()
+        self._auto_ls0.clear()
+        self._auto_ls1.clear()
+        self._auto_ls2.clear()
+        for side in sides:
+            match len(side.cards):
+                case 0:
+                    self._auto_ls.append(side)
+                    self._auto_ls0.append(side)
+                case 1:
+                    self._auto_ls.append(side)
+                    self._auto_ls1.append(side)
+                case 2:
+                    self._auto_ls.append(side)
+                    self._auto_ls2.append(side)
 
-            for i in range(len(self._auto_ls2)):
-                if self._auto_ls2[i] == side.numero:
-                    del self._auto_ls2[i]
-                    break
 

@@ -1,5 +1,7 @@
-from PyQt5.QtCore import QTimer
+
+from PyQt5.QtCore import QTimer, QLineF
 from PyQt5.QtWidgets import QGraphicsScene
+from PyQt5.uic.properties import QtCore
 
 from src.Scene.Game.Automaton import Automaton
 from src.Scene.Game.Card import Card
@@ -34,8 +36,8 @@ class GameScene(QGraphicsScene):
         self.card_manager = CardManager()
         self.card_manager.initialize()
         self.deck = Deck()
-        self.player = Player('humain', PlayerColors)
-        self.automaton = Automaton('Bot', AutomatonColors, self)
+        self.player = Player('Francesco', PlayerColors, True)
+        self.automaton = Automaton('Bot', AutomatonColors)
         self.umpire = Umpire()
         self.current_round = 0
 
@@ -165,8 +167,6 @@ class GameScene(QGraphicsScene):
         # Draw a new card unless deck is empty
 
         if self.deck.is_empty():
-            if current_player is self.automaton:
-                self.automaton.update_statistics()
             if self.player.playmat.is_empty() and self.automaton.playmat.is_empty():
                 self.umpire.final_countdown = True
         else:
@@ -209,15 +209,25 @@ class GameScene(QGraphicsScene):
 
         if self.shift_manager.dragged:
 
-            # Enlightment for user's side hovered. TODO : => treatement in Side class ?
+            # Enlightment for user's side hovered
 
-            items = self.items(event.pos())
+            items = self.collidingItems(self.shift_manager.card)
 
-            for item in items:
-                if isinstance(item, Side) and item.parentItem is self.player:
-                    if len(item.cards) < 3:
-                        item.light_on()
-                        self.itemsSelected.append(item)
+            if items:
+                closest_item = None
+                shortest_dist = 100000.
+
+                for item in items:
+                    if item in self.player.sides:
+                        line = QLineF(item.sceneBoundingRect().center(),
+                                      self.shift_manager.card.sceneBoundingRect().center())
+                        if line.length() < shortest_dist:
+                            shortest_dist = line.length()
+                            closest_item = item
+
+                if closest_item is not None and len(closest_item.cards) < 3:
+                    closest_item.light_on()
+                    self.itemsSelected.append(closest_item)
 
             for item in self.itemsSelected:
                 if item not in items:
@@ -299,6 +309,10 @@ class GameScene(QGraphicsScene):
     """
     def mouseReleaseEvent(self, event):
 
+        for item in self.itemsSelected:
+            item.light_off()
+            self.itemsSelected.remove(item)
+
         super(GameScene, self).mouseReleaseEvent(event)
 
         if not self.shift_manager.is_dragged():
@@ -324,6 +338,7 @@ class GameScene(QGraphicsScene):
 
         else:
             self.shift_manager.card.move_to(self.shift_manager.card.pos(), self.shift_manager.card.anchor_point)
+            self.shift_manager.reset()
 
         self.update()
 
@@ -353,4 +368,3 @@ class GameScene(QGraphicsScene):
 
     def hide_automaton_playmat(self):
         self.removeItem(self.automaton.playmat)
-

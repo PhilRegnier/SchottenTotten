@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import QMainWindow, QStatusBar
 from src.GameView import GameView
 from src.MainWindow.MenuBar import MenuBar
 from src.Scene.GameScene import GameScene
+from src.SettingsManager import SettingsManager
 from src.Style import GeometryStyle
 
 

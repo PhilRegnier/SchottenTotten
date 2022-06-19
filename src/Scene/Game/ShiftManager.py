@@ -5,7 +5,6 @@ class ShiftManager(Singleton):
 
     card = None
     side = None
-    playmat_index = None
     card_hover = None
 
     dragged = False
@@ -27,18 +26,13 @@ class ShiftManager(Singleton):
         cls.dragged = True
 
     @classmethod
-    def set_playmat_index(cls, playmat_index):
-        cls.playmat_index = playmat_index
-
-    @classmethod
     def set_side(cls, side):
         cls.side = side
 
     @classmethod
-    def select(cls, card, side, playmat_index):
+    def select(cls, card, side):
         cls.card = card
         cls.side = side
-        cls.playmat_index = playmat_index
         cls.sort = False
         cls.dragged = False
 
@@ -47,7 +41,6 @@ class ShiftManager(Singleton):
         cls.dragged = False
         cls.card = None
         cls.side = None
-        cls.playmat_index = None
 
     @classmethod
     def user_dont_want_to_reorganize(cls):

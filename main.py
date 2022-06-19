@@ -19,5 +19,5 @@ from src.MainWindow.GameWindow import GameWindow
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = GameWindow()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
