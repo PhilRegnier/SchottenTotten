@@ -137,20 +137,15 @@ class Card(QGraphicsObject):
                             shortest_dist = line.length()
                             closest_item = item
 
-                if closest_item is not None:
-                    self.set_card_on_side(closest_item)
+                if closest_item is not None and not closest_item.is_full():
+                    self.shift_manager.set_side(closest_item)
+                    self.set_draggable(False)
+                    if not closest_item.is_empty():
+                        self.setZValue(closest_item.cards[-1].zValue() + 0.1)
 
             QGraphicsObject.mouseReleaseEvent(self, event)
             self.shade.setEnabled(False)
             self.setOpacity(1)
-
-    def set_card_on_side(self, side):
-        if not side.is_full():
-            self.shift_manager.set_side(side)
-            self.set_draggable(False)
-
-            if len(side.cards) > 0:
-                self.setZValue(side.cards[-1].zValue() + 0.1)
 
     def move_to(self, starting_pos, ending_pos):
 

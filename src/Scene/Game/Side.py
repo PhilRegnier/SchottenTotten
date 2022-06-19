@@ -75,3 +75,5 @@ class Side(QGraphicsItem):
     def is_full(self):
         return len(self.cards) == 3
 
+    def is_empty(self):
+        return len(self.cards) == 0

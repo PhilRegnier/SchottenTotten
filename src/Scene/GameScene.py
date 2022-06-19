@@ -1,7 +1,6 @@
 
 from PyQt5.QtCore import QTimer, QLineF
 from PyQt5.QtWidgets import QGraphicsScene
-from PyQt5.uic.properties import QtCore
 
 from src.Scene.Game.Automaton import Automaton
 from src.Scene.Game.Card import Card
@@ -225,7 +224,7 @@ class GameScene(QGraphicsScene):
                             shortest_dist = line.length()
                             closest_item = item
 
-                if closest_item is not None and len(closest_item.cards) < 3:
+                if closest_item is not None and not closest_item.is_full():
                     closest_item.light_on()
                     self.itemsSelected.append(closest_item)
 
