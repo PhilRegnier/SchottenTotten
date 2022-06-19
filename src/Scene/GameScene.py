@@ -104,6 +104,10 @@ class GameScene(QGraphicsScene):
         for item in self.items():
             self.card_manager.set_zmax(item.zValue())
 
+        # Ensure curtains will be on foreground
+
+        self.home.setZValue(self.get_zmax()+1.)
+
         # Draw cards
 
         for i in range(settings_manager.get_max_cards_in_hand()):

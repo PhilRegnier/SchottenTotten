@@ -37,7 +37,6 @@ class Curtain(QGraphicsObject):
         painter.drawRoundedRect(rect, GeometryStyle.r_bound, GeometryStyle.r_bound)
 
     def animate_incoming(self, z_value=None):
-        print("animate_incoming:", self)
         if z_value is not None:
             self.setZValue(z_value)
         self.anim = QPropertyAnimation(self, b"pos")
@@ -49,7 +48,6 @@ class Curtain(QGraphicsObject):
         self.anim.start()
 
     def animate_leaving(self, z_value=None):
-        print("animate_leaving:", self)
         if z_value is not None:
             self.setZValue(z_value)
         self.anim = QPropertyAnimation(self, b"pos")
