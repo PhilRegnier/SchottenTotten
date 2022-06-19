@@ -211,11 +211,9 @@ class GameScene(QGraphicsScene):
             # Enlightment for user's side hovered
 
             items = self.collidingItems(self.shift_manager.card)
-
+            closest_item = None
             if items:
-                closest_item = None
                 shortest_dist = 100000.
-
                 for item in items:
                     if item in self.player.sides:
                         line = QLineF(item.sceneBoundingRect().center(),
@@ -229,7 +227,7 @@ class GameScene(QGraphicsScene):
                     self.itemsSelected.append(closest_item)
 
             for item in self.itemsSelected:
-                if item not in items:
+                if item is not closest_item:
                     item.light_off()
                     self.itemsSelected.remove(item)
 
