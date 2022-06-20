@@ -10,11 +10,18 @@ from src.Style import GradientStyle, GeometryStyle
 
 class Curtain(QGraphicsObject):
 
-    def __init__(self, parent):
+    def __init__(self, parent=None, alpha=255):
         from src.Scene.GameScene import GameScene
 
         super().__init__(parent)
-        self.gradient = GradientStyle(GameScene.height, QColor(0, 85, 127, 255), QColor(0, 37, 54, 255))
+        self.alpha = alpha
+        self.brush = QBrush(
+            GradientStyle(
+                GameScene.height,
+                QColor(0, 85, 127, self.alpha),
+                QColor(0, 37, 54, self.alpha)
+            )
+        )
         self.setVisible(False)
         self.setPos(0, 0)
         self.anim = None
@@ -31,8 +38,8 @@ class Curtain(QGraphicsObject):
     def paint(self, painter, option, widget=0):
         from src.Scene.GameScene import GameScene
 
-        painter.setBrush(QBrush(self.gradient))
-        painter.setPen(QPen(QColor(68, 68, 68, 255), 2))
+        painter.setBrush(self.brush)
+        painter.setPen(QPen(QColor(68, 68, 68, self.alpha), 2))
         rect = QRectF(0., 0., float(GameScene.width), float(GameScene.height))
         painter.drawRoundedRect(rect, GeometryStyle.r_bound, GeometryStyle.r_bound)
 
@@ -60,5 +67,13 @@ class Curtain(QGraphicsObject):
 
     def remove(self):
         self.setVisible(False)
+
+    @staticmethod
+    def change_text(text_item, text):
+        old_x = text_item.x()
+        old_w = text_item.boundingRect().width()
+        text_item.setText(text)
+        new_w = text_item.boundingRect().width()
+        text_item.setX(old_x + (old_w - new_w) / 2)
 
 

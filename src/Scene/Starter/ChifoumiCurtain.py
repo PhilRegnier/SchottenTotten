@@ -18,6 +18,11 @@ from src.ImageTreatment import ImageTreatment
 
 class Chifoumi(Curtain):
 
+    FIRST_TITLE = "Play Chifoumi to set who play first..."
+    REPLAY_TITLE = "It's tie !! Play again..."
+    PLAYER_WON = "YOU ARE FIRST PLAYER !!"
+    BOT_WON = "AUTOMATON IS FIRST PLAYER !!"
+
     def __init__(self, parent=None):
         super().__init__(parent)
 
@@ -49,10 +54,8 @@ class Chifoumi(Curtain):
         self.sep.setPen(QPen(QColor(68, 68, 68, 255), 2))
         self.sep.setParentItem(self)
 
-        self.text1 = TextInForeground("Choose your hand !", self)
-        self.text1.setVisible(False)
-        self.text2 = TextInForeground("Tie !!\n\n", self)
-        self.text2.setVisible(False)
+        self.text0 = TextInForeground(Chifoumi.FIRST_TITLE, self)
+        self.text1 = TextInForeground("Select your hand !", self)
 
         # continue geometry
 
@@ -63,11 +66,19 @@ class Chifoumi(Curtain):
 
         # set the scene
 
+        player_hand_y = wh / 2 + lh
+
         self.sep.setLine((ww - lw) / 2, wh / 2, (ww + lw) / 2, wh / 2)
         self.interro.setPos((ww - cw) / 2, wh / 2 - ch - lh)
-        self.pierre.setPos((ww - 3 * cw) / 2 - ew, wh / 2 + lh)
-        self.ciseaux.setPos((ww - cw) / 2, wh / 2 + lh)
-        self.feuille.setPos((ww + cw) / 2 + ew, wh / 2 + lh)
+        self.pierre.setPos((ww - 3 * cw) / 2 - ew, player_hand_y)
+        self.ciseaux.setPos((ww - cw) / 2, player_hand_y)
+        self.feuille.setPos((ww + cw) / 2 + ew, player_hand_y)
+
+        self.text0.setPos((ww - self.text0.boundingRect().width()) / 2, lh)
+        self.text1.setPos(
+            (ww - self.text1.boundingRect().width()) / 2,
+            (player_hand_y + cw + wh - self.text1.boundingRect().height()) / 2
+        )
 
     def start(self):
         self.text1.setVisible(True)
@@ -87,7 +98,6 @@ class Chifoumi(Curtain):
         if self.feuille.selected or self.ciseaux.selected or self.pierre.selected:
 
             self.text1.setVisible(False)
-            self.text2.setVisible(False)
 
             # automaton's choice (0=feuille, 1=ciseaux, 2=pierre)
 
@@ -108,8 +118,7 @@ class Chifoumi(Curtain):
                     tie = True
 
             if tie:
-                text = TextInForeground("TIE !!\n\n", self)
-                text.setVisible(True)
+                self.change_text(self.text0, Chifoumi.REPLAY_TITLE)
                 QTimer.singleShot(3000, self.start)
                 return
 
@@ -119,20 +128,18 @@ class Chifoumi(Curtain):
                     or (self.ciseaux.selected and autoc == 0) \
                     or (self.pierre.selected == 2 and autoc == 1):
                 self.settings.set_first_player(self.settings.CONST_PLAYER)
-                text = TextInForeground("YOU ARE FIRST PLAYER !!", self)
+                self.change_text(self.text0, Chifoumi.PLAYER_WON)
             else:
                 self.settings.set_first_player(self.settings.CONST_AUTOMATON)
-                text = TextInForeground("AUTOMATON IS FIRST PLAYER !!", self)
+                self.change_text(self.text0, Chifoumi.BOT_WON)
 
-            text.setVisible(True)
             self.pierre.setAcceptHoverEvents(False)
             self.ciseaux.setAcceptHoverEvents(False)
             self.feuille.setAcceptHoverEvents(False)
-            QTimer.singleShot(3000, lambda: self.leave(text))
-            return
+            QTimer.singleShot(3000, self.leave)
 
-    def leave(self, text):
-        text.setVisible(False)
+    def leave(self):
         self.animate_leaving()
         self.scene().start_new_round()
+
 

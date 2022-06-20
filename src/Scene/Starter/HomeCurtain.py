@@ -56,7 +56,6 @@ class HomeCurtain(Curtain):
         # continue geometry
 
         cw = self.settings_button.boundingRect().width()
-        # ch = self.settings_button.boundingRect().height()
 
         # set the scene
 

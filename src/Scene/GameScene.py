@@ -43,6 +43,7 @@ class GameScene(QGraphicsScene):
         self.new_order = []
         self.itemsSelected = []
         self.shift_manager = ShiftManager()
+        self.settings_manager = SettingsManager()
 
         # set the required width and height to the scene
 
@@ -50,11 +51,21 @@ class GameScene(QGraphicsScene):
 
         # Starter attributes
 
-        # TODO : send width and height of the scene to curtains...
-
         self.home = HomeCurtain()
         self.addItem(self.home)
         self.home.setVisible(True)
+
+        # Prepare round's curtain for transition
+
+        self.round_curtain = Curtain()
+        self.round_text = TextInForeground("", self.round_curtain)
+        self.round_text.setPos(GameScene.width / 2, GameScene.height / 2)
+
+        # Prepare results curtain for the end of the rounds
+
+        self.result_curtain = Curtain(alpha=50)
+        self.result_text = TextInForeground("", self.result_curtain)
+        self.result_text.setPos(GameScene.width / 2, GameScene.height / 2)
 
         self.setSceneRect(0, 0, GameScene.width, GameScene.height)
 
@@ -62,7 +73,6 @@ class GameScene(QGraphicsScene):
 
     def _setup(self):
         print("_setup")
-        settings_manager = SettingsManager()
 
         # Frontier items
 
@@ -71,7 +81,7 @@ class GameScene(QGraphicsScene):
             y = GeometryStyle.main_marge + Stone.height + Stone.marge
             self.automaton.sides[i].setPos(x, y)
             y += Side.height + Stone.marge
-            self.stones[i].setPos(x - 2, y - 2)
+            self.stones[i].setPos(x+1, y+2)
             y += Stone.height + Stone.marge
             self.player.sides[i].setPos(x, y)
 
@@ -104,25 +114,13 @@ class GameScene(QGraphicsScene):
         for item in self.items():
             self.card_manager.set_zmax(item.zValue())
 
-        # Ensure curtains will be on foreground
-
-        self.home.setZValue(self.get_zmax()+1.)
-
-        # Draw cards
-
-        for i in range(settings_manager.get_max_cards_in_hand()):
-            self.player.playmat.add(self.deck.draw(), True)
-            self.automaton.playmat.add(self.deck.draw())
-
     def start_new_round(self):
         print("start new round")
-        settings_manager = SettingsManager()
 
         # ending or starting the game
 
-        if self.current_round > settings_manager.get_number_of_rounds():
-            self.home.setVisible(True)
-            self.home.animate_incoming()
+        if self.current_round > self.settings_manager.get_number_of_rounds():
+            self.home.animate_incoming(self.get_zmax()+1)
             return
         elif self.current_round == 0:
             self.home.leave()
@@ -141,14 +139,30 @@ class GameScene(QGraphicsScene):
 
             self.card_manager.reset_cards()
 
-            settings_manager.switch_first_player()
+            self.settings_manager.switch_first_player()
 
         self.current_round += 1
 
-        # Set the board
-
-        self._setup()
         self.umpire.final_countdown = False
+
+        # Animate round's transition
+
+        self.round_curtain.change_text(
+            self.round_text,
+            "ROUND " + str(self.current_round)
+        )
+        self.round_curtain.animate_incoming(self.get_zmax()+1)
+        QTimer.singleShot(3000, self.start_the_round)
+
+    def start_the_round(self):
+        self.round_curtain.animate_leaving()
+        self._setup()
+
+        # Draw cards
+
+        for i in range(self.settings_manager.get_max_cards_in_hand()):
+            self.player.playmat.add(self.deck.draw(), True)
+            self.automaton.playmat.add(self.deck.draw())
 
     """
         Method processing the current player's turn
@@ -194,17 +208,17 @@ class GameScene(QGraphicsScene):
         self.shift_manager.reset()
 
         if winner is not None:
-            self.close_the_round(winner.name + " WON ROUND " + str(self.current_round))
-            self.start_new_round()
+            self.result_curtain.change_text(
+                self.result_text,
+                winner.name + " WON ROUND " + str(self.current_round)
+            )
+            self.result_curtain.animate_incoming(self.get_zmax())
+            QTimer.singleShot(3000, self.close_the_round)
 
-    def close_the_round(self, text):
+    def close_the_round(self):
         print("close_the_round")
-        frame = Curtain(None)
-        self.addItem(TextInForeground(text, frame))
-        frame.setVisible(True)
-        frame.animate_incoming(self.get_zmax())
-
-        QTimer.singleShot(3000, frame.animate_leaving)
+        self.result_curtain.animate_leaving()
+        self.start_new_round()
 
     def mouseMoveEvent(self, event):
 
