@@ -60,12 +60,14 @@ class GameScene(QGraphicsScene):
         self.round_curtain = Curtain()
         self.round_text = TextInForeground("", self.round_curtain)
         self.round_text.setPos(GameScene.width / 2, GameScene.height / 2)
+        self.addItem(self.round_curtain)
 
         # Prepare results curtain for the end of the rounds
 
         self.result_curtain = Curtain(alpha=50)
         self.result_text = TextInForeground("", self.result_curtain)
         self.result_text.setPos(GameScene.width / 2, GameScene.height / 2)
+        self.addItem(self.result_curtain)
 
         self.setSceneRect(0, 0, GameScene.width, GameScene.height)
 
