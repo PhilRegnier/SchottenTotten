@@ -1,6 +1,10 @@
-# Colors
+# Style classes
 
-from PyQt5.QtGui import QColor, QLinearGradient
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor, QLinearGradient, QPen
+from PyQt5.QtWidgets import QGraphicsDropShadowEffect
+
+from src.Singleton import Singleton
 
 
 class GlobalStyle:
@@ -46,3 +50,20 @@ class GradientStyle(QLinearGradient):
         self.setColorAt(0, color_up)
         self.setColorAt(1, color_down)
 
+
+class Pen(QPen):
+    def __init__(self):
+        super().__init__()
+        self.setWidth(2)
+        self.setColor(QColor(67, 66, 37, 255))
+        self.setCapStyle(Qt.SquareCap)
+        self.setJoinStyle(Qt.BevelJoin)
+
+
+class Shadow(QGraphicsDropShadowEffect):
+    def __init__(self):
+        super().__init__()
+        self.setColor(QColor(31, 21, 17, 255))
+        self.setBlurRadius(3)
+        self.setXOffset(1)
+        self.setYOffset(3)
