@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QBrush, QColor
-from PyQt5.QtWidgets import QGraphicsItem, QGraphicsDropShadowEffect
+from PyQt5.QtWidgets import QGraphicsItem
 
 from src.Scene.Game.Pixel import Pixel
 from src.Style import Pen, Shadow
