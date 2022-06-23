@@ -14,7 +14,7 @@ class Handler(QGraphicsItem):
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable, True)
         self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, True)
         self.setAcceptHoverEvents(True)
-        self.setCacheMode(QGraphicsItem.GraphicsItemFlag.DeviceCoordinateCache)
+        self.setCacheMode(QGraphicsItem.CacheMode.DeviceCoordinateCache)
         self.setParentItem(parent_item)
         self.anchor_point = QPointF()
 

@@ -62,7 +62,7 @@ class Curtain(QGraphicsObject):
         self.anim.setDuration(800)
         self.anim.setStartValue(QPointF(0, 0))
         self.anim.setEndValue(QPointF(0, -self.boundingRect().height()))
-        self.anim.finished(self.remove)
+        self.anim.finished.connect(self.remove)
         self.anim.start()
 
     def remove(self):

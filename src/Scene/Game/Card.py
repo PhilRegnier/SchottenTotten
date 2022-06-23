@@ -37,7 +37,7 @@ class Card(QGraphicsObject):
         self.pixmap = QPixmap.fromImage(ImageTreatment.enluminure(image))
 
         self.setAcceptHoverEvents(False)
-        self.setFlag(QGraphicsItem.GraphicsItemChange.ItemSendsGeometryChanges, True)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemSendsGeometryChanges, True)
 
         self.shade = Shader()
         self.setGraphicsEffect(self.shade)
@@ -160,7 +160,7 @@ class Card(QGraphicsObject):
         self.animation.setEndValue(ending_pos)
 
         self.set_on_top()
-        self.animation.finished(self.set_on_ground)
+        self.animation.finished.connect(self.set_on_ground)
 
         self.animation.start()
 

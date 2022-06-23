@@ -15,14 +15,14 @@ class HelpMenuBar:
         self.rules_action = QAction(QIcon('resources/images/help.png'), 'Rules', window)
         self.rules_action.setShortcut('F1')
         self.rules_action.setStatusTip('See the rules of Schotten Totten')
-        self.rules_action.triggered().connect(lambda: HelpMenuBar._show_rules(window))
+        self.rules_action.triggered.connect(lambda: HelpMenuBar._show_rules(window))
 
         self.about_action = QAction(
             QIcon('resources/images/info.png'),
             'About Schotten Totten...',
             window
         )
-        self.about_action.triggered().connect(lambda: HelpMenuBar._show_about(window))
+        self.about_action.triggered.connect(lambda: HelpMenuBar._show_about(window))
 
     def get_rules_action(self):
         return self.rules_action
@@ -61,7 +61,7 @@ class HelpMenuBar:
         texte.setWordWrap(True)
         button = QPushButton("Fermer")
         button.setToolTip("Ferme la fenêtre")
-        button.clicked().connect(dialog.close)
+        button.clicked.connect(dialog.close)
 
         r_layout.addWidget(texte)
         w_layout.addWidget(button, alignment=Qt.AlignmentFlag.AlignCenter)
