@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMenuBar
+from PyQt6.QtWidgets import QMenuBar
 
 from src.MainWindow.FileMenuBar import FileMenuBar
 from src.MainWindow.HelpMenuBar import HelpMenuBar

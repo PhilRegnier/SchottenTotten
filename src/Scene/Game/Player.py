@@ -1,5 +1,3 @@
-from random import choice
-
 from src.Scene.Game.Playmat import Playmat
 from src.Scene.Game.ShiftManager import ShiftManager
 from src.Scene.Game.Side import Side

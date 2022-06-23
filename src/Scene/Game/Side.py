@@ -1,9 +1,9 @@
 #
 # Common side definitions
 #
-from PyQt5.QtCore import QRectF, QPointF
-from PyQt5.QtGui import QBrush, QPen
-from PyQt5.QtWidgets import QGraphicsItem
+from PyQt6.QtCore import QRectF, QPointF
+from PyQt6.QtGui import QBrush, QPen
+from PyQt6.QtWidgets import QGraphicsItem
 
 from src.Scene.Game.ShiftManager import ShiftManager
 from src.Scene.Game.Stone import Stone
@@ -30,7 +30,7 @@ class Side(QGraphicsItem):
 
         self.gradient = GradientStyle(Side.height, colors.side0, colors.side1)
         self.pen_color = colors.side_pen
-        self.setFlag(QGraphicsItem.ItemDoesntPropagateOpacityToChildren)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemDoesntPropagateOpacityToChildren)
         self.light_off()
 
         self.shift_manager = ShiftManager()
@@ -45,10 +45,12 @@ class Side(QGraphicsItem):
         cls.height = Card.height * cls.HCARD_RATIO
 
     def boundingRect(self):
-        return QRectF(-GeometryStyle.pen_width / 2,
-                      -GeometryStyle.pen_width / 2,
-                      Side.width + GeometryStyle.pen_width,
-                      Side.height + GeometryStyle.pen_width)
+        return QRectF(
+            -GeometryStyle.pen_width / 2,
+            -GeometryStyle.pen_width / 2,
+            Side.width + GeometryStyle.pen_width,
+            Side.height + GeometryStyle.pen_width
+        )
 
     def paint(self, painter, option, widget=0):
         painter.setBrush(QBrush(self.gradient))

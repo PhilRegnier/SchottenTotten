@@ -1,11 +1,8 @@
 # Style classes
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor, QLinearGradient, QPen
-from PyQt5.QtWidgets import QGraphicsDropShadowEffect
-
-from src.Singleton import Singleton
-
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QColor, QLinearGradient, QPen, QBrush
+from PyQt6.QtWidgets import QGraphicsDropShadowEffect
 
 class GlobalStyle:
     cadre_color = (57, 57, 57)
@@ -14,6 +11,11 @@ class GlobalStyle:
     ombrage_color = QColor(36, 36, 36, 90)
     ombrage_color_bt = QColor(36, 36, 36, 200)
     background_color = QColor(167, 159, 120)
+
+
+class ManagerStyle:
+    brush = QBrush(QColor(255, 255, 255, 180))
+    pen = QPen(QColor(166, 166, 166, 255), 1)
 
 
 class PlayerColors:
@@ -33,7 +35,7 @@ class AutomatonColors:
 
 
 class GeometryStyle:
-    main_width = 1000
+    main_width = 1200
     main_marge = 20
     marge = 5.
     r_bound = 10.
@@ -46,7 +48,7 @@ class GeometryStyle:
 class GradientStyle(QLinearGradient):
     def __init__(self, height, color_up, color_down):
         super().__init__(0., height, 0., 0.)
-        self.setSpread(QLinearGradient.ReflectSpread)
+        self.setSpread(QLinearGradient.Spread.ReflectSpread)
         self.setColorAt(0, color_up)
         self.setColorAt(1, color_down)
 
@@ -56,8 +58,8 @@ class Pen(QPen):
         super().__init__()
         self.setWidth(2)
         self.setColor(QColor(67, 66, 37, 255))
-        self.setCapStyle(Qt.SquareCap)
-        self.setJoinStyle(Qt.BevelJoin)
+        self.setCapStyle(Qt.PenCapStyle.SquareCap)
+        self.setJoinStyle(Qt.PenJoinStyle.BevelJoin)
 
 
 class Shadow(QGraphicsDropShadowEffect):

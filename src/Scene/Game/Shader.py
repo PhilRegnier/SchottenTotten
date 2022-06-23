@@ -1,6 +1,6 @@
 # Shadow on movable or clickable items
 
-from PyQt5.QtWidgets import QGraphicsDropShadowEffect
+from PyQt6.QtWidgets import QGraphicsDropShadowEffect
 
 from src.Style import GlobalStyle
 

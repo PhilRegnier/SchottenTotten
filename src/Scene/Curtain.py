@@ -1,9 +1,9 @@
 #
 # curtain for transition
 #
-from PyQt5.QtCore import QRectF, QPointF, QPropertyAnimation, QEasingCurve
-from PyQt5.QtGui import QColor, QBrush, QPen
-from PyQt5.QtWidgets import QGraphicsObject
+from PyQt6.QtCore import QRectF, QPointF, QPropertyAnimation, QEasingCurve
+from PyQt6.QtGui import QColor, QBrush, QPen
+from PyQt6.QtWidgets import QGraphicsObject
 
 from src.Style import GradientStyle, GeometryStyle
 
@@ -47,7 +47,7 @@ class Curtain(QGraphicsObject):
         if z_value is not None:
             self.setZValue(z_value)
         self.anim = QPropertyAnimation(self, b"pos")
-        self.anim.setEasingCurve(QEasingCurve.OutBounce)
+        self.anim.setEasingCurve(QEasingCurve.Type.OutBounce)
         self.anim.setDuration(800)
         self.anim.setStartValue(QPointF(0, -self.boundingRect().height()))
         self.anim.setEndValue(QPointF(0, 0))
@@ -58,11 +58,11 @@ class Curtain(QGraphicsObject):
         if z_value is not None:
             self.setZValue(z_value)
         self.anim = QPropertyAnimation(self, b"pos")
-        self.anim.setEasingCurve(QEasingCurve.InCubic)
+        self.anim.setEasingCurve(QEasingCurve.Type.Custom)
         self.anim.setDuration(800)
         self.anim.setStartValue(QPointF(0, 0))
         self.anim.setEndValue(QPointF(0, -self.boundingRect().height()))
-        self.anim.finished.connect(self.remove)
+        self.anim.finished(self.remove)
         self.anim.start()
 
     def remove(self):

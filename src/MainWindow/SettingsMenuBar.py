@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QAction, QWidget, QLabel, QSpinBox, QPushButton, QHBoxLayout, QVBoxLayout
+from PyQt6.QtGui import QAction
+from PyQt6.QtWidgets import QWidget, QLabel, QSpinBox, QPushButton, QHBoxLayout, QVBoxLayout
 
 from src.SettingsManager import SettingsManager
 
@@ -16,20 +17,20 @@ class SettingsMenuBar:
         self.level0_action = QAction('stupid boy', window)
         self.level0_action.setStatusTip("The easiest and dumbest one !")
         self.level0_action.setCheckable(True)
-        self.level0_action.triggered.connect(self._set_level0)
+        self.level0_action.triggered().connect(self._set_level0)
 
         self.level1_action = QAction('lightning', window)
         self.level1_action.setStatusTip("A smarter one...")
         self.level1_action.setCheckable(True)
         self.level1_action.setChecked(True)
-        self.level1_action.triggered.connect(self._set_level1)
+        self.level1_action.triggered().connect(self._set_level1)
 
         self.sound_action = QAction('Play sounds', window)
         self.sound_action.setCheckable(True)
         self.sound_action.setStatusTip('Play sounds in the game')
 
         self.round_nb_action = QAction('Rounds...\t (' + str(self.settings.get_number_of_rounds()) + ')', window)
-        self.round_nb_action.triggered.connect(lambda: self._set_rounds(window))
+        self.round_nb_action.triggered().connect(lambda: self._set_rounds(window))
         self.round_nb_action.setStatusTip('Set the number of rounds for a match')
 
     def get_level0_action(self):
@@ -66,9 +67,9 @@ class SettingsMenuBar:
         sbox.setValue(self.settings.get_number_of_rounds())
 
         ok_button = QPushButton("&Ok")
-        ok_button.clicked.connect(lambda: self._set_nrounds(sbox.value(), widget))
+        ok_button.clicked().connect(lambda: self._set_nrounds(sbox.value(), widget))
         cancel_button = QPushButton("&Cancel")
-        cancel_button.clicked.connect(widget.close)
+        cancel_button.clicked().connect(widget.close)
 
         hbox = QHBoxLayout()
         hbox.addWidget(ok_button)

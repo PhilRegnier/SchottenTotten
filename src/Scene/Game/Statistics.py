@@ -1,10 +1,6 @@
 #
 # Statistics
 #
-from src.Scene.Game.CardManager import CardManager
-from src.Singleton import Singleton
-
-
 class Statistics:
 
     def __init__(self, sides):

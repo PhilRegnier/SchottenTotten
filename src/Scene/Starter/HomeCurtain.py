@@ -2,8 +2,8 @@
 # Home panel
 #
 from PIL import Image, ImageQt
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QGraphicsPixmapItem
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QGraphicsPixmapItem
 
 from src.Scene.Starter.ChifoumiCurtain import Chifoumi
 from src.Scene.Clickable import Clickable

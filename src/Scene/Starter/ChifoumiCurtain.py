@@ -4,9 +4,9 @@
 from random import randint
 
 from PIL import Image
-from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QPixmap, QPen, QColor
-from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsLineItem
+from PyQt6.QtCore import QTimer
+from PyQt6.QtGui import QPixmap, QPen, QColor
+from PyQt6.QtWidgets import QGraphicsPixmapItem, QGraphicsLineItem
 
 from src.Scene.Game.Card import Card
 from src.Scene.Clickable import Clickable

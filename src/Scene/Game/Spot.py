@@ -11,9 +11,9 @@
     Spot gets the same boundingRect and paint methods as Card.
 
 """
-from PyQt5.QtCore import QRect, Qt, QRectF
-from PyQt5.QtGui import QBrush
-from PyQt5.QtWidgets import QGraphicsObject
+from PyQt6.QtCore import QRect, QRectF
+from PyQt6.QtGui import QBrush, QColorConstants
+from PyQt6.QtWidgets import QGraphicsObject
 
 from src.Style import GeometryStyle
 
@@ -38,7 +38,7 @@ class Spot(QGraphicsObject):
 
     def paint(self, painter, option, widget=0):
         from src.Scene.Game.Card import Card
-        painter.setBrush(QBrush(Qt.cyan))
+        painter.setBrush(QBrush(QColorConstants.Cyan))
         painter.setOpacity(0.3)
         rect = QRect(-1, -1, int(Card.width), int(Card.height))
         painter.drawRoundedRect(rect, GeometryStyle.r_bound, GeometryStyle.r_bound)

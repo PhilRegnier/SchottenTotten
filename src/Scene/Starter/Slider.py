@@ -1,9 +1,9 @@
 #
 # Generic slider
 #
-from PyQt5.QtCore import QRectF, Qt
-from PyQt5.QtGui import QBrush, QFont, QColor, QPen
-from PyQt5.QtWidgets import QGraphicsSimpleTextItem, QGraphicsItem
+from PyQt6.QtCore import QRectF, Qt
+from PyQt6.QtGui import QBrush, QFont, QColor, QPen
+from PyQt6.QtWidgets import QGraphicsSimpleTextItem, QGraphicsItem
 
 from src.Scene.Starter.Handler import Handler
 from src.Style import GeometryStyle
@@ -126,13 +126,13 @@ class Slider(QGraphicsItem):
         painter.drawRoundedRect(rect, Slider.radius, Slider.radius)
 
         painter.setBrush(QBrush(self.colorLeft))
-        painter.setPen(Qt.NoPen)
+        painter.setPen(Qt.PenStyle.NoPen)
         rect = QRectF(self.relief_offset, self.relief_offset, self.handler.x() + self.handler.boundingRect().width(),
                       float(self.sliderHeight))
         painter.drawRoundedRect(rect, Slider.radius, Slider.radius)
 
         painter.setBrush(QBrush(self.colorRight))
-        painter.setPen(Qt.NoPen)
+        painter.setPen(Qt.PenStyle.NoPen)
         rect = QRectF(self.handler.x(), 0., float(self.sliderWidth), float(self.sliderHeight))
         painter.drawRoundedRect(rect, Slider.radius, Slider.radius)
 
@@ -149,9 +149,9 @@ class Slider(QGraphicsItem):
 
     def mousePressEvent(self, event):
         # valide le click
-        if not event.button() == Qt.LeftButton:
+        if not event.button() == Qt.MouseButton.LeftButton:
             return
-        self.setCursor(Qt.ClosedHandCursor)
+        self.setCursor(Qt.CursorShape.ClosedHandCursor)
         self.clicked = True
 
     def mouseReleaseEvent(self, event):

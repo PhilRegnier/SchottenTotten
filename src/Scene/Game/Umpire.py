@@ -66,7 +66,6 @@ class Umpire:
         if Umpire.final_countdown:
             for stone in stones:
                 if stone.winner is not None:
-                    i = stone.numero
                     stone.claim(player, automa)
                     stone.winner.round_score += 1
 
@@ -106,4 +105,3 @@ class Umpire:
             return automa
 
         return None
-

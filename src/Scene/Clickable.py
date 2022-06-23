@@ -2,9 +2,9 @@
 # Generic clickable button
 #
 from PIL import Image
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap, QCursor
-from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsItem
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPixmap, QCursor
+from PyQt6.QtWidgets import QGraphicsPixmapItem, QGraphicsItem
 
 from src.ImageTreatment import ImageTreatment
 from src.Scene.Game.Shader import Shader
@@ -27,10 +27,10 @@ class Clickable(QGraphicsPixmapItem):
         image.thumbnail((width, height))
         self.setPixmap(QPixmap.fromImage(ImageTreatment.enluminure(image)))
         self.setParentItem(parent_item)
-        self.setCursor(QCursor(Qt.PointingHandCursor))
+        self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.setAcceptHoverEvents(True)
-        self.setAcceptedMouseButtons(Qt.LeftButton)
-        self.setFlag(QGraphicsItem.ItemIsSelectable)
+        self.setAcceptedMouseButtons(Qt.MouseButton.LeftButton)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable)
 
         self.ombrage = Shader()
         self.setGraphicsEffect(self.ombrage)
@@ -54,7 +54,7 @@ class Clickable(QGraphicsPixmapItem):
         self.ombrage.setEnabled(False)
 
     def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.MouseButton.LeftButton:
             self.clicked = True
         else:
             QGraphicsPixmapItem.mousePressEvent(self, event)

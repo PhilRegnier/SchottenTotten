@@ -1,15 +1,14 @@
 #
 # Définition de la fenêtre principale de l'interface avec ses menus
 #
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QStatusBar
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QMainWindow, QStatusBar
 
 from src.GameView import GameView
 from src.MainWindow.MenuBar import MenuBar
 from src.Scene.GameScene import GameScene
-from src.SettingsManager import SettingsManager
 from src.Style import GeometryStyle
 
 
@@ -56,16 +55,16 @@ class GameWindow(QMainWindow):
     # Hidden short-cuts pressed handler
 
     def keyPressEvent(self, event):
-        if int(event.modifiers()) == Qt.ControlModifier:
-            if event.key() == Qt.Key_A:
+        if int(event.modifiers()) == Qt.KeyboardModifier.ControlModifier:
+            if event.key() == Qt.Key.Key_A:
                 self.board.show_automaton_playmat()
 
-            if event.key() == Qt.Key_G:
+            if event.key() == Qt.Key.Key_G:
                 self.board.start_new_round()
 
     # Hidden short-cut release handler
 
     def keyReleaseEvent(self, event):
-        if int(event.modifiers()) == Qt.ControlModifier:
-            if event.key() == Qt.Key_A:
+        if int(event.modifiers()) == Qt.KeyboardModifier.ControlModifier:
+            if event.key() == Qt.Key.Key_A:
                 self.board.hide_automaton_playmat()

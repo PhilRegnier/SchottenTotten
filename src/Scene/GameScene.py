@@ -1,10 +1,11 @@
 
-from PyQt5.QtCore import QTimer, QLineF
-from PyQt5.QtWidgets import QGraphicsScene
+from PyQt6.QtCore import QTimer, QLineF
+from PyQt6.QtWidgets import QGraphicsScene
 
 from src.Scene.Game.Automaton import Automaton
 from src.Scene.Game.Card import Card
 from src.Scene.Game.CardManager import CardManager
+from src.Scene.Game.Counter import Counter
 from src.Scene.Game.Deck import Deck
 from src.Scene.Game.Player import Player
 from src.Scene.Game.ShiftManager import ShiftManager
@@ -45,9 +46,18 @@ class GameScene(QGraphicsScene):
         self.shift_manager = ShiftManager()
         self.settings_manager = SettingsManager()
 
+        # Game managers : counter, scorer and timer
+
+        self.counter = Counter()
+        self.addItem(self.counter)
+
         # set the required width and height to the scene
 
         GameScene.set_size()
+
+        # Position managers
+
+        self.counter.setPos(GeometryStyle.main_width + 40, 50)
 
         # Starter attributes
 
@@ -365,7 +375,7 @@ class GameScene(QGraphicsScene):
     """
     @classmethod
     def set_size(cls):
-        cls.width = GeometryStyle.main_width - 40
+        cls.width = GeometryStyle.main_width + 200
         cls.height = int(
             4 * Stone.height + 4.33 * Card.height
             + cls.marge * 2 + 8 * GeometryStyle.pen_width + 4 * Stone.marge + 40

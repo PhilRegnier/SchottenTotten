@@ -1,9 +1,9 @@
 #
 # player's playmat
 #
-from PyQt5.QtCore import QRectF
-from PyQt5.QtGui import QBrush, QPen
-from PyQt5.QtWidgets import QGraphicsItem
+from PyQt6.QtCore import QRectF
+from PyQt6.QtGui import QBrush, QPen
+from PyQt6.QtWidgets import QGraphicsItem
 
 from src.Scene.Game.Card import Card
 from src.Scene.Game.Spot import Spot

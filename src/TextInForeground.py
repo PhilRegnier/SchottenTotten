@@ -1,8 +1,8 @@
 #
 # Text format
 #
-from PyQt5.QtGui import QFont, QColor
-from PyQt5.QtWidgets import QGraphicsSimpleTextItem
+from PyQt6.QtGui import QFont, QColor
+from PyQt6.QtWidgets import QGraphicsSimpleTextItem
 
 from src.Style import Pen, Shadow
 

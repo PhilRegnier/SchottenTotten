@@ -2,9 +2,9 @@
 # Stone definition
 #
 from PIL import Image
-from PyQt5.QtCore import QRectF, QRect, QPropertyAnimation, QPointF
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QGraphicsObject
+from PyQt6.QtCore import QRectF, QRect, QPropertyAnimation, QPointF
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QGraphicsObject
 
 from src.ImageTreatment import ImageTreatment
 from src.Style import GeometryStyle

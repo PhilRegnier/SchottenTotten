@@ -1,6 +1,6 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QAction, QMessageBox, QScrollArea, QWidget, QVBoxLayout, QLabel, QDialog, QPushButton
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon, QAction
+from PyQt6.QtWidgets import QMessageBox, QScrollArea, QWidget, QVBoxLayout, QLabel, QDialog, QPushButton
 
 from src.Style import GeometryStyle
 from src.variables_globales import __version__
@@ -15,14 +15,14 @@ class HelpMenuBar:
         self.rules_action = QAction(QIcon('resources/images/help.png'), 'Rules', window)
         self.rules_action.setShortcut('F1')
         self.rules_action.setStatusTip('See the rules of Schotten Totten')
-        self.rules_action.triggered.connect(lambda: HelpMenuBar._show_rules(window))
+        self.rules_action.triggered().connect(lambda: HelpMenuBar._show_rules(window))
 
         self.about_action = QAction(
             QIcon('resources/images/info.png'),
             'About Schotten Totten...',
             window
         )
-        self.about_action.triggered.connect(lambda: HelpMenuBar._show_about(window))
+        self.about_action.triggered().connect(lambda: HelpMenuBar._show_about(window))
 
     def get_rules_action(self):
         return self.rules_action
@@ -43,8 +43,8 @@ class HelpMenuBar:
 
         scroll = QScrollArea(dialog)
 
-        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         scroll.setWidgetResizable(True)
 
         widget = QWidget(scroll)
@@ -61,12 +61,12 @@ class HelpMenuBar:
         texte.setWordWrap(True)
         button = QPushButton("Fermer")
         button.setToolTip("Ferme la fenêtre")
-        button.clicked.connect(dialog.close)
+        button.clicked().connect(dialog.close)
 
         r_layout.addWidget(texte)
-        w_layout.addWidget(button, alignment=Qt.AlignCenter)
+        w_layout.addWidget(button, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        dialog.exec_()
+        dialog.exec()
 
     @staticmethod
     def _show_about(window):

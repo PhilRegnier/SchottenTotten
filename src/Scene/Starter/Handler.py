@@ -2,8 +2,8 @@
 # Slider's button
 # ------------------------------------------------------------------------------------------------------
 
-from PyQt5.QtCore import Qt, QRectF, QPointF
-from PyQt5.QtWidgets import QGraphicsItem
+from PyQt6.QtCore import Qt, QRectF, QPointF
+from PyQt6.QtWidgets import QGraphicsItem
 
 
 class Handler(QGraphicsItem):
@@ -11,10 +11,10 @@ class Handler(QGraphicsItem):
 
     def __init__(self, parent_item):
         super().__init__()
-        self.setFlag(QGraphicsItem.ItemIsMovable, True)
-        self.setFlag(QGraphicsItem.ItemIsSelectable, True)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable, True)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, True)
         self.setAcceptHoverEvents(True)
-        self.setCacheMode(QGraphicsItem.DeviceCoordinateCache)
+        self.setCacheMode(QGraphicsItem.GraphicsItemFlag.DeviceCoordinateCache)
         self.setParentItem(parent_item)
         self.anchor_point = QPointF()
 
@@ -27,13 +27,13 @@ class Handler(QGraphicsItem):
         self.anchor_point = self.pos()
 
     def hoverEnterEvent(self, event):
-        self.setCursor(Qt.OpenHandCursor)
+        self.setCursor(Qt.CursorShape.OpenHandCursor)
 
     def hoverLeaveEvent(self, event):
-        self.setCursor(Qt.ArrowCursor)
+        self.setCursor(Qt.CursorShape.ArrowCursor)
 
     def mousePressEvent(self, event):
-        if not event.button() == Qt.LeftButton:
+        if not event.button() == Qt.MouseButton.LeftButton:
             return
         self.clicked = True
 
@@ -61,7 +61,7 @@ class Handler(QGraphicsItem):
     def paint(self, painter, option, widget=0):
         from src.Scene.Starter.Slider import Slider
 
-        painter.setPen(Qt.NoPen)
+        painter.setPen(Qt.PenStyle.NoPen)
         painter.setBrush(Slider.colorBack)
         r = 2 * int(Slider.radius)
         painter.drawEllipse(0, 0, r, r)

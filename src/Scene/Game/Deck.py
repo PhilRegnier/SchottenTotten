@@ -3,8 +3,8 @@
 # ------------------------------------------------------------------------------------------------------
 
 from PIL import ImageQt, Image
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QGraphicsPixmapItem
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QGraphicsPixmapItem
 from src.Scene.Game.Card import Card
 from src.ImageTreatment import ImageTreatment
 from src.Scene.Game.CardManager import CardManager

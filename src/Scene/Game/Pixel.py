@@ -1,6 +1,6 @@
-from PyQt5.QtCore import QRectF, Qt
-from PyQt5.QtGui import QColor, QBrush
-from PyQt5.QtWidgets import QGraphicsItem
+from PyQt6.QtCore import QRectF, Qt
+from PyQt6.QtGui import QColor, QBrush
+from PyQt6.QtWidgets import QGraphicsItem
 
 
 class Pixel(QGraphicsItem):
@@ -14,7 +14,6 @@ class Pixel(QGraphicsItem):
         super().__init__()
         self.color = Pixel.color_off
         self.brush = QBrush()
-        pass
 
     def set_light_off(self):
         self.color = Pixel.color_off
@@ -28,5 +27,5 @@ class Pixel(QGraphicsItem):
     def paint(self, painter, option, widget=0):
         self.brush.setColor(self.color)
         painter.setBrush(self.brush)
-        painter.setPen(Qt.NoPen)
+        painter.setPen(Qt.PenStyle.NoPen)
         painter.drawRect(0, 0, Pixel.width, Pixel.height)

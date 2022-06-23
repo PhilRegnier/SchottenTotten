@@ -4,9 +4,9 @@
 from math import sqrt
 
 from PIL import Image
-from PyQt5.QtCore import QPointF, QLineF, QPropertyAnimation, QRectF, QRect, Qt
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
+from PyQt6.QtCore import QPointF, QLineF, QPropertyAnimation, QRectF, QRect, Qt
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
 
 from src.ImageTreatment import ImageTreatment
 from src.Scene.Game.Shader import Shader
@@ -37,7 +37,7 @@ class Card(QGraphicsObject):
         self.pixmap = QPixmap.fromImage(ImageTreatment.enluminure(image))
 
         self.setAcceptHoverEvents(False)
-        self.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+        self.setFlag(QGraphicsItem.GraphicsItemChange.ItemSendsGeometryChanges, True)
 
         self.shade = Shader()
         self.setGraphicsEffect(self.shade)
@@ -56,7 +56,7 @@ class Card(QGraphicsObject):
             cls.height = cls.width * cls.HW_RATIO
 
     def set_draggable(self, draggable=True):
-        self.setFlag(QGraphicsItem.ItemIsMovable, draggable)
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable, draggable)
         self.setAcceptHoverEvents(draggable)
 
     def set_anchor_point(self, anchor_point):
@@ -66,30 +66,30 @@ class Card(QGraphicsObject):
         self.index = index
 
     def hoverEnterEvent(self, event):
-        self.setCursor(Qt.OpenHandCursor)
+        self.setCursor(Qt.CursorShape.OpenHandCursor)
         self.setPos(self.x() - 2, self.y() - 2)
         self.shade.setEnabled(True)
 
     def hoverLeaveEvent(self, event):
-        self.setCursor(Qt.ArrowCursor)
+        self.setCursor(Qt.CursorShape.ArrowCursor)
         self.setPos(self.anchor_point)
         self.shade.setEnabled(False)
 
     def mousePressEvent(self, event):
-        if not event.button() == Qt.LeftButton:
+        if not event.button() == Qt.MouseButton.LeftButton:
             return
         if isinstance(self.parentItem(), Side):
             return
 
         self.shift_manager.set_starting_pos(event.pos())
-        self.setCursor(Qt.ClosedHandCursor)
+        self.setCursor(Qt.CursorShape.ClosedHandCursor)
         self.shade.setEnabled(True)
 
     def mouseMoveEvent(self, event):
 
         # Check button pressed, card's origin, and if a minimum move has been done
 
-        if not (event.buttons() == Qt.LeftButton):
+        if not (event.buttons() == Qt.MouseButton.LeftButton):
             return
         if isinstance(self.parentItem(), Side):
             return
@@ -103,7 +103,7 @@ class Card(QGraphicsObject):
             self.shift_manager.set_card(self)
             self.shade.setEnabled(True)
             self.setOpacity(0.9)
-            self.setCursor(Qt.ClosedHandCursor)
+            self.setCursor(Qt.CursorShape.ClosedHandCursor)
 
         # get sure the card dragged is in the foreground
 
@@ -120,7 +120,7 @@ class Card(QGraphicsObject):
 
     def mouseReleaseEvent(self, event):
 
-        self.setCursor(Qt.ArrowCursor)
+        self.setCursor(Qt.CursorShape.ArrowCursor)
         if self.shift_manager.card is self:
 
             items = self.collidingItems()
@@ -160,7 +160,7 @@ class Card(QGraphicsObject):
         self.animation.setEndValue(ending_pos)
 
         self.set_on_top()
-        self.animation.finished.connect(self.set_on_ground)
+        self.animation.finished(self.set_on_ground)
 
         self.animation.start()
 
