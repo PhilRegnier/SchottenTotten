@@ -57,7 +57,7 @@ class GameScene(QGraphicsScene):
 
         # Position managers
 
-        self.counter.setPos(GeometryStyle.main_width + 40, 50)
+        self.counter.setPos(GeometryStyle.main_width - 200, 50)
 
         # Starter attributes
 
@@ -85,6 +85,11 @@ class GameScene(QGraphicsScene):
 
     def _setup(self):
         print("_setup")
+
+        # Manager items
+
+        self.counter.current_round.display_number(self.current_round)
+        self.counter.max_round.display_number(self.settings_manager.get_number_of_rounds())
 
         # Frontier items
 
@@ -375,7 +380,7 @@ class GameScene(QGraphicsScene):
     """
     @classmethod
     def set_size(cls):
-        cls.width = GeometryStyle.main_width + 200
+        cls.width = GeometryStyle.main_width - 40
         cls.height = int(
             4 * Stone.height + 4.33 * Card.height
             + cls.marge * 2 + 8 * GeometryStyle.pen_width + 4 * Stone.marge + 40

@@ -55,7 +55,7 @@ class GameWindow(QMainWindow):
     # Hidden short-cuts pressed handler
 
     def keyPressEvent(self, event):
-        if int(event.modifiers()) == Qt.KeyboardModifier.ControlModifier:
+        if event.modifiers() == Qt.KeyboardModifier.ControlModifier:
             if event.key() == Qt.Key.Key_A:
                 self.board.show_automaton_playmat()
 
@@ -65,6 +65,6 @@ class GameWindow(QMainWindow):
     # Hidden short-cut release handler
 
     def keyReleaseEvent(self, event):
-        if int(event.modifiers()) == Qt.KeyboardModifier.ControlModifier:
+        if event.modifiers() == Qt.KeyboardModifier.ControlModifier:
             if event.key() == Qt.Key.Key_A:
                 self.board.hide_automaton_playmat()

@@ -77,9 +77,9 @@ class Stone(QGraphicsObject):
     @classmethod
     def set_size(cls):
         cls.width = int(
-            (GeometryStyle.main_width
-             - 2 * GeometryStyle.main_marge
-             - 8 * cls.marge - 40)
+            (GeometryStyle.main_width - 250
+                - 2 * GeometryStyle.main_marge
+                - 8 * cls.marge - 40)
             / 9 - 2 * GeometryStyle.pen_width
         )
         cls.height = cls.width * cls.HW_RATIO

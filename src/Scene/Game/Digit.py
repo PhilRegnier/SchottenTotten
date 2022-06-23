@@ -68,3 +68,4 @@ class Digit(QGraphicsItem):
         self.display_none()
         for k in Digit.NUMBER[number]:
             self.pixels[k].set_light_on()
+            print(self.pixels[k].pos())

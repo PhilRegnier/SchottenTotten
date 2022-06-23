@@ -25,9 +25,9 @@ class Counter(QGraphicsItem):
         # geometry
 
         self.slash.setLine(
-            0,
-            0,
             self.max_round.boundingRect().width() / 2,
+            0,
+            0,
             self.max_round.boundingRect().height()
         )
 
