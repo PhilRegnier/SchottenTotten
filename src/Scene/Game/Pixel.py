@@ -27,6 +27,7 @@ class Pixel(QGraphicsItem):
         return QRectF(0, 0, Pixel.width, Pixel.height)
 
     def paint(self, painter, option, widget=0):
+        print("Pixel paint")
         self.brush.setColor(self.color)
         painter.setBrush(self.brush)
         painter.setPen(Qt.PenStyle.NoPen)

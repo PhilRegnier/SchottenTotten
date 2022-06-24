@@ -66,6 +66,6 @@ class Digit(QGraphicsItem):
 
     def display_number(self, number):
         self.display_none()
+        print("digit")
         for k in Digit.NUMBER[number]:
             self.pixels[k].set_light_on()
-            print(self.pixels[k].pos())

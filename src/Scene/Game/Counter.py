@@ -15,6 +15,8 @@ class Counter(QGraphicsItem):
 
         self.current_round = Digit()
         self.max_round = Digit()
+        self.current_round.setParentItem(self)
+        self.max_round.setParentItem(self)
 
         self.slash = QGraphicsLineItem()
         self.slash.setPen(Pen())

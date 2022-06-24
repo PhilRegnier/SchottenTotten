@@ -4,6 +4,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QLinearGradient, QPen, QBrush
 from PyQt6.QtWidgets import QGraphicsDropShadowEffect
 
+
 class GlobalStyle:
     cadre_color = (57, 57, 57)
     relief_color = (53, 53, 43, 255)
