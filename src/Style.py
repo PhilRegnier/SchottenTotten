@@ -14,7 +14,7 @@ class GlobalStyle:
     background_color = QColor(167, 159, 120)
 
 
-class ManagerStyle:
+class DisplayStyle:
     brush = QBrush(QColor(255, 255, 255, 180))
     pen = QPen(QColor(166, 166, 166, 255), 1)
 
@@ -42,6 +42,8 @@ class GeometryStyle:
     r_bound = 10.
     pen_width = 1.
 
+    width_display_ratio = 0.2
+
     # main_height must be redefined after initialization of the view by the init method of GameWindow
     main_height = 0
 
@@ -64,9 +66,9 @@ class Pen(QPen):
 
 
 class Shadow(QGraphicsDropShadowEffect):
-    def __init__(self):
+    def __init__(self, x_offset=1, y_offset=3):
         super().__init__()
         self.setColor(QColor(31, 21, 17, 255))
         self.setBlurRadius(3)
-        self.setXOffset(1)
-        self.setYOffset(3)
+        self.setXOffset(x_offset)
+        self.setYOffset(y_offset)

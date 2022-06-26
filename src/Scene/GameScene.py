@@ -7,7 +7,10 @@ from src.Scene.Game.Card import Card
 from src.Scene.Game.CardManager import CardManager
 from src.Scene.Game.Counter import Counter
 from src.Scene.Game.Deck import Deck
+from src.Scene.Game.Display import Display
+from src.Scene.Game.Pixel import Pixel
 from src.Scene.Game.Player import Player
+from src.Scene.Game.Scorer import Scorer
 from src.Scene.Game.ShiftManager import ShiftManager
 from src.Scene.Game.Side import Side
 from src.Scene.Game.Stone import Stone
@@ -51,13 +54,27 @@ class GameScene(QGraphicsScene):
         self.counter = Counter()
         self.addItem(self.counter)
 
+        self.scorer = Scorer(self.player.name, self.automaton.name)
+        self.addItem(self.scorer)
+
+        # self.timer = Timer()
+        # self.addItem(self.timer)
+
         # set the required width and height to the scene
 
         GameScene.set_size()
 
         # Position managers
 
-        self.counter.setPos(GeometryStyle.main_width - 200, 50)
+        self.counter.setPos(
+            GeometryStyle.main_width - (self.counter.boundingRect().width() + Display.max_width) / 2,
+            50
+        )
+        self.scorer.setPos(
+            GeometryStyle.main_width - (self.scorer.boundingRect().width() + Display.max_width) / 2,
+            250
+        )
+        # self.timer.setPos(GeometryStyle.main_width - 200, 550)
 
         # Starter attributes
 
@@ -84,7 +101,6 @@ class GameScene(QGraphicsScene):
     # Create board game items and set the board scene
 
     def _setup(self):
-        print("_setup")
 
         # Manager items
 

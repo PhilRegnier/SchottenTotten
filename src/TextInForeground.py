@@ -8,6 +8,7 @@ from src.Style import Pen, Shadow
 
 
 class TextInForeground(QGraphicsSimpleTextItem):
+
     def __init__(self, txt, parent_item):
         super().__init__()
         self.setParentItem(parent_item)
@@ -16,3 +17,4 @@ class TextInForeground(QGraphicsSimpleTextItem):
         self.setBrush(QColor(0, 114, 114, 255))
         self.setPen(Pen())
         self.setGraphicsEffect(Shadow())
+

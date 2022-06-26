@@ -38,7 +38,7 @@ class Digit(QGraphicsItem):
         self.brush = QBrush()
         self.brush.setColor(QColor(31, 21, 17, 255))
         self.pen = Pen()
-        self.setGraphicsEffect(Shadow())
+        self.setGraphicsEffect(Shadow(-1, -2))
 
         self.rect = QRectF(
             0,
@@ -66,6 +66,5 @@ class Digit(QGraphicsItem):
 
     def display_number(self, number):
         self.display_none()
-        print("digit")
         for k in Digit.NUMBER[number]:
             self.pixels[k].set_light_on()
