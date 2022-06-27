@@ -24,8 +24,8 @@ class Digit(QGraphicsItem):
         [0, 1, 2, 3, 4, 7, 8, 11, 12, 13, 14, 15, 19, 23, 27]
     ]
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent_item):
+        super(Digit, self).__init__()
         self.pixels = []
         for i in range(Digit.nb_pixels_height):
             for j in range(Digit.nb_pixels_width):
@@ -35,6 +35,7 @@ class Digit(QGraphicsItem):
                 pixel.setY(Digit.gap + i * (Digit.gap + Pixel.height))
                 self.pixels.append(pixel)
 
+        self.setParentItem(parent_item)
         self.brush = QBrush()
         self.brush.setColor(QColor(31, 21, 17, 255))
         self.pen = Pen()

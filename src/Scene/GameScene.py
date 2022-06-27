@@ -65,15 +65,15 @@ class GameScene(QGraphicsScene):
         GameScene.set_size()
 
         # Position managers
-
-        self.counter.setPos(
-            GeometryStyle.main_width - (self.counter.boundingRect().width() + Display.max_width) / 2,
+        self.scorer.setPos(
+            GeometryStyle.main_width - (self.scorer.boundingRect().width() + Display.max_width) / 2 - 40,
             50
         )
-        self.scorer.setPos(
-            GeometryStyle.main_width - (self.scorer.boundingRect().width() + Display.max_width) / 2,
+        self.counter.setPos(
+            GeometryStyle.main_width - (self.counter.boundingRect().width() + Display.max_width) / 2 - 40,
             250
         )
+
         # self.timer.setPos(GeometryStyle.main_width - 200, 550)
 
         # Starter attributes
@@ -104,6 +104,8 @@ class GameScene(QGraphicsScene):
 
         # Manager items
 
+        self.scorer.set_score_left(0)
+        self.scorer.set_score_right(0)
         self.counter.current_round.display_number(self.current_round)
         self.counter.max_round.display_number(self.settings_manager.get_number_of_rounds())
 

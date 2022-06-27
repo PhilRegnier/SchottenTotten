@@ -8,8 +8,8 @@ from src.TextInForeground import TextInForeground
 class Display(QGraphicsItem):
 
     max_width = 0
-    marge_width = 5
-    marge_height = 5
+    marge_width = 8
+    marge_height = 8
 
     def __init__(self):
         super(Display, self).__init__()
@@ -31,15 +31,15 @@ class Display(QGraphicsItem):
         painter.drawRoundedRect(self.rect, GeometryStyle.r_bound, GeometryStyle.r_bound)
 
     def text_displayed(self, string, max_width):
-
-        flag = True
+        touch = False
         text = TextInForeground(string, self)
-        while flag:
-            if text.boundingRect().width() > max_width:
-                string = string[:len(string) - 1]
-                text.setText(string)
-            else:
-                flag = False
+        while text.boundingRect().width() > max_width:
+            string = string[:len(string) - 1]
+            touch = True
+            text.setText(string)
+
+        if touch:
+            string += "."
 
         text.setText(string)
         return text
@@ -47,3 +47,8 @@ class Display(QGraphicsItem):
     @classmethod
     def set_size(cls):
         cls.max_width = GeometryStyle.main_width * GeometryStyle.width_display_ratio
+
+    @staticmethod
+    def centered(pos0, total_width, effective_width):
+        # TODO : test if total > effective...
+        return pos0 + (total_width - effective_width) / 2

@@ -15,7 +15,7 @@ class SettingsManager(Singleton):
     __max_card_value = 9
     __max_cards_in_hand = 6
     __difficulty = 1
-    __number_of_rounds = 1
+    __number_of_rounds = 2
     __sounds = False
     __variant = False
     __first_player = None

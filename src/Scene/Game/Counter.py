@@ -14,10 +14,8 @@ class Counter(Display):
 
         # instantiate children items
 
-        self.current_round = Digit()
-        self.max_round = Digit()
-        self.current_round.setParentItem(self)
-        self.max_round.setParentItem(self)
+        self.current_round = Digit(self)
+        self.max_round = Digit(self)
 
         self.slash = QGraphicsLineItem()
         self.slash.setPen(Pen())
@@ -36,18 +34,24 @@ class Counter(Display):
 
         width = max(
             self.max_round.boundingRect().width() * 2 + self.slash.boundingRect().width() + 4 * self.marge_width,
-            self.text.boundingRect().width() + 2 * self.marge_width,
-            self.max_width
+            self.text.boundingRect().width() + 2 * self.marge_width
         )
-        height = self.max_round.boundingRect().height() + self.text.boundingRect().height() + self.marge_height * 3
+        height = self.max_round.boundingRect().height() + self.text.boundingRect().height() + self.marge_height * 2
 
         self.rect = QRectF(0, 0, width, height)
 
         # position items
 
-        self.text.setPos((width - self.text.boundingRect().width()) / 2, self.marge_height)
+        self.text.setPos(
+            Display.centered(
+                self.marge_width,
+                width - 2 * self.marge_width,
+                self.text.boundingRect().width()
+            ),
+            0
+        )
 
-        y = self.text.boundingRect().height() + 2 * self.marge_height
+        y = self.text.boundingRect().height() + self.marge_height
 
         self.current_round.setPos(
             (width - self.slash.boundingRect().width()) / 2 - self.max_round.boundingRect().width() - self.marge_width,
@@ -55,7 +59,7 @@ class Counter(Display):
         )
         self.slash.setPos(
             (width - self.slash.boundingRect().width()) / 2,
-            y
+            y - 1
         )
         self.max_round.setPos(
             (width + self.slash.boundingRect().width()) / 2 + self.marge_width,
