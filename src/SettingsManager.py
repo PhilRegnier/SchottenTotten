@@ -19,6 +19,7 @@ class SettingsManager(Singleton):
     __sounds = False
     __variant = False
     __first_player = None
+    __timer = 90
 
     __debug = True
 
@@ -93,4 +94,6 @@ class SettingsManager(Singleton):
     def is_debugging(cls):
         return cls.__debug
 
-
+    @classmethod
+    def get_time(cls):
+        return cls.__timer

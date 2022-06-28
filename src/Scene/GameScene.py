@@ -5,17 +5,17 @@ from PyQt6.QtWidgets import QGraphicsScene
 from src.Scene.Game.Automaton import Automaton
 from src.Scene.Game.Card import Card
 from src.Scene.Game.CardManager import CardManager
-from src.Scene.Game.Counter import Counter
+from src.Scene.Game.displays.Counter import Counter
 from src.Scene.Game.Deck import Deck
-from src.Scene.Game.Display import Display
-from src.Scene.Game.Pixel import Pixel
+from src.Scene.Game.displays.Display import Display
 from src.Scene.Game.Player import Player
-from src.Scene.Game.Scorer import Scorer
+from src.Scene.Game.displays.Scorer import Scorer
 from src.Scene.Game.ShiftManager import ShiftManager
 from src.Scene.Game.Side import Side
 from src.Scene.Game.Stone import Stone
 from src.Scene.Game.Umpire import Umpire
 from src.Scene.Curtain import Curtain
+from src.Scene.Game.displays.Timer import Timer
 from src.Scene.Starter.HomeCurtain import HomeCurtain
 from src.SettingsManager import SettingsManager
 from src.Style import GeometryStyle, PlayerColors, AutomatonColors
@@ -39,7 +39,7 @@ class GameScene(QGraphicsScene):
         self.card_manager = CardManager()
         self.card_manager.initialize()
         self.deck = Deck()
-        self.player = Player('Francesco', PlayerColors, True)
+        self.player = Player('Human', PlayerColors, True)
         self.automaton = Automaton('Bot', AutomatonColors)
         self.umpire = Umpire()
         self.current_round = 0
@@ -57,8 +57,8 @@ class GameScene(QGraphicsScene):
         self.scorer = Scorer(self.player.name, self.automaton.name)
         self.addItem(self.scorer)
 
-        # self.timer = Timer()
-        # self.addItem(self.timer)
+        self.timer = Timer()
+        self.addItem(self.timer)
 
         # set the required width and height to the scene
 
@@ -71,7 +71,11 @@ class GameScene(QGraphicsScene):
         )
         self.counter.setPos(
             GeometryStyle.main_width - (self.counter.boundingRect().width() + Display.max_width) / 2 - 40,
-            250
+            self.scorer.y() + self.scorer.boundingRect().height() + 20
+        )
+        self.timer.setPos(
+            GeometryStyle.main_width - (self.timer.boundingRect().width() + Display.max_width) / 2 - 40,
+            self.counter.y() + self.counter.boundingRect().height() + 20
         )
 
         # self.timer.setPos(GeometryStyle.main_width - 200, 550)
@@ -104,10 +108,11 @@ class GameScene(QGraphicsScene):
 
         # Manager items
 
-        self.scorer.set_score_left(0)
-        self.scorer.set_score_right(0)
+        self.scorer.set_score_left(self.player.total_score)
+        self.scorer.set_score_right(self.automaton.total_score)
         self.counter.current_round.display_number(self.current_round)
         self.counter.max_round.display_number(self.settings_manager.get_number_of_rounds())
+        self.timer.set_time(self.settings_manager.get_time())
 
         # Frontier items
 

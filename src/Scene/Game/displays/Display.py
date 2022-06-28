@@ -11,10 +11,11 @@ class Display(QGraphicsItem):
     marge_width = 8
     marge_height = 8
 
-    def __init__(self):
+    def __init__(self, name):
         super(Display, self).__init__()
         if Display.max_width == 0:
             Display.set_size()
+        self.title = self.text_displayed(name, self.max_width - 2 * self.marge_width)
         self.rect = None
 
     def boundingRect(self):

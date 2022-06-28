@@ -5,7 +5,8 @@ from PyQt6.QtWidgets import QGraphicsItem
 
 class Pixel(QGraphicsItem):
 
-    color_on = QColor(0, 114, 114, 255)
+    # color_on = QColor(0, 114, 114, 255)
+    color_on = QColor(235, 216, 80, 255)
     color_off = QColor(31, 21, 17, 255)
     width = 6
     height = 5

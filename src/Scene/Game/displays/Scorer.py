@@ -1,17 +1,16 @@
 from PyQt6.QtCore import QRectF
 
-from src.Scene.Game.Digit import Digit
-from src.Scene.Game.Display import Display
+from src.Scene.Game.displays.Digit import Digit
+from src.Scene.Game.displays.Display import Display
 
 
 class Scorer(Display):
 
     def __init__(self, name_left, name_right):
-        super(Scorer, self).__init__()
+        super(Scorer, self).__init__("SCORE")
 
         # instantiate children items
 
-        self.text_title = self.text_displayed("SCORE", self.max_width)
         self.text_left = self.text_displayed(name_left, self.max_width / 2 - 2 * self.marge_width)
         self.text_right = self.text_displayed(name_right, self.max_width / 2 - 2 * self.marge_width)
         self.ten_digit_left = Digit(self)
@@ -25,23 +24,23 @@ class Scorer(Display):
 
         height = self.ten_digit_left.boundingRect().height()\
                  + self.text_left.boundingRect().height()\
-                 + self.text_title.boundingRect().height()\
+                 + self.title.boundingRect().height()\
                  + 3 * self.marge_height
 
         self.rect = QRectF(0, 0, width, height)
 
         # position items
 
-        self.text_title.setPos(
+        self.title.setPos(
             Display.centered(
                 0,
                 width,
-                self.text_title.boundingRect().width()
+                self.title.boundingRect().width()
             ),
             0
         )
 
-        y = self.text_title.boundingRect().height() + self.marge_height
+        y = self.title.boundingRect().height() + self.marge_height
 
         self.text_left.setPos(
             Display.centered(

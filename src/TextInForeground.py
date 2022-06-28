@@ -14,7 +14,8 @@ class TextInForeground(QGraphicsSimpleTextItem):
         self.setParentItem(parent_item)
         self.setText(txt)
         self.setFont(QFont("Helvetica [Cronyx]", 28))
-        self.setBrush(QColor(0, 114, 114, 255))
+        # self.setBrush(QColor(0, 114, 114, 255))
+        self.setBrush(QColor(176, 186, 58, 255))
         self.setPen(Pen())
         self.setGraphicsEffect(Shadow())
 

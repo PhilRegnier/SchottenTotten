@@ -2,7 +2,7 @@ from PyQt6.QtCore import QRectF
 from PyQt6.QtGui import QBrush, QColor
 from PyQt6.QtWidgets import QGraphicsItem
 
-from src.Scene.Game.Pixel import Pixel
+from src.Scene.Game.displays.Pixel import Pixel
 from src.Style import Pen, Shadow
 
 
