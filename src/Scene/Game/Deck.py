@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import QGraphicsPixmapItem
 from src.Scene.Game.Card import Card
 from src.ImageTreatment import ImageTreatment
 from src.Scene.Game.CardManager import CardManager
-from src.Style import GlobalStyle, GeometryStyle
+from src.Style import GlobalStyle, MainGeometry
 
 
 class Deck(QGraphicsPixmapItem):
@@ -54,7 +54,7 @@ class Deck(QGraphicsPixmapItem):
         self.setPos(x0, y0)
 
     def _stack(self):
-        r = GeometryStyle.r_bound
+        r = MainGeometry.r_bound
         t = 1
         ow = 1
         oh = 1

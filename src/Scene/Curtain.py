@@ -5,7 +5,7 @@ from PyQt6.QtCore import QRectF, QPointF, QPropertyAnimation, QEasingCurve
 from PyQt6.QtGui import QColor, QBrush, QPen
 from PyQt6.QtWidgets import QGraphicsObject
 
-from src.Style import GradientStyle, GeometryStyle
+from src.Style import GradientStyle, MainGeometry
 
 
 class Curtain(QGraphicsObject):
@@ -29,10 +29,10 @@ class Curtain(QGraphicsObject):
     def boundingRect(self):
         from src.Scene.GameScene import GameScene
 
-        return QRectF(-GeometryStyle.pen_width / 2,
-                      -GeometryStyle.pen_width / 2,
-                      GameScene.width + GeometryStyle.pen_width,
-                      GameScene.height + GeometryStyle.pen_width
+        return QRectF(-MainGeometry.pen_width / 2,
+                      -MainGeometry.pen_width / 2,
+                      GameScene.width + MainGeometry.pen_width,
+                      GameScene.height + MainGeometry.pen_width
                       )
 
     def paint(self, painter, option, widget=0):
@@ -41,7 +41,7 @@ class Curtain(QGraphicsObject):
         painter.setBrush(self.brush)
         painter.setPen(QPen(QColor(68, 68, 68, self.alpha), 2))
         rect = QRectF(0., 0., float(GameScene.width), float(GameScene.height))
-        painter.drawRoundedRect(rect, GeometryStyle.r_bound, GeometryStyle.r_bound)
+        painter.drawRoundedRect(rect, MainGeometry.r_bound, MainGeometry.r_bound)
 
     def animate_incoming(self, z_value=None):
         if z_value is not None:

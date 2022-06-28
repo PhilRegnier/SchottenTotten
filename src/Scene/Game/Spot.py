@@ -15,7 +15,7 @@ from PyQt6.QtCore import QRect, QRectF
 from PyQt6.QtGui import QBrush, QColorConstants
 from PyQt6.QtWidgets import QGraphicsObject
 
-from src.Style import GeometryStyle
+from src.Style import MainGeometry
 
 
 class Spot(QGraphicsObject):
@@ -41,4 +41,4 @@ class Spot(QGraphicsObject):
         painter.setBrush(QBrush(QColorConstants.Cyan))
         painter.setOpacity(0.3)
         rect = QRect(-1, -1, int(Card.width), int(Card.height))
-        painter.drawRoundedRect(rect, GeometryStyle.r_bound, GeometryStyle.r_bound)
+        painter.drawRoundedRect(rect, MainGeometry.r_bound, MainGeometry.r_bound)

@@ -6,7 +6,7 @@ from PyQt6.QtGui import QBrush, QFont, QColor, QPen
 from PyQt6.QtWidgets import QGraphicsSimpleTextItem, QGraphicsItem
 
 from src.Scene.Starter.Handler import Handler
-from src.Style import GeometryStyle
+from src.Style import MainGeometry
 
 
 class Slider(QGraphicsItem):
@@ -112,10 +112,10 @@ class Slider(QGraphicsItem):
 
     def boundingRect(self):
         return QRectF(
-            -GeometryStyle.pen_width / 2,
-            -GeometryStyle.pen_width / 2,
-            self.sliderWidth + GeometryStyle.pen_width,
-            self.sliderHeight + GeometryStyle.pen_width)
+            -MainGeometry.pen_width / 2,
+            -MainGeometry.pen_width / 2,
+            self.sliderWidth + MainGeometry.pen_width,
+            self.sliderHeight + MainGeometry.pen_width)
 
     def paint(self, painter, option, widget=0):
         # assembly of 3 roundedRects

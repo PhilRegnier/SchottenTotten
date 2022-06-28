@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QGraphicsLineItem
 
 from src.Scene.Game.displays.Digit import Digit
 from src.Scene.Game.displays.Display import Display
-from src.Style import Pen
+from src.Style import Pen, MainGeometry
 
 
 class Counter(Display):
@@ -40,7 +40,7 @@ class Counter(Display):
         # position items
 
         self.title.setPos(
-            Display.centered(
+            MainGeometry.centered(
                 self.marge_width,
                 width - 2 * self.marge_width,
                 self.title.boundingRect().width()

@@ -40,7 +40,7 @@ class SettingsManager(Singleton):
 
     @classmethod
     def set_number_of_rounds(cls, number_of_rounds):
-        cls.__number_of_rounds = number_of_rounds
+        cls.__number_of_rounds = max(min(int(number_of_rounds), 9), 0)
 
     @classmethod
     def get_difficulty(cls):

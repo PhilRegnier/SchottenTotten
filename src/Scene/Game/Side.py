@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import QGraphicsItem
 
 from src.Scene.Game.ShiftManager import ShiftManager
 from src.Scene.Game.Stone import Stone
-from src.Style import GeometryStyle, GradientStyle
+from src.Style import MainGeometry, GradientStyle
 
 # TODO : change to QGraphicsObect to directly handle mouse EnterEvent and DropEvent
 
@@ -46,17 +46,17 @@ class Side(QGraphicsItem):
 
     def boundingRect(self):
         return QRectF(
-            -GeometryStyle.pen_width / 2,
-            -GeometryStyle.pen_width / 2,
-            Side.width + GeometryStyle.pen_width,
-            Side.height + GeometryStyle.pen_width
+            -MainGeometry.pen_width / 2,
+            -MainGeometry.pen_width / 2,
+            Side.width + MainGeometry.pen_width,
+            Side.height + MainGeometry.pen_width
         )
 
     def paint(self, painter, option, widget=0):
         painter.setBrush(QBrush(self.gradient))
         painter.setPen(QPen(self.pen_color, 1))
         rect = QRectF(0., 0., float(Stone.width), float(Side.height))
-        painter.drawRoundedRect(rect, GeometryStyle.r_bound, GeometryStyle.r_bound)
+        painter.drawRoundedRect(rect, MainGeometry.r_bound, MainGeometry.r_bound)
 
     def add_card(self, card):
         old_pos = card.pos() + card.parentItem().pos() - self.pos()

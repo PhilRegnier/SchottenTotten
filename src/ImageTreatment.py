@@ -2,7 +2,7 @@
 
 from PIL import ImageDraw, Image, ImageQt
 
-from src.Style import GeometryStyle, GlobalStyle
+from src.Style import MainGeometry, GlobalStyle
 
 
 class ImageTreatment:
@@ -24,7 +24,7 @@ class ImageTreatment:
 
     # frame & thickness
     @staticmethod
-    def enluminure(im, r=GeometryStyle.r_bound, t=1, ow=1, oh=1):
+    def enluminure(im, r=MainGeometry.r_bound, t=1, ow=1, oh=1):
         im = ImageTreatment.round_corners(im, int(r))
 
         cadre = Image.new('RGBA', (im.width + 2 * t, im.height + 2 * t), GlobalStyle.cadre_color)

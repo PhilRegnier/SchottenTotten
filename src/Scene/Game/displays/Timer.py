@@ -2,6 +2,7 @@ from PyQt6.QtCore import QRectF
 
 from src.Scene.Game.displays.Digit import Digit
 from src.Scene.Game.displays.Display import Display
+from src.Style import MainGeometry
 from src.TextInForeground import TextInForeground
 
 
@@ -30,7 +31,7 @@ class Timer(Display):
         # position items
 
         self.title.setPos(
-            Display.centered(
+            MainGeometry.centered(
                 0,
                 width,
                 self.title.boundingRect().width()
@@ -41,7 +42,7 @@ class Timer(Display):
         y = self.title.boundingRect().height() + self.marge_height
 
         self.unit_min.setPos(
-            Display.centered(
+            MainGeometry.centered(
                 0,
                 width,
                 (self.ten_sec.boundingRect().width() + self.marge_width) * 3 + self.sep.boundingRect().width()

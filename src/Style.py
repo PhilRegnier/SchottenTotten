@@ -15,8 +15,8 @@ class GlobalStyle:
 
 
 class DisplayStyle:
-    brush = QBrush(QColor(255, 255, 255, 180))
-    pen = QPen(QColor(166, 166, 166, 255), 1)
+    brush = QBrush(QColor(255, 255, 255, 100))
+    pen = QPen(QColor(166, 166, 166, 100), 1)
 
 
 class PlayerColors:
@@ -35,17 +35,21 @@ class AutomatonColors:
     hand_pen = QColor(10, 11, 8)
 
 
-class GeometryStyle:
-    main_width = 1200
-    main_marge = 20
-    marge = 5.
+class MainGeometry:
+    width = 1200
+    marge = 20
     r_bound = 10.
     pen_width = 1.
+    spot_marge = 5.
 
     width_display_ratio = 0.2
 
     # main_height must be redefined after initialization of the view by the init method of GameWindow
-    main_height = 0
+    height = 0
+
+    @staticmethod
+    def centered(pos0, total_width, effective_width):
+        return pos0 + (total_width - effective_width) / 2
 
 
 class GradientStyle(QLinearGradient):

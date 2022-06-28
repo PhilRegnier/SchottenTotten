@@ -18,7 +18,7 @@ from src.Scene.Curtain import Curtain
 from src.Scene.Game.displays.Timer import Timer
 from src.Scene.Starter.HomeCurtain import HomeCurtain
 from src.SettingsManager import SettingsManager
-from src.Style import GeometryStyle, PlayerColors, AutomatonColors
+from src.Style import MainGeometry, PlayerColors, AutomatonColors
 from src.TextInForeground import TextInForeground
 
 
@@ -49,7 +49,18 @@ class GameScene(QGraphicsScene):
         self.shift_manager = ShiftManager()
         self.settings_manager = SettingsManager()
 
-        # Game managers : counter, scorer and timer
+        # Add game board items
+
+        self.addItem(self.deck)
+
+        for i in range(9):
+            self.addItem(self.automaton.sides[i])
+            self.addItem(self.player.sides[i])
+            self.addItem(self.stones[i])
+
+        self.addItem(self.player.playmat)
+
+        # Add game managers : counter, scorer and timer
 
         self.counter = Counter()
         self.addItem(self.counter)
@@ -65,20 +76,26 @@ class GameScene(QGraphicsScene):
         GameScene.set_size()
 
         # Position managers
+
         self.scorer.setPos(
-            GeometryStyle.main_width - (self.scorer.boundingRect().width() + Display.max_width) / 2 - 40,
-            50
+            MainGeometry.width - (self.scorer.boundingRect().width() + Display.max_width) / 2 - 40,
+            MainGeometry.centered(
+                0,
+                self.height,
+                self.scorer.boundingRect().height()
+                + self.counter.boundingRect().height()
+                + self.timer.boundingRect().height()
+                + 2 * Display.ext_marge_height
+            )
         )
         self.counter.setPos(
-            GeometryStyle.main_width - (self.counter.boundingRect().width() + Display.max_width) / 2 - 40,
-            self.scorer.y() + self.scorer.boundingRect().height() + 20
+            MainGeometry.width - (self.counter.boundingRect().width() + Display.max_width) / 2 - 40,
+            self.scorer.y() + self.scorer.boundingRect().height() + Display.ext_marge_height
         )
         self.timer.setPos(
-            GeometryStyle.main_width - (self.timer.boundingRect().width() + Display.max_width) / 2 - 40,
-            self.counter.y() + self.counter.boundingRect().height() + 20
+            MainGeometry.width - (self.timer.boundingRect().width() + Display.max_width) / 2 - 40,
+            self.counter.y() + self.counter.boundingRect().height() + Display.ext_marge_height
         )
-
-        # self.timer.setPos(GeometryStyle.main_width - 200, 550)
 
         # Starter attributes
 
@@ -102,9 +119,7 @@ class GameScene(QGraphicsScene):
 
         self.setSceneRect(0, 0, GameScene.width, GameScene.height)
 
-    # Create board game items and set the board scene
-
-    def _setup(self):
+    def _init_board(self):
 
         # Manager items
 
@@ -117,8 +132,8 @@ class GameScene(QGraphicsScene):
         # Frontier items
 
         for i in range(9):
-            x = i * Stone.marge + i * Stone.width + GeometryStyle.main_marge
-            y = GeometryStyle.main_marge + Stone.height + Stone.marge
+            x = i * Stone.marge + i * Stone.width + MainGeometry.marge
+            y = MainGeometry.marge + Stone.height + Stone.marge
             self.automaton.sides[i].setPos(x, y)
             y += Side.height + Stone.marge
             self.stones[i].setPos(x+1, y+2)
@@ -129,24 +144,13 @@ class GameScene(QGraphicsScene):
 
         # Set items positions
 
-        bottom_y = GameScene.height - 2 * GeometryStyle.main_marge - Card.height
+        bottom_y = GameScene.height - 2 * MainGeometry.marge - Card.height
 
         deck_xpos = self.player.playmat.width + 2 * Card.width
 
         self.deck.set_pos_init(deck_xpos, bottom_y)
-        self.player.playmat.setPos(GeometryStyle.main_marge, bottom_y)
-        self.automaton.playmat.setPos(GeometryStyle.main_marge, GeometryStyle.main_marge)
-
-        # Game board assembly
-
-        self.addItem(self.deck)
-
-        for i in range(9):
-            self.addItem(self.automaton.sides[i])
-            self.addItem(self.player.sides[i])
-            self.addItem(self.stones[i])
-
-        self.addItem(self.player.playmat)
+        self.player.playmat.setPos(MainGeometry.marge, bottom_y)
+        self.automaton.playmat.setPos(MainGeometry.marge, MainGeometry.marge)
 
         # Set zValue max
 
@@ -403,10 +407,10 @@ class GameScene(QGraphicsScene):
     """
     @classmethod
     def set_size(cls):
-        cls.width = GeometryStyle.main_width - 40
+        cls.width = MainGeometry.width - 40
         cls.height = int(
             4 * Stone.height + 4.33 * Card.height
-            + cls.marge * 2 + 8 * GeometryStyle.pen_width + 4 * Stone.marge + 40
+            + cls.marge * 2 + 8 * MainGeometry.pen_width + 4 * Stone.marge + 40
         ) - 60
 
     """

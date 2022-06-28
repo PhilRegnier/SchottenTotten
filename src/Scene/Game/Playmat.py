@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import QGraphicsItem
 from src.Scene.Game.Card import Card
 from src.Scene.Game.Spot import Spot
 from src.SettingsManager import SettingsManager
-from src.Style import GeometryStyle, GradientStyle
+from src.Style import MainGeometry, GradientStyle
 
 
 class Playmat(QGraphicsItem):
@@ -28,23 +28,23 @@ class Playmat(QGraphicsItem):
         self.spots = []
         for i in range(SettingsManager.max_cards_in_hand()):
             spot = Spot(i, True, self)
-            spot.setPos((i + 1) * GeometryStyle.marge + i * Card.width, GeometryStyle.marge)
+            spot.setPos((i + 1) * MainGeometry.spot_marge + i * Card.width, MainGeometry.spot_marge)
             spot.setVisible(True)
             self.spots.append(spot)
 
         self.cards = []
 
     def boundingRect(self):
-        return QRectF(-GeometryStyle.pen_width / 2,
-                      -GeometryStyle.pen_width / 2,
-                      Playmat.width + GeometryStyle.pen_width,
-                      Playmat.height + GeometryStyle.pen_width)
+        return QRectF(-MainGeometry.pen_width / 2,
+                      -MainGeometry.pen_width / 2,
+                      Playmat.width + MainGeometry.pen_width,
+                      Playmat.height + MainGeometry.pen_width)
 
     def paint(self, painter, option, widget=0):
         painter.setBrush(QBrush(self.gradient))
         painter.setPen(QPen(self.pen_color, 1))
         rect = QRectF(0., 0., float(Playmat.width), float(Playmat.height))
-        painter.drawRoundedRect(rect, GeometryStyle.r_bound, GeometryStyle.r_bound)
+        painter.drawRoundedRect(rect, MainGeometry.r_bound, MainGeometry.r_bound)
 
     def add(self, card, draggable=False, index=None):
         # TODO : Animation du déplacement de la carte
@@ -101,8 +101,8 @@ class Playmat(QGraphicsItem):
 
         cls.width = 1.0 * (
                 settings_manager.get_max_cards_in_hand()
-                * (Card.width + GeometryStyle.marge)
-                + GeometryStyle.marge
+                * (Card.width + MainGeometry.spot_marge)
+                + MainGeometry.spot_marge
         )
-        cls.height = Card.height + GeometryStyle.marge * 2.0
+        cls.height = Card.height + MainGeometry.spot_marge * 2.0
 

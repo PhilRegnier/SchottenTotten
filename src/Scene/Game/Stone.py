@@ -7,7 +7,7 @@ from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QGraphicsObject
 
 from src.ImageTreatment import ImageTreatment
-from src.Style import GeometryStyle
+from src.Style import MainGeometry
 
 
 class Stone(QGraphicsObject):
@@ -65,10 +65,10 @@ class Stone(QGraphicsObject):
     # define the geometry of the stone
 
     def boundingRect(self):
-        return QRectF(-GeometryStyle.pen_width / 2,
-                      -GeometryStyle.pen_width / 2,
-                      Stone.width + GeometryStyle.pen_width,
-                      Stone.height + GeometryStyle.pen_width)
+        return QRectF(-MainGeometry.pen_width / 2,
+                      -MainGeometry.pen_width / 2,
+                      Stone.width + MainGeometry.pen_width,
+                      Stone.height + MainGeometry.pen_width)
 
     def paint(self, painter, option, widget=0):
         rect = QRect(-1, -1, int(Stone.width), int(Stone.height))
@@ -77,9 +77,9 @@ class Stone(QGraphicsObject):
     @classmethod
     def set_size(cls):
         cls.width = int(
-            (GeometryStyle.main_width - 250
-                - 2 * GeometryStyle.main_marge
+            (MainGeometry.width - 250
+                - 2 * MainGeometry.marge
                 - 8 * cls.marge - 40)
-            / 9 - 2 * GeometryStyle.pen_width
+            / 9 - 2 * MainGeometry.pen_width
         )
         cls.height = cls.width * cls.HW_RATIO

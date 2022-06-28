@@ -2,6 +2,7 @@ from PyQt6.QtCore import QRectF
 
 from src.Scene.Game.displays.Digit import Digit
 from src.Scene.Game.displays.Display import Display
+from src.Style import MainGeometry
 
 
 class Scorer(Display):
@@ -32,7 +33,7 @@ class Scorer(Display):
         # position items
 
         self.title.setPos(
-            Display.centered(
+            MainGeometry.centered(
                 0,
                 width,
                 self.title.boundingRect().width()
@@ -43,7 +44,7 @@ class Scorer(Display):
         y = self.title.boundingRect().height() + self.marge_height
 
         self.text_left.setPos(
-            Display.centered(
+            MainGeometry.centered(
                 self.marge_width,
                 width / 2 - self.marge_width,
                 self.text_left.boundingRect().width()
@@ -51,7 +52,7 @@ class Scorer(Display):
             y
         )
         self.text_right.setPos(
-            Display.centered(
+            MainGeometry.centered(
                 width / 2 + self.marge_width,
                 width / 2 - self.marge_width,
                 self.text_right.boundingRect().width()
@@ -64,7 +65,7 @@ class Scorer(Display):
         two_digits_width = self.ten_digit_left.boundingRect().width() * 2 + self.marge_width
 
         self.ten_digit_left.setPos(
-            Display.centered(
+            MainGeometry.centered(
                 self.marge_width,
                 width / 2 - self.marge_width,
                 two_digits_width
@@ -72,7 +73,7 @@ class Scorer(Display):
             y
         )
         self.unit_digit_left.setPos(
-            Display.centered(
+            MainGeometry.centered(
                 2 * self.marge_width + self.ten_digit_left.boundingRect().width(),
                 width / 2 - self.marge_width,
                 two_digits_width
@@ -80,7 +81,7 @@ class Scorer(Display):
             y
         )
         self.ten_digit_right.setPos(
-            Display.centered(
+            MainGeometry.centered(
                 width / 2 + self.marge_width,
                 width / 2 - self.marge_width,
                 two_digits_width
@@ -88,7 +89,7 @@ class Scorer(Display):
             y
         )
         self.unit_digit_right.setPos(
-            Display.centered(
+            MainGeometry.centered(
                 width / 2 + 2 * self.marge_width + self.ten_digit_left.boundingRect().width(),
                 width / 2 - self.marge_width,
                 two_digits_width

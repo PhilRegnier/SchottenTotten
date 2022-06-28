@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import QMainWindow, QStatusBar
 from src.GameView import GameView
 from src.MainWindow.MenuBar import MenuBar
 from src.Scene.GameScene import GameScene
-from src.Style import GeometryStyle
+from src.Style import MainGeometry
 
 
 class GameWindow(QMainWindow):
@@ -25,7 +25,7 @@ class GameWindow(QMainWindow):
         # Create the main window
 
         self.set_height()
-        self.setFixedSize(GeometryStyle.main_width, GeometryStyle.main_height)
+        self.setFixedSize(MainGeometry.width, MainGeometry.height)
         self.setWindowTitle('Schotten Totten')
         self.setWindowIcon(QIcon('resources/images/logo.png'))
         self.setCentralWidget(self.game_view)
@@ -45,7 +45,7 @@ class GameWindow(QMainWindow):
         self.show()
 
     def set_height(self):
-        GeometryStyle.main_height = self.game_view.height() + 60
+        MainGeometry.height = self.game_view.height() + 60
 
     def new_game(self):
         self.game_view.close()

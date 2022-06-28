@@ -2,7 +2,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QAction
 from PyQt6.QtWidgets import QMessageBox, QScrollArea, QWidget, QVBoxLayout, QLabel, QDialog, QPushButton
 
-from src.Style import GeometryStyle
+from src.Style import MainGeometry
 from src.variables_globales import __version__
 
 
@@ -39,7 +39,7 @@ class HelpMenuBar:
         dialog = QDialog(window)
 
         dialog.setWindowTitle("Les règles du jeu")
-        dialog.setMinimumSize(int(0.6*GeometryStyle.main_width), int(0.6*GeometryStyle.main_height))
+        dialog.setMinimumSize(int(0.6*MainGeometry.width), int(0.6*MainGeometry.height))
 
         scroll = QScrollArea(dialog)
 
