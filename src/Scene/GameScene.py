@@ -144,12 +144,10 @@ class GameScene(QGraphicsScene):
 
         # Set items positions
 
-        bottom_y = GameScene.height - 2 * MainGeometry.marge - Card.height
+        y = GameScene.height - 2 * MainGeometry.marge - Card.height
 
-        deck_xpos = self.player.playmat.width + 2 * Card.width
-
-        self.deck.set_pos_init(deck_xpos, bottom_y)
-        self.player.playmat.setPos(MainGeometry.marge, bottom_y)
+        self.deck.set_pos_init(self.player.playmat.width + 2 * Card.width, y)
+        self.player.playmat.setPos(MainGeometry.marge, y)
         self.automaton.playmat.setPos(MainGeometry.marge, MainGeometry.marge)
 
         # Set zValue max
@@ -158,19 +156,42 @@ class GameScene(QGraphicsScene):
         for item in self.items():
             self.card_manager.set_zmax(item.zValue())
 
+    def _reset_board(self):
+        self.scorer.set_score_left(self.player.total_score)
+        self.scorer.set_score_right(self.automaton.total_score)
+        self.counter.current_round.display_number(self.current_round)
+
+        for i in range(9):
+            self.stones[i].reset()
+
     def start_new_round(self):
         print("start new round")
 
-        # ending or starting the game
+        self.current_round += 1
+
+        # update displays
+
+        self.scorer.set_score_left(self.player.total_score)
+        self.scorer.set_score_right(self.automaton.total_score)
+        self.counter.current_round.display_number(self.current_round)
+
+        # ending the game
 
         if self.current_round > self.settings_manager.get_number_of_rounds():
             self.home.animate_incoming(self.get_zmax()+1)
             return
-        elif self.current_round == 0:
+
+        # starting the game (first round only)
+
+        elif self.current_round == 1:
             self.home.leave()
+            self._init_board()
+
+        # preparing next round
+
         else:
 
-            # pick up the cards everywhere
+            # pick up the cards from everywhere
 
             self.card_manager.pick_up_cards(self.player.playmat.cards)
             self.card_manager.pick_up_cards(self.automaton.playmat.cards)
@@ -183,9 +204,12 @@ class GameScene(QGraphicsScene):
 
             self.card_manager.reset_cards()
 
-            self.settings_manager.switch_first_player()
+            # reset the stones
 
-        self.current_round += 1
+            for i in range(9):
+                self.stones[i].reset()
+
+            self.settings_manager.switch_first_player()
 
         self.umpire.final_countdown = False
 
@@ -200,7 +224,7 @@ class GameScene(QGraphicsScene):
 
     def start_the_round(self):
         self.round_curtain.animate_leaving()
-        self._setup()
+        self._init_board()
 
         # Draw cards
 

@@ -29,6 +29,7 @@ class Stone(QGraphicsObject):
         self.winner = None
         self.first_to_play_the_third_card = None
         self.animation = QPropertyAnimation(self, b"pos")
+        self.y0 = None
 
     # Memorize the player who put a third card first for this stone
 
@@ -52,7 +53,15 @@ class Stone(QGraphicsObject):
         if self.winner == automa:
             delta_height = - delta_height
 
+        self.y0 = self.y()
+
         self.move_to(delta_height)
+
+    # position stone at the frontier zone
+
+    def reset(self):
+        if self.y0 is not None:
+            self.move_to(self.y0 - self.y())
 
     # Animate the claimed stone
 
