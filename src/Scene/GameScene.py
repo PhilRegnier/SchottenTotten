@@ -2,7 +2,6 @@
 from PyQt6.QtCore import QTimer, QLineF
 from PyQt6.QtWidgets import QGraphicsScene
 
-from src.Scene.Game.Automaton import Automaton
 from src.Scene.Game.Card import Card
 from src.Scene.Game.CardManager import CardManager
 from src.Scene.Game.displays.Counter import Counter
@@ -40,7 +39,7 @@ class GameScene(QGraphicsScene):
         self.card_manager.initialize()
         self.deck = Deck()
         self.player = Player('Human', PlayerColors, True)
-        self.automaton = Automaton('Bot', AutomatonColors)
+        self.automaton = Player('Bot', AutomatonColors, False)
         self.umpire = Umpire()
         self.current_round = 0
 
@@ -68,7 +67,7 @@ class GameScene(QGraphicsScene):
         self.scorer = Scorer(self.player.name, self.automaton.name)
         self.addItem(self.scorer)
 
-        self.timer = Timer()
+        self.timer = Timer(self.time_out)
         self.addItem(self.timer)
 
         # set the required width and height to the scene
@@ -121,11 +120,8 @@ class GameScene(QGraphicsScene):
 
     def _init_board(self):
 
-        # Manager items
+        # Fixed manager items
 
-        self.scorer.set_score_left(self.player.total_score)
-        self.scorer.set_score_right(self.automaton.total_score)
-        self.counter.current_round.display_number(self.current_round)
         self.counter.max_round.display_number(self.settings_manager.get_number_of_rounds())
 
         # Frontier items
@@ -157,6 +153,7 @@ class GameScene(QGraphicsScene):
 
     def prepare_new_round(self):
 
+        self.result_curtain.animate_leaving()
         self.settings_manager.switch_first_player()
 
         # pick up the cards from everywhere
@@ -177,38 +174,35 @@ class GameScene(QGraphicsScene):
         for i in range(9):
             self.stones[i].reset()
 
-        # update displays
+    def next_round(self):
+        print("\n----- next round ------")
 
+        # update scores and statistics
+
+        self.player.update()
+        self.automaton.update()
         self.scorer.set_score_left(self.player.total_score)
         self.scorer.set_score_right(self.automaton.total_score)
-        self.counter.current_round.display_number(self.current_round)
-        self.timer.start(self.settings_manager.get_time())
-
-    def start_new_round(self):
-        print("start new round")
-
-        self.current_round += 1
-
-        # update displays
-
-        self.scorer.set_score_left(self.player.total_score)
-        self.scorer.set_score_right(self.automaton.total_score)
-        self.counter.current_round.display_number(self.current_round)
-
+        print("scores: ", self.player.total_score, self.automaton.total_score)
         # ending the game
 
-        if self.current_round > self.settings_manager.get_number_of_rounds():
+        if self.current_round == self.settings_manager.get_number_of_rounds():
+            # TODO: curtain telling who won the game
+            self.player.reset()
+            self.automaton.reset()
             self.home.animate_incoming(self.get_zmax()+1)
             return
 
-        # starting the game (first round only)
+        # update current round
 
-        elif self.current_round == 1:
+        self.current_round += 1
+        self.counter.current_round.display_number(self.current_round)
+
+        # if first round starting the game, else preparing next round
+
+        if self.current_round == 1:
             self.home.leave()
             self._init_board()
-
-        # preparing next round
-
         else:
             self.prepare_new_round()
 
@@ -221,17 +215,11 @@ class GameScene(QGraphicsScene):
             "ROUND " + str(self.current_round)
         )
         self.round_curtain.animate_incoming(self.get_zmax()+1)
-        QTimer.singleShot(3000, self.start_the_round)
+        QTimer.singleShot(2000, lambda: self.round_curtain.animate_leaving(function=self.start_round))
 
-    def start_the_round(self):
-        self.round_curtain.animate_leaving()
-
-# TODO: créer un évènement à la fermeture du curtain (méthode remove)
-#       et capter cet event dans le gameScene
-#       pour déclencher la distribution des cartes et le début du round avec
-#       le premier lancement du timer.
-
-        # Draw cards
+    def start_round(self):
+        print("start round")
+        # Draw cards & start the timer
 
         for i in range(self.settings_manager.get_max_cards_in_hand()):
             self.player.playmat.add(self.deck.draw(), True)
@@ -239,10 +227,26 @@ class GameScene(QGraphicsScene):
 
         self.timer.start(self.settings_manager.get_time())
 
+        # manage the first turn of automaton if he's first player
+
+        if self.settings_manager.get_first_player() == self.automaton:
+            self.automaton.choose_card(self.settings_manager.get_difficulty())
+            self._play_turn(self.automaton)
+
+    def time_out(self):
+        print("time out")
+        self.player.choose_card()
+        self.proceed()
+
+    def proceed(self):
+        self._play_turn(self.player)
+        self.automaton.choose_card(self.settings_manager.get_difficulty())
+        self._play_turn(self.automaton)
+
     """
         Method processing the current player's turn
     """
-    def _play_a_turn(self, current_player):
+    def _play_turn(self, current_player):
         print("play a turn:", current_player.name)
         side = self.shift_manager.side
 
@@ -278,7 +282,7 @@ class GameScene(QGraphicsScene):
 
         winner = self.umpire.judge(self.player, self.automaton, self.stones)
 
-        # reset shift_manager & show the ending message
+        # reset shift_manager & eventually show the ending message
 
         self.shift_manager.reset()
 
@@ -288,15 +292,10 @@ class GameScene(QGraphicsScene):
                 winner.name + " WON ROUND " + str(self.current_round)
             )
             self.result_curtain.animate_incoming(self.get_zmax())
-            QTimer.singleShot(3000, self.close_the_round)
+            QTimer.singleShot(3000, self.next_round)
 
         else:
             self.timer.start(self.settings_manager.get_time())
-
-    def close_the_round(self):
-        print("close_the_round")
-        self.result_curtain.animate_leaving()
-        self.start_new_round()
 
     def mouseMoveEvent(self, event):
 
@@ -421,14 +420,7 @@ class GameScene(QGraphicsScene):
         # 2/ when the player puts a card on an avaiable side, starts process for the turn's of each player
 
         if self.shift_manager.side is not None:
-
-            self._play_a_turn(self.player)
-
-            # Run automaton's turn
-
-            self.automaton.play_a_card()
-            self._play_a_turn(self.automaton)
-
+            self.proceed()
         else:
             self.shift_manager.card.move_to(self.shift_manager.card.pos(), self.shift_manager.card.anchor_point)
             self.shift_manager.reset()

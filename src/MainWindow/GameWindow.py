@@ -60,7 +60,7 @@ class GameWindow(QMainWindow):
                 self.board.show_automaton_playmat()
 
             if event.key() == Qt.Key.Key_G:
-                self.board.start_new_round()
+                self.board.next_round()
 
     # Hidden short-cut release handler
 

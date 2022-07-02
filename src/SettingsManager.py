@@ -19,7 +19,7 @@ class SettingsManager(Singleton):
     __sounds = False
     __variant = False
     __first_player = None
-    __timer = 90
+    __timer = 12  # max time in secondes to play a card
 
     __debug = True
 

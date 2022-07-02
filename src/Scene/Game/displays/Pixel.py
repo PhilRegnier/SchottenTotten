@@ -19,11 +19,11 @@ class Pixel(QGraphicsItem):
 
     def set_light_off(self):
         self.color = Pixel.color_off
-        self.update()
+        #self.update()
 
     def set_light_on(self):
         self.color = Pixel.color_on
-        self.update()
+        #self.update()
 
     def boundingRect(self):
         return QRectF(0, 0, Pixel.width, Pixel.height)

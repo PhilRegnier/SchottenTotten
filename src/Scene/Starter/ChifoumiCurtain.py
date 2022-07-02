@@ -126,7 +126,7 @@ class Chifoumi(Curtain):
 
             if (self.feuille.selected and autoc == 2) \
                     or (self.ciseaux.selected and autoc == 0) \
-                    or (self.pierre.selected == 2 and autoc == 1):
+                    or (self.pierre.selected and autoc == 1):
                 self.settings.set_first_player(self.settings.CONST_PLAYER)
                 self.change_text(self.text0, Chifoumi.PLAYER_WON)
             else:
@@ -140,6 +140,6 @@ class Chifoumi(Curtain):
 
     def leave(self):
         self.animate_leaving()
-        self.scene().start_new_round()
+        self.scene().next_round()
 
 

@@ -34,14 +34,6 @@ class Automaton(Player):
         self.statistics.add_card_to_autoside(self.shift_manager.side)
 
     """
-    Automate 0 : random card and random side
-    """
-    def cervo0(self):
-        self.shift_manager.select(
-            choice(self.playmat.cards),
-            choice(self.statistics.auto_ls()))
-
-    """
     Automate 1 :    search the best option considering the automaton's cards
                     in his hand and in his sides 
     """

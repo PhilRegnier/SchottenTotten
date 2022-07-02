@@ -19,6 +19,11 @@ class DisplayStyle:
     pen = QPen(QColor(166, 166, 166, 100), 1)
 
 
+class WarningStyle:
+    brush = QBrush(QColor(255, 0, 0, 150))
+    pen = QPen(QColor(255, 0, 0, 200), 1)
+
+
 class PlayerColors:
     side0 = QColor(9, 18, 27, 90)
     side1 = QColor(85, 170, 255, 90)
@@ -76,3 +81,4 @@ class Shadow(QGraphicsDropShadowEffect):
         self.setBlurRadius(3)
         self.setXOffset(x_offset)
         self.setYOffset(y_offset)
+

@@ -1,9 +1,9 @@
 #
 # curtain for transition
 #
-from PyQt6.QtCore import QRectF, QPointF, QPropertyAnimation, QEasingCurve
+from PyQt6.QtCore import QRectF, QPointF, QPropertyAnimation, QEasingCurve, QEvent
 from PyQt6.QtGui import QColor, QBrush, QPen
-from PyQt6.QtWidgets import QGraphicsObject
+from PyQt6.QtWidgets import QGraphicsObject, QApplication
 
 from src.Style import GradientStyle, MainGeometry
 
@@ -54,19 +54,21 @@ class Curtain(QGraphicsObject):
         self.setVisible(True)
         self.anim.start()
 
-    def animate_leaving(self, z_value=None):
+    def animate_leaving(self, z_value=None, function=None):
         if z_value is not None:
             self.setZValue(z_value)
         self.anim = QPropertyAnimation(self, b"pos")
-        self.anim.setEasingCurve(QEasingCurve.Type.Custom)
+        self.anim.setEasingCurve(QEasingCurve.Type.InCubic)
         self.anim.setDuration(800)
         self.anim.setStartValue(QPointF(0, 0))
         self.anim.setEndValue(QPointF(0, -self.boundingRect().height()))
-        self.anim.finished.connect(self.remove)
+        self.anim.finished.connect(lambda: self.remove(function))
         self.anim.start()
 
-    def remove(self):
+    def remove(self, function):
         self.setVisible(False)
+        if function is not None:
+            function()
 
     @staticmethod
     def change_text(text_item, text):

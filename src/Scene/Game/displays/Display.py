@@ -1,11 +1,11 @@
 from PyQt6.QtCore import QRectF
-from PyQt6.QtWidgets import QGraphicsItem
+from PyQt6.QtWidgets import QGraphicsObject
 
 from src.Style import MainGeometry, DisplayStyle
 from src.TextInForeground import TextInForeground
 
 
-class Display(QGraphicsItem):
+class Display(QGraphicsObject):
 
     max_width = 0
     marge_width = 8
@@ -14,6 +14,8 @@ class Display(QGraphicsItem):
 
     def __init__(self, name):
         super(Display, self).__init__()
+        self.brush = DisplayStyle.brush
+        self.pen = DisplayStyle.pen
         if Display.max_width == 0:
             Display.set_size()
         self.title = self.text_displayed(name, self.max_width - 2 * self.marge_width)
@@ -28,8 +30,8 @@ class Display(QGraphicsItem):
         )
 
     def paint(self, painter, option, widget=0):
-        painter.setBrush(DisplayStyle.brush)
-        painter.setPen(DisplayStyle.pen)
+        painter.setBrush(self.brush)
+        painter.setPen(self.pen)
         painter.drawRoundedRect(self.rect, MainGeometry.r_bound, MainGeometry.r_bound)
 
     def text_displayed(self, string, max_width):

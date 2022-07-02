@@ -65,7 +65,11 @@ class Digit(QGraphicsItem):
         for pixel in self.pixels:
             pixel.set_light_off()
 
+        self.update()
+
     def display_number(self, number):
         self.display_none()
         for k in Digit.NUMBER[number]:
             self.pixels[k].set_light_on()
+
+        self.update()

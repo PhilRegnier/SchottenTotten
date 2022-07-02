@@ -18,11 +18,10 @@ class Side(QGraphicsItem):
     width = 0
     height = 0
 
-    def __init__(self, numero, colors, parent, accept_hover_event):
+    def __init__(self, numero, colors, hover):
         super().__init__()
         self.numero = numero
-        self.parent = parent
-        self.setAcceptHoverEvents(accept_hover_event)
+        self.setAcceptHoverEvents(hover)
         self.cards = []
         self.somme = 0
         if Side.width == 0:
