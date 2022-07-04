@@ -3,7 +3,8 @@ from PyQt6.QtGui import QBrush, QColor
 from PyQt6.QtWidgets import QGraphicsItem
 
 from src.Scene.Game.displays.Pixel import Pixel
-from src.Style import Pen, Shadow
+from src.Scene.effects.Shadow import Shadow
+from src.Style import Pen
 
 
 class Digit(QGraphicsItem):

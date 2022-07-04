@@ -1,7 +1,7 @@
 # Style classes
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor, QLinearGradient, QPen, QBrush
+from PyQt6.QtGui import QColor, QLinearGradient, QPen, QBrush, QFont
 from PyQt6.QtWidgets import QGraphicsDropShadowEffect
 
 
@@ -12,6 +12,10 @@ class GlobalStyle:
     ombrage_color = QColor(36, 36, 36, 90)
     ombrage_color_bt = QColor(36, 36, 36, 200)
     background_color = QColor(167, 159, 120)
+    shadow_color = QColor(31, 21, 17, 255)
+    glow_color = QColor(176, 186, 58, 255)
+    text_color = QColor(176, 186, 58, 255)
+    text_font = QFont("Helvetica [Cronyx]", 28)
 
 
 class DisplayStyle:
@@ -72,13 +76,4 @@ class Pen(QPen):
         self.setColor(QColor(67, 66, 37, 255))
         self.setCapStyle(Qt.PenCapStyle.SquareCap)
         self.setJoinStyle(Qt.PenJoinStyle.BevelJoin)
-
-
-class Shadow(QGraphicsDropShadowEffect):
-    def __init__(self, x_offset=1, y_offset=3):
-        super().__init__()
-        self.setColor(QColor(31, 21, 17, 255))
-        self.setBlurRadius(3)
-        self.setXOffset(x_offset)
-        self.setYOffset(y_offset)
 

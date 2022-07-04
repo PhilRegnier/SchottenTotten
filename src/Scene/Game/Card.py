@@ -9,7 +9,7 @@ from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QGraphicsObject, QGraphicsItem, QApplication
 
 from src.ImageTreatment import ImageTreatment
-from src.Scene.Game.Shader import Shader
+from src.Scene.effects.Shader import Shader
 from src.Scene.Game.ShiftManager import ShiftManager
 from src.Scene.Game.Side import Side
 from src.Scene.Game.Stone import Stone

@@ -1,10 +1,10 @@
 #
 # Text format
 #
-from PyQt6.QtGui import QFont, QColor
 from PyQt6.QtWidgets import QGraphicsSimpleTextItem
 
-from src.Style import Pen, Shadow
+from src.Scene.effects.Shadow import Shadow
+from src.Style import Pen, GlobalStyle
 
 
 class TextInForeground(QGraphicsSimpleTextItem):
@@ -13,9 +13,8 @@ class TextInForeground(QGraphicsSimpleTextItem):
         super().__init__()
         self.setParentItem(parent_item)
         self.setText(txt)
-        self.setFont(QFont("Helvetica [Cronyx]", 28))
-        # self.setBrush(QColor(0, 114, 114, 255))
-        self.setBrush(QColor(176, 186, 58, 255))
+        self.setFont(GlobalStyle.text_font)
+        self.setBrush(GlobalStyle.text_color)
         self.setPen(Pen())
         self.setGraphicsEffect(Shadow())
 

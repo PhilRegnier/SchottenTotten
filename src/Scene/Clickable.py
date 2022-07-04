@@ -7,7 +7,7 @@ from PyQt6.QtGui import QPixmap, QCursor
 from PyQt6.QtWidgets import QGraphicsPixmapItem, QGraphicsItem
 
 from src.ImageTreatment import ImageTreatment
-from src.Scene.Game.Shader import Shader
+from src.Scene.effects.Shader import Shader
 from src.Style import GlobalStyle
 
 
